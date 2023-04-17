@@ -1,4 +1,4 @@
-##Extract climate variables from MACA and calculate ACIs for each county for 1950-2005, and 2006-2099 under RCP4.5 and RCP8.5
+##Extract climate variables to calculate county-averaged ACIs for each MACA model for 1950-2005, and 2006-2099 under RCP4.5 and RCP8.5
 
 
 import matplotlib.pyplot as plt
