@@ -1,4 +1,4 @@
-##Extract climate variables from gridMET and calculate ACIs for each county
+##Extract climate variables from gridMET and calculate county-averaged ACIs
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
