@@ -11,3 +11,8 @@ which can be downloaded at: https://www.northwestknowledge.net/metdata/data/
 **California almond harvest data:** Annual county-level agricultural production data provided by the USDA's National Agricultural Statistics Services from 1980 to 2011, which can be downloaded at https://www.nass.usda.gov/Statistics_by_State/California/Publications/AgComm/index.php
 
 **Cropland Data Layer:** geospatial data of Cropland Data Layer(CDL) across contiguous U.S. provided by the USDA, which can be exported from the CropScape web app (https://nassgeodata.gmu.edu/CropScape/)
+
+
+
+## Data processing
+**Almond cropland mask:** The spatial resolution of CDL (30m)is different from those of climate datasets (4km). To filter out gridcells without almond croplands from gridMET and MACA, we used ArcGIS Pro to aggregrate and re-coordinate CDL raster data to match the resolution and geospatial coordinate of climate datasets. The CDL of almonds in California is available from 2007 to 2022 and the netCDF files produced from ArcGIS Pro are available in folder ***Almond_cropland_nc***
