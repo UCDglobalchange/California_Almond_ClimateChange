@@ -1,5 +1,6 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+##Extract climate variables from MACA and calculate ACIs for each county for 1950-2005, and 2006-2099 under RCP4.5 and RCP8.5
+
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import xarray
@@ -14,8 +15,8 @@ from numpy import savetxt
 import netCDF4 as nc
 import math
 
-data_ID='11_19'
-model_name='MRI-CGCM3'
+data_ID='' ## set ID for the entire simulation
+model_name='' ## MACA model name
 save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_ACI/'+str(model_name)+'/'
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 shapefile = salem.read_shapefile('/home/pgzikala/Shapefiles/CA_Counties/Counties.shp')
