@@ -1,5 +1,5 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+##Extract climate variables from gridMET and calculate ACIs for each county
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import xarray
@@ -13,7 +13,7 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import math
 
-data_ID='11_19'
+data_ID='11_19'  ## set ID for the entire simulation
 save_path ='/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_ACI/'
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
