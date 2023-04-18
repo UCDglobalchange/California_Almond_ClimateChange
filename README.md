@@ -13,7 +13,6 @@ which can be downloaded at: https://www.northwestknowledge.net/metdata/data/
 **Cropland Data Layer:** geospatial data of Cropland Data Layer(CDL) across contiguous U.S. provided by the USDA, which can be exported from the CropScape web app (https://nassgeodata.gmu.edu/CropScape/)
 
 
-
 ## Data processing
 **Almond cropland mask:** The spatial resolution of CDL (30m)is different from those of climate datasets (4km). To filter out gridcells without almond croplands from gridMET and MACA, we used ArcGIS Pro to aggregrate and re-coordinate CDL raster data to match the resolution and geospatial coordinate of climate datasets. The CDL of almonds in California is available from 2007 to 2022 and the netCDF files produced from ArcGIS Pro are available in folder ***Almond_cropland_nc***
 
@@ -24,3 +23,8 @@ We used the function *sklearn.linear_model.LassoCV*  from Python package —— 
 
 ## Yield projection ##
 After obtaining statistical relationship between gridMET-ACIs and historical county-level yields, we run ***MACA_projection.py*** to project yield based on MACA climate datasets(historical:1950-2005; future:2006-2099 under RCP4.5 and RCP8.5) and compute cropland area-weighted California statewide almond yield. 
+
+## Run the project ##
+Due to the enormous size of climate datasets and huge computation power requirement, we recommend to run the project on supercomputing cluster. The folder ***Run_project*** contains python and bash scripts which can be run sequentially to reproduce the results.
+
+
