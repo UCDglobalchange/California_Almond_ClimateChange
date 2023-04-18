@@ -1,3 +1,5 @@
+##Code to run LASSO regression model with gridMET-ACI (X) and historical almond yield (Y)
+
 import math
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -21,7 +23,7 @@ from yellowbrick.regressor import cooks_distance
 data_ID='11_19'
 save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/lasso_model/'
 import sys
-trial=np.int(sys.argv[1])
+trial=np.int(sys.argv[1]) ## the trial number (1-1000); Passed to random state in LassoCV function
 aci_num=13
 model_list = ['bcc-csm1-1','bcc-csm1', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
 X = genfromtxt('/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_csv/Gridmet.csv', delimiter = ',')
