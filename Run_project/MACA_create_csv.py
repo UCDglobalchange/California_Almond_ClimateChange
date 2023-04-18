@@ -1,0 +1,222 @@
+import os
+os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+import math 
+import pandas as pd
+import numpy as np
+import netCDF4 as nc
+from math import sqrt
+from sklearn import preprocessing
+from numpy import genfromtxt
+from numpy import savetxt
+
+
+county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
+data_ID='11_19'
+load_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_nc/'
+save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/tech_2010/'
+
+aci_num = 13
+model_list = ['bcc-csm1-1','bcc-csm1-1-m', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
+for model_id in range(0,17):
+    print(model_id)
+    almond_hist = nc.Dataset(str(load_path)+str(model_list[model_id])+'_hist_ACI.nc')
+    almond_rcp45 = nc.Dataset(str(load_path)+str(model_list[model_id])+'_rcp45_ACI.nc')
+    almond_rcp85 = nc.Dataset(str(load_path)+str(model_list[model_id])+'_rcp85_ACI.nc')
+    ACI_rcp45_2080_2018_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_s_1980_2018_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_2080_2018_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_s_1980_2018_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_2019_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_s_2019_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_2019_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_s_2019_2099_sum = np.zeros((0,aci_num*2+32)) 
+    for region_id in range(0,16):
+        print(region_id)
+        non_clim_coef_hist = np.zeros((26,32))
+        non_clim_coef_hist[:,region_id] = np.arange(1,27,1)
+        non_clim_coef_hist[:,(region_id+16)] = 1
+        aci_hist = np.array(almond_hist.variables['ACI_value'][29:55,region_id,:], dtype = np.float)
+        aci_hist = np.column_stack((aci_hist, aci_hist**2))
+        non_clim_coef_rcp45 = np.zeros((94,32))
+        non_clim_coef_rcp45[:,region_id] = np.arange(27,121,1)
+        non_clim_coef_rcp45[:,(region_id+16)] = 1
+        aci_rcp45 = np.array(almond_rcp45.variables['ACI_value'][:,region_id,:], dtype = np.float)
+        aci_rcp45 = np.column_stack((aci_rcp45, aci_rcp45**2))
+        non_clim_coef_rcp45_s = np.zeros((94, 32))
+        non_clim_coef_rcp45_s[0:15,region_id] = np.arange(27,42,1)
+        non_clim_coef_rcp45_s[15:,region_id] = 41
+        non_clim_coef_rcp45_s[:,(region_id+16)] = 1      
+        non_clim_coef_rcp85 = np.zeros((94,32))
+        non_clim_coef_rcp85[:,region_id] = np.arange(27,121,1)
+        non_clim_coef_rcp85[:,(region_id+16)] = 1
+        aci_rcp85 = np.array(almond_rcp85.variables['ACI_value'][:,region_id,:], dtype = np.float)
+        aci_rcp85 = np.column_stack((aci_rcp85, aci_rcp85**2))
+        non_clim_coef_rcp85_s = np.zeros((94, 32))
+        non_clim_coef_rcp85_s[0:15,region_id] = np.arange(27,42,1)
+        non_clim_coef_rcp85_s[15:,region_id] = 41
+        non_clim_coef_rcp85_s[:,(region_id+16)] = 1
+        ACI_rcp45_2080_2018 = np.column_stack((np.row_stack((aci_hist, aci_rcp45[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_rcp45[0:15]))))
+        ACI_rcp45_s_1980_2018 = np.column_stack((np.row_stack((aci_hist, aci_rcp45[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_rcp45_s[0:15]))))
+        ACI_rcp45_s_1980_2018[21:,aci_num*2+region_id] = 31
+        ACI_rcp85_2080_2018 = np.column_stack((np.row_stack((aci_hist, aci_rcp85[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_rcp85[0:15]))))
+        ACI_rcp85_s_1980_2018 = np.column_stack((np.row_stack((aci_hist, aci_rcp85[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_rcp85_s[0:15]))))                    
+        ACI_rcp85_s_1980_2018[21:,aci_num*2+region_id] = 31
+        ACI_rcp45_2019_2099 = np.column_stack((aci_rcp45[15:94], non_clim_coef_rcp45[15:94]))
+        ACI_rcp45_s_2019_2099 = np.column_stack((aci_rcp45[15:94], non_clim_coef_rcp45_s[15:94]))
+        ACI_rcp45_s_2019_2099[:,aci_num*2+region_id] = 31
+        ACI_rcp85_2019_2099 = np.column_stack((aci_rcp85[15:94], non_clim_coef_rcp85[15:94]))
+        ACI_rcp85_s_2019_2099 = np.column_stack((aci_rcp85[15:94], non_clim_coef_rcp85_s[15:94]))  
+        ACI_rcp85_s_2019_2099[:,aci_num*2+region_id] = 31
+        aci_mean_rcp45 = np.mean(ACI_rcp45_2080_2018[:,0:aci_num], axis = 0)
+        aci_mean_rcp85 = np.mean(ACI_rcp85_2080_2018[:,0:aci_num], axis = 0)
+        aci_std_rcp45 = np.std(ACI_rcp45_2080_2018[:,0:aci_num], axis = 0)
+        aci_std_rcp85 = np.std(ACI_rcp85_2080_2018[:,0:aci_num], axis = 0)        
+        for j in range(0,aci_num):
+            ACI_rcp45_2019_2099[:,j] = (ACI_rcp45_2019_2099[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_s_2019_2099[:,j] = (ACI_rcp45_s_2019_2099[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_2080_2018[:,j] = (ACI_rcp45_2080_2018[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_s_1980_2018[:,j] =(ACI_rcp45_s_1980_2018[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+        for j in range(0,aci_num):
+            ACI_rcp85_2019_2099[:,j] = (ACI_rcp85_2019_2099[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_s_2019_2099[:,j] = (ACI_rcp85_s_2019_2099[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_2080_2018[:,j] = (ACI_rcp85_2080_2018[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_s_1980_2018[:,j] =(ACI_rcp85_s_1980_2018[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+        ACI_rcp45_2019_2099[:,aci_num:aci_num*2] = (ACI_rcp45_2019_2099[:,0:aci_num])**2
+        ACI_rcp45_s_2019_2099[:,aci_num:aci_num*2] = (ACI_rcp45_s_2019_2099[:,0:aci_num])**2
+        ACI_rcp45_2080_2018[:,aci_num:aci_num*2] = (ACI_rcp45_2080_2018[:,0:aci_num])**2
+        ACI_rcp45_s_1980_2018[:,aci_num:aci_num*2] = (ACI_rcp45_s_1980_2018[:,0:aci_num])**2
+        ACI_rcp85_2019_2099[:,aci_num:aci_num*2] = (ACI_rcp85_2019_2099[:,0:aci_num])**2
+        ACI_rcp85_s_2019_2099[:,aci_num:aci_num*2] = (ACI_rcp85_s_2019_2099[:,0:aci_num])**2
+        ACI_rcp85_2080_2018[:,aci_num:aci_num*2] = (ACI_rcp85_2080_2018[:,0:aci_num])**2
+        ACI_rcp85_s_1980_2018[:,aci_num:aci_num*2] = (ACI_rcp85_s_1980_2018[:,0:aci_num])**2
+        ACI_rcp45_2080_2018_sum = np.row_stack((ACI_rcp45_2080_2018_sum, ACI_rcp45_2080_2018))
+        ACI_rcp45_s_1980_2018_sum = np.row_stack((ACI_rcp45_s_1980_2018_sum,ACI_rcp45_s_1980_2018))
+        ACI_rcp85_2080_2018_sum = np.row_stack((ACI_rcp85_2080_2018_sum,ACI_rcp85_2080_2018))
+        ACI_rcp85_s_1980_2018_sum = np.row_stack((ACI_rcp85_s_1980_2018_sum,ACI_rcp85_s_1980_2018))
+        ACI_rcp45_2019_2099_sum = np.row_stack((ACI_rcp45_2019_2099_sum,ACI_rcp45_2019_2099))
+        ACI_rcp45_s_2019_2099_sum = np.row_stack((ACI_rcp45_s_2019_2099_sum,ACI_rcp45_s_2019_2099))
+        ACI_rcp85_2019_2099_sum = np.row_stack((ACI_rcp85_2019_2099_sum,ACI_rcp85_2019_2099))
+        ACI_rcp85_s_2019_2099_sum = np.row_stack((ACI_rcp85_s_2019_2099_sum,ACI_rcp85_s_2019_2099))
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp45_ACI.csv', ACI_rcp45_2080_2018_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp45_s_ACI.csv', ACI_rcp45_s_1980_2018_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp85_ACI.csv', ACI_rcp85_2080_2018_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp85_s_ACI.csv', ACI_rcp85_s_1980_2018_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp45_ACI.csv', ACI_rcp45_2019_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp45_s_ACI.csv', ACI_rcp45_s_2019_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp85_ACI.csv', ACI_rcp85_2019_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp85_s_ACI.csv', ACI_rcp85_s_2019_2099_sum, delimiter = ',')
+
+load_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_nc/'
+save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/to_2020/'
+model_list = ['bcc-csm1-1','bcc-csm1-1-m', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
+middle_tech_scenario = np.zeros(80)
+middle_tech_scenario[0] = 41
+for i in range(1,80):
+    middle_tech_scenario[i] = middle_tech_scenario[i-1] + (80 - i)/80
+for model_id in range(0,17):
+    print(model_id)
+    almond_hist = nc.Dataset(str(load_path)+str(model_list[model_id])+'_hist_ACI.nc')
+    almond_rcp45 = nc.Dataset(str(load_path)+str(model_list[model_id])+'_rcp45_ACI.nc')
+    almond_rcp85 = nc.Dataset(str(load_path)+str(model_list[model_id])+'_rcp85_ACI.nc')
+    ACI_rcp45_1980_2020_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_s_1980_2020_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_m_1980_2020_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_1980_2020_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_s_1980_2020_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_m_1980_2020_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_2021_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_s_2021_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp45_m_2021_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_2021_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_s_2021_2099_sum = np.zeros((0,aci_num*2+32))
+    ACI_rcp85_m_2021_2099_sum = np.zeros((0,aci_num*2+32))
+    for region_id in range(0,16):
+        print(region_id)
+        non_clim_coef_hist = np.zeros((26,32))
+        non_clim_coef_hist[:,region_id] = np.arange(1,27,1)
+        non_clim_coef_hist[:,(region_id+16)] = 1
+        aci_hist = np.array(almond_hist.variables['ACI_value'][29:55,region_id,:], dtype = np.float)
+        aci_hist = np.column_stack((aci_hist, aci_hist**2))
+        aci_rcp45 = np.array(almond_rcp45.variables['ACI_value'][:,region_id,:], dtype = np.float)
+        aci_rcp45 = np.column_stack((aci_rcp45, aci_rcp45**2))
+        ACI_rcp85 = np.array(almond_rcp85.variables['ACI_value'][:,region_id,:], dtype = np.float)
+        ACI_rcp85 = np.column_stack((ACI_rcp85, ACI_rcp85**2))
+        non_clim_coef= np.zeros((94,32))
+        non_clim_coef[:,region_id] = np.arange(27,121,1)
+        non_clim_coef[:,(region_id+16)] = 1
+        non_clim_coef_s = np.zeros((94, 32))
+        non_clim_coef_s[0:15,region_id] = np.arange(27,42,1)
+        non_clim_coef_s[15:,region_id] = 41
+        non_clim_coef_s[:,(region_id+16)] = 1
+        non_clim_coef_m = np.zeros((94, 32))
+        non_clim_coef_m[0:15,region_id] = np.arange(27,42,1)
+        non_clim_coef_m[15:,region_id] = middle_tech_scenario[1:]
+        non_clim_coef_m[:,(region_id+16)] = 1
+        ACI_rcp45_1980_2020 = np.column_stack((np.row_stack((aci_hist, aci_rcp45[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef[0:15]))))
+        ACI_rcp45_s_1980_2020 = np.column_stack((np.row_stack((aci_hist, aci_rcp45[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_s[0:15]))))
+        ACI_rcp45_m_1980_2020 = np.column_stack((np.row_stack((aci_hist, aci_rcp45[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_m[0:15]))))
+        ACI_rcp85_1980_2020 = np.column_stack((np.row_stack((aci_hist, ACI_rcp85[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef[0:15]))))
+        ACI_rcp85_s_1980_2020 = np.column_stack((np.row_stack((aci_hist, ACI_rcp85[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_s[0:15]))))
+        ACI_rcp85_m_1980_2020 = np.column_stack((np.row_stack((aci_hist, ACI_rcp85[0:15])), np.row_stack((non_clim_coef_hist, non_clim_coef_m[0:15]))))
+        ACI_rcp45_2021_2099 = np.column_stack((aci_rcp45[15:94], non_clim_coef[15:94]))
+        ACI_rcp45_s_2021_2099 = np.column_stack((aci_rcp45[15:94], non_clim_coef_s[15:94]))
+        ACI_rcp45_m_2021_2099 = np.column_stack((aci_rcp45[15:94], non_clim_coef_m[15:94]))
+        ACI_rcp85_2021_2099 = np.column_stack((ACI_rcp85[15:94], non_clim_coef[15:94]))
+        ACI_rcp85_s_2021_2099 = np.column_stack((ACI_rcp85[15:94], non_clim_coef_s[15:94]))
+        ACI_rcp85_m_2021_2099 = np.column_stack((ACI_rcp85[15:94], non_clim_coef_m[15:94]))
+        aci_mean_rcp45 = np.mean(ACI_rcp45_1980_2020[:,0:aci_num], axis = 0)
+        aci_mean_rcp85 = np.mean(ACI_rcp85_1980_2020[:,0:aci_num], axis = 0)
+        aci_std_rcp45 = np.std(ACI_rcp45_1980_2020[:,0:aci_num], axis = 0)
+        aci_std_rcp85 = np.std(ACI_rcp85_1980_2020[:,0:aci_num], axis = 0)
+        for j in range(0,aci_num):
+            ACI_rcp45_2021_2099[:,j] = (ACI_rcp45_2021_2099[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_s_2021_2099[:,j] = (ACI_rcp45_s_2021_2099[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_m_2021_2099[:,j] = (ACI_rcp45_m_2021_2099[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_1980_2020[:,j] = (ACI_rcp45_1980_2020[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_s_1980_2020[:,j] = (ACI_rcp45_s_1980_2020[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp45_m_1980_2020[:,j] = (ACI_rcp45_m_1980_2020[:,j]-aci_mean_rcp45[j])/aci_std_rcp45[j]
+            ACI_rcp85_2021_2099[:,j] = (ACI_rcp85_2021_2099[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_s_2021_2099[:,j] = (ACI_rcp85_s_2021_2099[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_m_2021_2099[:,j] = (ACI_rcp85_m_2021_2099[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_1980_2020[:,j] = (ACI_rcp85_1980_2020[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_s_1980_2020[:,j] = (ACI_rcp85_s_1980_2020[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+            ACI_rcp85_m_1980_2020[:,j] = (ACI_rcp85_m_1980_2020[:,j]-aci_mean_rcp85[j])/aci_std_rcp85[j]
+        ACI_rcp45_2021_2099[:,aci_num:aci_num*2] = (ACI_rcp45_2021_2099[:,0:aci_num])**2
+        ACI_rcp45_s_2021_2099[:,aci_num:aci_num*2] = (ACI_rcp45_s_2021_2099[:,0:aci_num])**2
+        ACI_rcp45_m_2021_2099[:,aci_num:aci_num*2] = (ACI_rcp45_m_2021_2099[:,0:aci_num])**2
+        ACI_rcp45_1980_2020[:,aci_num:aci_num*2] = (ACI_rcp45_1980_2020[:,0:aci_num])**2
+        ACI_rcp45_s_1980_2020[:,aci_num:aci_num*2] = (ACI_rcp45_s_1980_2020[:,0:aci_num])**2
+        ACI_rcp45_m_1980_2020[:,aci_num:aci_num*2] = (ACI_rcp45_m_1980_2020[:,0:aci_num])**2
+        ACI_rcp85_2021_2099[:,aci_num:aci_num*2] = (ACI_rcp85_2021_2099[:,0:aci_num])**2
+        ACI_rcp85_s_2021_2099[:,aci_num:aci_num*2] = (ACI_rcp85_s_2021_2099[:,0:aci_num])**2
+        ACI_rcp85_m_2021_2099[:,aci_num:aci_num*2] = (ACI_rcp85_m_2021_2099[:,0:aci_num])**2
+        ACI_rcp85_1980_2020[:,aci_num:aci_num*2] = (ACI_rcp85_1980_2020[:,0:aci_num])**2
+        ACI_rcp85_s_1980_2020[:,aci_num:aci_num*2] = (ACI_rcp85_s_1980_2020[:,0:aci_num])**2
+        ACI_rcp85_m_1980_2020[:,aci_num:aci_num*2] = (ACI_rcp85_m_1980_2020[:,0:aci_num])**2
+        ACI_rcp45_1980_2020_sum = np.row_stack((ACI_rcp45_1980_2020_sum, ACI_rcp45_1980_2020))
+        ACI_rcp45_s_1980_2020_sum = np.row_stack((ACI_rcp45_s_1980_2020_sum,ACI_rcp45_s_1980_2020))
+        ACI_rcp45_m_1980_2020_sum = np.row_stack((ACI_rcp45_m_1980_2020_sum,ACI_rcp45_m_1980_2020))
+        ACI_rcp85_1980_2020_sum = np.row_stack((ACI_rcp85_1980_2020_sum,ACI_rcp85_1980_2020))
+        ACI_rcp85_s_1980_2020_sum = np.row_stack((ACI_rcp85_s_1980_2020_sum,ACI_rcp85_s_1980_2020))
+        ACI_rcp85_m_1980_2020_sum = np.row_stack((ACI_rcp85_m_1980_2020_sum,ACI_rcp85_m_1980_2020))
+        ACI_rcp45_2021_2099_sum = np.row_stack((ACI_rcp45_2021_2099_sum,ACI_rcp45_2021_2099))
+        ACI_rcp45_s_2021_2099_sum = np.row_stack((ACI_rcp45_s_2021_2099_sum,ACI_rcp45_s_2021_2099))
+        ACI_rcp45_m_2021_2099_sum = np.row_stack((ACI_rcp45_m_2021_2099_sum,ACI_rcp45_m_2021_2099))
+        ACI_rcp85_2021_2099_sum = np.row_stack((ACI_rcp85_2021_2099_sum,ACI_rcp85_2021_2099))
+        ACI_rcp85_s_2021_2099_sum = np.row_stack((ACI_rcp85_s_2021_2099_sum,ACI_rcp85_s_2021_2099))
+        ACI_rcp85_m_2021_2099_sum = np.row_stack((ACI_rcp85_m_2021_2099_sum,ACI_rcp85_m_2021_2099))
+        print(non_clim_coef_m)
+        print(middle_tech_scenario)
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp45_ACI.csv', ACI_rcp45_1980_2020_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp45_s_ACI.csv', ACI_rcp45_s_1980_2020_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp45_m_ACI.csv', ACI_rcp45_m_1980_2020_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp85_ACI.csv', ACI_rcp85_1980_2020_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp85_s_ACI.csv', ACI_rcp85_s_1980_2020_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'hist_rcp85_m_ACI.csv', ACI_rcp85_m_1980_2020_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp45_ACI.csv', ACI_rcp45_2021_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp45_s_ACI.csv', ACI_rcp45_s_2021_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp45_m_ACI.csv', ACI_rcp45_m_2021_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp85_ACI.csv', ACI_rcp85_2021_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp85_s_ACI.csv', ACI_rcp85_s_2021_2099_sum, delimiter = ',')
+    savetxt(str(save_path)+str(model_list[model_id])+'future_rcp85_m_ACI.csv', ACI_rcp85_m_2021_2099_sum, delimiter = ',')
+
