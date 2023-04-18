@@ -25,6 +25,6 @@ We used the function *sklearn.linear_model.LassoCV*  from Python package —— 
 After obtaining statistical relationship between gridMET-ACIs and historical county-level yields, we run ***MACA_projection.py*** to project yield based on MACA climate datasets(historical:1950-2005; future:2006-2099 under RCP4.5 and RCP8.5) and compute cropland area-weighted California statewide almond yield. 
 
 ## Run the project ##
-Due to the enormous size of climate datasets and huge computation power requirement, we recommend to run the project on supercomputing cluster. The folder ***Run_project*** contains python and bash scripts which can be run sequentially to reproduce the results and generate plots in the Run_project/saved_data/. Please read the **Running_instruction.txt**, which can be found in the folder, at first.
+Due to the enormous size of climate datasets and huge computation power requirement, we recommend to run the project on supercomputing cluster. The folder ***Run_project*** contains python and bash scripts which can be run sequentially to reproduce the results and generate plots in the ***Run_project/saved_data/***. Please read the **Running_instruction.txt**, which can be found in the folder, at first.
 
 
