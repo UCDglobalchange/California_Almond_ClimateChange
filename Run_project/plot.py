@@ -28,7 +28,7 @@ from matplotlib import cm
 
 
 data_path =  ## set path to the project_path/saved_data/data_ID 
-
+home_path = 
 ## Load yield simulations
 yield_all_future_rcp45 = np.load(str(data_path)+'/projection/yield_all_future_rcp45.npy')
 yield_all_future_rcp45_s = np.load(str(data_path)+'/projection/yield_all_future_rcp45_s.npy')
