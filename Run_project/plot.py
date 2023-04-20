@@ -25,10 +25,12 @@ from matplotlib import gridspec
 from scipy.interpolate import make_interp_spline
 from matplotlib.patches import PathPatch
 from matplotlib import cm
+from matplotlib import gridspec
 
 
-data_path =  ## set path to the project_path/saved_data/data_ID 
-home_path = 
+data_ID='11_19'
+data_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID) ## set path to the project_path/saved_data/data_ID 
+home_path = '/home/shqwu/Almond_code_git'
 ## Load yield simulations
 yield_all_future_rcp45 = np.load(str(data_path)+'/projection/yield_all_future_rcp45.npy')
 yield_all_future_rcp45_s = np.load(str(data_path)+'/projection/yield_all_future_rcp45_s.npy')
@@ -90,9 +92,10 @@ for i in range(1,11):
 
 
 
-area = genfromtxt(str(data_path)+'/almond_area.csv', delimiter = ',')
-production = genfromtxt(str(data_path)+'/almond_production.csv', delimiter = ',')
+area = genfromtxt(str(home_path)+'/almond_area.csv', delimiter = ',')
+production = genfromtxt(str(home_path)+'/almond_production.csv', delimiter = ',')
 gridmet = genfromtxt(str(data_path)+'/Gridmet_csv/Gridmet.csv', delimiter = ',')
+yield_csv = genfromtxt(str(home_path)+'/almond_yield_1980_2020.csv', delimiter = ',')
 
 simulation_gridmet = np.zeros((656, 1000))
 production_gridmet = np.zeros((656, 1000))
@@ -183,7 +186,79 @@ def extract_prob_curve(matrix, prob):
     df = df.loc[df['y'] <=0.1]
     return(np.array(df.x), np.array(df.min_index))
     
+def add_median_labels(ax, fmt='.1f'):
+    lines = ax.get_lines()
+    boxes = [c for c in ax.get_children() if type(c).__name__ == 'PathPatch']
+    lines_per_box = int(len(lines) / len(boxes))
+    for median in lines[4:len(lines):lines_per_box]:
+        x, y = (data.mean() for data in median.get_data())
+        # choose value depending on horizontal or vertical plot orientation
+        value = x if (median.get_xdata()[1] - median.get_xdata()[0]) == 0 else y
+        text = ax.text(x, y+0.15, f'{value:{fmt}}', ha='center', va='center',
+                       fontweight='bold', color='white',fontsize = 25)
+        # create median-colored border around white text for contrast
+        text.set_path_effects([
+            path_effects.Stroke(linewidth=3, foreground=median.get_color()),
+            path_effects.Normal(),
+        ])
 
+
+
+def tsplot(x, y, n=2, percentile_min=2.5, percentile_max=97.5, color='r', plot_mean=False, plot_median=False, line_color='k', **kwargs):
+    # calculate the lower and upper percentile groups, skipping 50 percentile
+    perc1 = np.percentile(y, np.linspace(percentile_min, 31, num=n, endpoint=False), axis=0)
+    perc2 = np.percentile(y, np.linspace(71.5, percentile_max, num=n+1)[1:], axis=0)
+
+    if 'alpha' in kwargs:
+        alpha = kwargs.pop('alpha')
+    else:
+        alpha = 1/n
+    # fill lower and upper percentile groups
+    for p1, p2 in zip(perc1, perc2):
+        plt.fill_between(x, p1, p2, alpha=alpha, color=color, edgecolor='k')
+
+    if plot_mean:
+        plt.plot(x, np.mean(y, axis=0), color=line_color)
+
+
+    if plot_median:
+        plt.plot(x, np.median(y, axis=0), color=line_color)
+    
+    return plt.gca() 
+
+def adjust_box_widths(g, fac):
+    """
+    Adjust the withs of a seaborn-generated boxplot.
+    """
+
+    # iterating through Axes instances
+    for ax in g.axes:
+
+        # iterating through axes artists:
+        for c in ax.get_children():
+
+            # searching for PathPatches
+            if isinstance(c, PathPatch):
+                # getting current width of box:
+                p = c.get_path()
+                verts = p.vertices
+                verts_sub = verts[:-1]
+                xmin = np.min(verts_sub[:, 0])
+                xmax = np.max(verts_sub[:, 0])
+                xmid = 0.5*(xmin+xmax)
+                xhalf = 0.5*(xmax - xmin)
+
+                # setting new width of box
+                xmin_new = xmid-fac*xhalf
+                xmax_new = xmid+fac*xhalf
+                verts_sub[verts_sub[:, 0] == xmin, 0] = xmin_new
+                verts_sub[verts_sub[:, 0] == xmax, 0] = xmax_new
+
+                # setting new width of median line
+                for l in ax.lines:
+                    if np.all(l.get_xdata() == [xmin, xmax]):
+                        l.set_xdata([xmin_new, xmax_new])
+                        
 
 matrix_percent_loss_num_year_rcp45_2090 = np.zeros((21,17000))
 matrix_percent_loss_num_year_rcp85_2090 = np.zeros((21,17000))
@@ -481,13 +556,13 @@ plt.xticks(np.arange(0,21,2)+0.5, np.array(np.linspace(0,100,11)).astype(int), r
 plt.xticks(fontsize = 30)
 plt.yticks(y_tick_pos+0.5, y_tick_value[::-1], fontsize = 30, rotation = 360)
 cbar = ax10.get_children()[0]
-plt.colorbar(cbar, ax = [ax10,ax11],orientation = 'horizontal', location = 'bottom', pad = 0.26, shrink = 0.8)
+plt.colorbar(cbar, ax = [ax10,ax11], location = 'bottom', pad = 0.26, shrink = 0.8)
 cbar = ax10.collections[0].colorbar
 cbar.ax.tick_params(labelsize=30)
 cbar.set_label('Probability', fontsize = 35, labelpad=0.1)
 plt.title('2080-2099', fontsize = 35, y = 1.05)
 plt.text(-6.8, -4.25, 'RCP8.5', fontsize = 35)
-plt.savefig(str(data_path)+'/UCDGlobalChange/shqwu/Almond_plots/manuscript_plot/future_yield_prediction_with_contant_tech_trend.pdf', dpi = 300)
+plt.savefig(str(data_path)+'/plot/yield_time_series.pdf', dpi = 300)
 plt.show()
 
 
@@ -537,8 +612,8 @@ tech_change_for_shp_45_2099_int[:] = np.nan
 
 N_S_order = np.zeros((16))
 
-ca = geopandas.read_file(str(data_path)+'/UCDGlobalChange/shqwu/CA_Counties/CA_Counties_TIGER2016.shp')
-ca_county_remove_shp = geopandas.read_file(str(data_path)+'/UCDGlobalChange/shqwu/CA_Counties/CA_Counties_TIGER2016.shp')
+ca = geopandas.read_file(str(home_path)+'/CA_Counties/CA_Counties_TIGER2016.shp')
+ca_county_remove_shp = geopandas.read_file(str(home_path)+'/CA_Counties/CA_Counties_TIGER2016.shp')
 ca_county_remove = ['Sierra', 'Sacramento', 'Santa Barbara', 'Calaveras', 'Ventura','Los Angeles', 'Sonoma', 'San Diego', 'Placer', 'San Francisco', 'Marin', 'Mariposa', 'Lassen', 'Napa',
                     'Shasta', 'Monterey','Trinity', 'Mendocino', 'Inyo', 'Mono', 'Tuolumne', 'San Bernardino', 'Contra Costa', 'Alpine', 'El Dorado', 'San Benito', 'Humboldt','Riverside',
                     'Del Norte', 'Modoc', 'Santa Clara', 'Alameda', 'Nevada', 'Orange', 'Imperial', 'Amador', 'Lake', 'Plumas', 'San Mateo', 'Siskiyou', 'Santa Cruz','San Luis Obispo']
@@ -606,8 +681,7 @@ fig.set_figwidth(50)
 spec = gridspec.GridSpec(nrows=110, ncols=7, width_ratios=[1,1,0,0.6,1,0,0.6], wspace = 0,hspace = 20)
 
 ax0 = plt.subplot(spec[0:50,0])
-ca_merge_obs.plot(ax = ax0, column = ca_merge_obs.Observation,edgecolor='black',missing_kwds={'color': 'grey'}, legend = True, cmap = 'Greens',legend_kwds={
-                        'orientation': "horizontal", 'aspect' : 10}, vmin = 0.5, vmax = 2)
+ca_merge_obs.plot(ax = ax0, column = ca_merge_obs.Observation,edgecolor='black',missing_kwds={'color': 'grey'}, legend = True, cmap = 'Greens',legend_kwds={'orientation': "horizontal", 'aspect' : 10}, vmin = 0.5, vmax = 2)
 ax0.set_axis_off()
 ax0.set_title('Observed yield at 2020 (ton/acre)', fontsize = 35, y = 1.08)
 ca_county_remove_shp['coords'] = ca_county_remove_shp['geometry'].apply(lambda x: x.representative_point().coords[:])
@@ -619,8 +693,7 @@ ticks_county_order_N_S = ['[1]', '[2]', '[3]', '[4]', '[5]', '[6]', '[7]', '[8]'
 #for idx in range(16):
 
 ax1 = plt.subplot(spec[0:50,1])
-ca_merge_rcp45_2099_tech_con.plot(ax = ax1, column = ca_merge_rcp45_2099_tech_int.yield_change, edgecolor='black',missing_kwds={'color': 'grey'}, legend = True, cmap = 'Purples',legend_kwds={
-                        'orientation': "horizontal", 'ticks': [-50, 0, 100, 200, 300]}, vmin = -50, vmax = 300)
+ca_merge_rcp45_2099_tech_con.plot(ax = ax1, column = ca_merge_rcp45_2099_tech_int.yield_change, edgecolor='black',missing_kwds={'color': 'grey'}, legend = True, cmap = 'Purples',legend_kwds={'orientation': "horizontal", 'ticks': [-50, 0, 100, 200, 300]}, vmin = -50, vmax = 300)
 fig = ax1.figure
 cb_ax = fig.axes[3]
 cb_ax.tick_params(labelsize = 35)
@@ -686,8 +759,7 @@ ax2_box.spines['right'].set_visible(False)
 
 
 ax3 = plt.subplot(spec[60:110,1])
-ca_merge_rcp45_2099.plot(ax = ax3, column = ca_merge_rcp45_2099.rcp45_2099,edgecolor='black',missing_kwds={'color': 'grey'}, legend = True, cmap = 'OrRd_r', figsize = (15,15),vmin = -100, vmax = 0,legend_kwds={
-                        'orientation': "horizontal", 'ticks': [-100, -50, 0]})
+ca_merge_rcp45_2099.plot(ax = ax3, column = ca_merge_rcp45_2099.rcp45_2099,edgecolor='black',missing_kwds={'color': 'grey'}, legend = True, cmap = 'OrRd_r', figsize = (15,15),vmin = -100, vmax = 0,legend_kwds={'orientation': "horizontal", 'ticks': [-100, -50, 0]})
 cb_ax = fig.axes[8]
 cb_ax.tick_params(labelsize = 35)
 #cb_ax.set_title("Yield change, %", fontsize=35, y=-2.5)
@@ -737,7 +809,7 @@ plt.axvline(x=-100, linestyle = 'dashed', color = 'r')
 plt.axvline(x=0, linestyle = 'dashed', color = 'r')
 ax4_box.spines['top'].set_visible(False)
 ax4_box.spines['right'].set_visible(False)
-plt.savefig(str(data_path)+'/UCDGlobalChange/shqwu/Almond_plots/manuscript_plot/map.pdf', dpi = 300, bbox_inches='tight')
+plt.savefig(str(data_path)+'/plot/map.pdf', dpi = 300, bbox_inches='tight')
 
 
 
@@ -1099,7 +1171,7 @@ plt.xticks(fontsize =35, rotation = 35)
 plt.yticks(np.linspace(20,100,5).astype(int),np.linspace(20,100,5).astype(int),fontsize = 35)
 plt.title('Fractional contribution to total uncertainty (%)' , fontsize = 35, y = 1.06)
 
-plt.savefig(str(data_path)+'/UCDGlobalChange/shqwu/Almond_plots/manuscript_plot/uncertainty.pdf', bbox_inches='tight', dpi =300)
+plt.savefig(str(data_path)+'/plot/uncertainty.pdf', bbox_inches='tight', dpi =300)
 
 
 
@@ -1163,6 +1235,7 @@ aci_contribution_rcp85_county_2050_change_percent_median = np.median(aci_contrib
 aci_contribution_rcp85_county_2090_change_percent_median = np.median(aci_contribution_rcp85_county_2090_change_percent, axis=1)
 
 
+
 fig, axs = plt.subplots(2,2,figsize=(40,30))
 formatting = "{:,.1f}"
 from matplotlib.ticker import FuncFormatter
@@ -1196,7 +1269,7 @@ trans.loc[trans['positive'] == 99, 'color'] = '#24CAFF' #blue_color
 my_colors = list(trans.color)
 #my_plot = plt.bar(np.arange(0,len(trans.index))-0.5, blank, width=0.4, color='black')
 plt.subplot(2,2,1)
-axs[0,0].bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
+plt.bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
          bottom=blank, color=my_colors)
 plt.plot(step.index, step.values, 'k', linewidth = 2)
 plt.yticks(fontsize = 35)
@@ -1273,7 +1346,7 @@ trans.loc[trans['positive'] == 99, 'color'] = '#24CAFF' #blue_color
 my_colors = list(trans.color)
 #my_plot = plt.bar(np.arange(0,len(trans.index))-0.5, blank, width=0.4, color='black')
 plt.subplot(2,2,2)
-axs[0,1].bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
+plt.bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
          bottom=blank, color=my_colors)
 plt.plot(step.index, step.values, 'k', linewidth = 2)
 plt.yticks(fontsize = 35)
@@ -1349,7 +1422,7 @@ trans.loc[trans['positive'] == 99, 'color'] = '#24CAFF' #blue_color
 my_colors = list(trans.color)
 #my_plot = plt.bar(np.arange(0,len(trans.index))-0.5, blank, width=0.4, color='black')
 plt.subplot(2,2,3)
-axs[1,0].bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
+plt.bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
          bottom=blank, color=my_colors)
 plt.plot(step.index, step.values, 'k', linewidth = 2)
 plt.yticks(fontsize = 35)
@@ -1434,7 +1507,7 @@ trans.loc[trans['positive'] == 99, 'color'] = '#24CAFF' #blue_color
 my_colors = list(trans.color)
 #my_plot = plt.bar(np.arange(0,len(trans.index))-0.5, blank, width=0.4, color='black')
 plt.subplot(2,2,4)
-axs[1,1].bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
+plt.bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
          bottom=blank, color=my_colors)
 plt.plot(step.index, step.values, 'k', linewidth = 2)
 plt.yticks(fontsize = 35)
@@ -1523,7 +1596,7 @@ trans.loc[trans['positive'] == 99, 'color'] = '#24CAFF' #blue_color
 my_colors = list(trans.color)
 #my_plot = plt.bar(np.arange(0,len(trans.index))-0.5, blank, width=0.4, color='black')
 plt.subplot(17,1,1)
-axs[0].bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
+plt.bar(np.arange(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
          bottom=blank, color=my_colors)       
 plt.plot(step.index, step.values, 'k', linewidth = 2)
 plt.yticks(fontsize = 35)
@@ -1615,7 +1688,8 @@ for county in range(0,16):
     plt.subplot(17,1,county+2)
     plt.text(s = str(county_order_N_S[county]), x = -3.35, y = -120, fontsize = 35)
     plt.plot(step.index, step.values, 'k', linewidth = 2)
-    axs[county+1].bar(range(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
+    plt.subplot(17,1,county+2)
+    plt.bar(range(0,len(trans.index)), trans.amount, width=0.6, edgecolor = 'black',linewidth = 2,
              bottom=blank, color=my_colors)       
     plt.yticks(fontsize = 25)
     y_height = trans.amount.cumsum().shift(1).fillna(0)
