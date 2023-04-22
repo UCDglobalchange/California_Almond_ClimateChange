@@ -1,3 +1,6 @@
+##code to  calculate ACI's relative contributions to yield change
+
+
 import math 
 import matplotlib.pyplot as plt 
 import pandas as pd
@@ -18,7 +21,7 @@ import matplotlib as mpl
 aci_num = 13
 data_ID='11_19'
 load_coef_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/lasso_model/'
-load_aci_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/to_2020/'
+load_aci_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/'
 area_csv = genfromtxt('/home/shqwu/Almond_code_git/almond_area.csv', delimiter = ',')
 save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/aci_contribution/'
 ##multiply coef and aci
