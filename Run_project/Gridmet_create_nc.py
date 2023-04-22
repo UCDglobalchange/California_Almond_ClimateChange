@@ -1,5 +1,5 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+## code to collect gridmet ACIs and save into a single netCDF file
+
 import pandas as pd
 import numpy as np
 from numpy import genfromtxt
