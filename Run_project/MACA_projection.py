@@ -2,8 +2,6 @@
 ##Code to use statistical relationship obtained from Lasso regression between gridMET-ACI and historical almond yield to 
 ##project almond yield based on MACA climate datasets for each county, and compute almond cropand area-weighted yield of California. 
 
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
 import math 
 import matplotlib.pyplot as plt 
 import pandas as pd
