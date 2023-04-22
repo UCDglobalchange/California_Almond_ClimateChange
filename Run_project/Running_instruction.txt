@@ -1,4 +1,5 @@
 running steps:
+*Change the path in initiate.sh
 *Change the path of data loading/saving in each python script to yours. 
 *Change user information in submit_.sh files to successfully submit jobs via slurm.
 
