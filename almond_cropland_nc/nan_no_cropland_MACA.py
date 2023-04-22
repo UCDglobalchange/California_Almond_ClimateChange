@@ -1,5 +1,7 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+##code to filter out gridcells without almond in gridMET, MACA(1950-2005), MACA (2006-2099,for RCP4.5 and RCP8.5)
+## Note: In the python scripts to calculate MACA ACIs (MACA_ACI.py), we only used one climate netcdf file processed from this script as reference to  
+##       keep gridcells with almond cropland in MACA since it requires much time to remove gridcells without almond cropland in all MACA netCDF.
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import xarray
