@@ -10,11 +10,7 @@ mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/MACA_ACI
 mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/lasso_model
 mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/MACA_nc
 mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/MACA_csv
-mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/MACA_csv/tech_2010
-mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/MACA_csv/to_2020
 mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/projection
-mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/projection/to_2020
-mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/projection/tech_2010
 mkdir /home/shqwu/Almond_code_git/saved_data/$data_ID/aci_contribution
 
 
