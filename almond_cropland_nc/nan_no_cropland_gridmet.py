@@ -1,5 +1,6 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+##code to filter out gridMET gridcells without almond cropland
+
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import xarray
