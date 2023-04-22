@@ -1,5 +1,5 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
+##Code to normalize gridmet data and save them into csv
+
 import math
 import pandas as pd
 import numpy as np
