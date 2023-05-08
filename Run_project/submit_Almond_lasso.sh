@@ -3,7 +3,7 @@
 home_path=''
 
 # setting name of job
-#SBATCH -J Job_name
+#SBATCH -J Lasso_model
 
 # setting home directory
 #SBATCH -D $home_path
