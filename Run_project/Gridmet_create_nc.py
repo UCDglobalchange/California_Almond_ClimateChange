@@ -10,12 +10,13 @@ import netCDF4 as nc
 from numpy import genfromtxt
 import math
 
-data_ID='11_19'
-load_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_ACI/'
-save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_nc/'
+input_path_ACI = '../intermediate_data/Gridmet_ACI/'
+input_path_yield = '../input_data/'
+save_path = '../intermediate_data/Gridmet_nc/'
+
 # create netcdf file
 Almond = nc.Dataset(str(save_path)+'gridmet_ACI.nc', 'w', format = 'NETCDF4')
-yield_csv = genfromtxt('/home/shqwu/Almond_code_git/almond_yield_1980_2020.csv', delimiter = ',')[:,1:]
+yield_csv = genfromtxt(input_path_yield+'almond_yield_1980_2020.csv', delimiter = ',')[:,1:]
 
 ## define dimensions
 Almond.createDimension('Time', size = 41)
@@ -43,7 +44,7 @@ for i in range(0,13):
 for county_id in range(0,16):
     for ACI_id in range(0,13):
         ACI_id_name = ACI_list[ACI_id]
-        ACI_id_data = genfromtxt(str(load_path)+str(county_list[county_id])+'_'+str(ACI_id_name)+'.csv', delimiter = ',')
+        ACI_id_data = genfromtxt(input_path_ACI+str(county_list[county_id])+'_'+str(ACI_id_name)+'.csv', delimiter = ',')
         ACI_id_data = ACI_id_data[:,1]
         for year_id in range(0,41):
             ACI_values[year_id, county_id, ACI_id] = ACI_id_data[year_id]
