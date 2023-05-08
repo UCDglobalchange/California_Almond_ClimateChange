@@ -11,3 +11,4 @@ mkdir "$home_path"/intermediate_data/MACA_nc
 mkdir "$home_path"/intermediate_data/MACA_csv
 mkdir "$home_path"/output_data/projection
 mkdir "$home_path"/output_data/aci_contribution
+mkdir "$home_path"/output_data/plots
