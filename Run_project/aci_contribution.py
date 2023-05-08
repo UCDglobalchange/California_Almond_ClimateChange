@@ -19,17 +19,22 @@ import matplotlib as mpl
 
 
 aci_num = 13
-data_ID='11_19'
-load_coef_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/lasso_model/'
-load_aci_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/'
-area_csv = genfromtxt('/home/shqwu/Almond_code_git/almond_area.csv', delimiter = ',')
-save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/aci_contribution/'
+
+input_path_model = '../intermediate_data/lasso_model/'
+input_path_ACI = '../intermediate_data/MACA_csv/'
+input_path_area = '../input_data/'
+save_path = '../output_data/aci_contribution/'
+
+
+area_csv = genfromtxt(input_path_area+'almond_area.csv', delimiter = ',')
+
+
 ##multiply coef and aci
 for i in range(1,11):
     locals()['coef'+str(i)] = np.zeros((100,aci_num*2+32))
 coef_sum = np.zeros((0,aci_num*2+32))
 for i in range(1,1001):
-    locals()['coef'+str(((i-1)//100)+1)][i%100-1] = genfromtxt(str(load_coef_path) + 'coef_'+str(i)+'.csv', delimiter = ',')
+    locals()['coef'+str(((i-1)//100)+1)][i%100-1] = genfromtxt(input_path_model+'coef_'+str(i)+'.csv', delimiter = ',')
 for i in range(1,11):
     coef_sum = np.row_stack((coef_sum, locals()['coef'+str(i)]))
 
@@ -42,8 +47,8 @@ for model in range(0,17):
     for trial in range(1,11):
         simulation_rcp45 = np.zeros((656,100))
         simulation_rcp85 = np.zeros((656,100))
-        aci_rcp45 = genfromtxt(str(load_aci_path)+str(model_list[model])+'hist_rcp45_ACI.csv', delimiter = ',')[:,0:aci_num*2]
-        aci_rcp85 = genfromtxt(str(load_aci_path)+str(model_list[model])+'hist_rcp85_ACI.csv', delimiter = ',')[:,0:aci_num*2]
+        aci_rcp45 = genfromtxt(input_path_ACI+str(model_list[model])+'hist_rcp45_ACI.csv', delimiter = ',')[:,0:aci_num*2]
+        aci_rcp85 = genfromtxt(input_path_ACI+str(model_list[model])+'hist_rcp85_ACI.csv', delimiter = ',')[:,0:aci_num*2]
         for i in range(0,656):
             for j in range(0,100):
                 locals()['aci_contribution_model_rcp45_'+str(model)][i,(trial-1)*100+j,:] = aci_rcp45[i,:]*locals()['coef'+str(trial)][j,0:aci_num*2]
@@ -75,8 +80,8 @@ for model in range(0,17):
     for trial in range(1,11):
         simulation_rcp45 = np.zeros((1264,100))
         simulation_rcp85 = np.zeros((1264,100))
-        aci_rcp45 = genfromtxt(str(load_aci_path)+str(model_list[model])+'future_rcp45_ACI.csv', delimiter = ',')[:,0:aci_num*2]
-        aci_rcp85 = genfromtxt(str(load_aci_path)+str(model_list[model])+'future_rcp85_ACI.csv', delimiter = ',')[:,0:aci_num*2]
+        aci_rcp45 = genfromtxt(input_path_ACI+str(model_list[model])+'future_rcp45_ACI.csv', delimiter = ',')[:,0:aci_num*2]
+        aci_rcp85 = genfromtxt(input_path_ACI+str(model_list[model])+'future_rcp85_ACI.csv', delimiter = ',')[:,0:aci_num*2]
         for i in range(0,1264):
             for j in range(0,100):
                 locals()['aci_contribution_model_rcp45_future_'+str(model)][i,(trial-1)*100+j,:] = aci_rcp45[i,:]*locals()['coef'+str(trial)][j,0:aci_num*2]
