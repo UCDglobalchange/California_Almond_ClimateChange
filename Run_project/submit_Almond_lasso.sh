@@ -4,7 +4,7 @@
 #SBATCH -J Lasso_model
 
 # setting home directory
-#SBATCH -D $home_path
+#SBATCH -D
 
 # setting medium priority
 #SBATCH -p high2
