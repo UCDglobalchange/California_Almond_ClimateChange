@@ -2,6 +2,9 @@
 
 home_path=''
 
+mkdir $home_path/intermediate_data/
+mkdir $home_path/input_data/
+mkdir $home_path/output_data/
 mkdir $home_path/intermediate_data/Gridmet_ACI
 mkdir $home_path/intermediate_data/Gridmet_nc
 mkdir $home_path/intermediate_data/Gridmet_csv
