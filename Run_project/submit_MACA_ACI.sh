@@ -4,7 +4,7 @@
 #SBATCH -J 'MRI-CGCM3'
 
 # setting home directory
-#SBATCH -D $home_path
+#SBATCH -D 
 
 # setting medium priority
 #SBATCH -p high2
