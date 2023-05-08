@@ -13,11 +13,12 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import math
 
-data_ID='11_19'  ## set ID for the entire simulation
-save_path ='/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_ACI/'
+input_path = '../data/Gridmet/'
+save_path = '../data/Gridmet_ACI/'
+shp_path = '../data/CA_Counties/'
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-shapefile = salem.read_shapefile('/home/shqwu/Almond_code_git/CA_Counties/Counties.shp')
+shapefile = salem.read_shapefile(shp_path+'Counties.shp')
 for county in county_list:
      locals()[str(county)+'_shp'] = shapefile.loc[shapefile['NAME'].isin([str(county)])]
 
@@ -25,7 +26,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))    
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'CA_GridMet.ETo._'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
