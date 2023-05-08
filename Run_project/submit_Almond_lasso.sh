@@ -1,16 +1,12 @@
 #!/bin/bash -l
 
+home_path=''
+
 # setting name of job
-#SBATCH -J autogluon
+#SBATCH -J Job_name
 
 # setting home directory
-#SBATCH -D /home/shqwu/Almond_code_git
-
-# setting standard error output
-#SBATCH -e /home/shqwu/NEX-GDDP/slurm_log/sterror_%j.txt
-
-# setting standard output
-#SBATCH -o /home/shqwu/NEX-GDDP/slurm_log/stdoutput_%j.txt
+#SBATCH -D $home_path
 
 # setting medium priority
 #SBATCH -p high2
@@ -31,4 +27,4 @@
 
 
 
-srun /home/shqwu/miniconda3/bin/python -u Almond_lasso.py $SLURM_ARRAY_TASK_ID
+srun python -u Almond_lasso.py $SLURM_ARRAY_TASK_ID
