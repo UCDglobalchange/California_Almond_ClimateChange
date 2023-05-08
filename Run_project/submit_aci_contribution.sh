@@ -1,16 +1,11 @@
 #!/bin/bash -l
+home_path=''
 
 # setting name of job
 #SBATCH -J ACI_contribution
 
 # setting home directory
-#SBATCH -D /home/shqwu/Almond_code_git
-
-# setting standard error output
-#SBATCH -e /home/shqwu/NEX-GDDP/slurm_log/sterror_%j.txt
-
-# setting standard output
-#SBATCH -o /home/shqwu/NEX-GDDP/slurm_log/stdoutput_%j.txt
+#SBATCH -D $home_path
 
 # setting medium priority
 #SBATCH -p high2
@@ -25,9 +20,9 @@
 #SBATCH --mail-type=END
 
 # send mail here
-#SBATCH --mail-user=shqwu@ucdavis.edu
+#SBATCH --mail-user=
 
 
 
 
-srun /home/shqwu/miniconda3/bin/python aci_contribution.py
+srun python aci_contribution.py
