@@ -4,7 +4,7 @@
 #SBATCH -J Gridmet_ACI
 
 # setting home directory
-#SBATCH -D $home_path
+#SBATCH -D
 
 
 # setting medium priority
