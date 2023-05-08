@@ -1,11 +1,10 @@
 #!/bin/bash -l
-home_path=''
 
 # setting name of job
 #SBATCH -J ACI_contribution
 
 # setting home directory
-#SBATCH -D $home_path
+#SBATCH -D 
 
 # setting medium priority
 #SBATCH -p high2
