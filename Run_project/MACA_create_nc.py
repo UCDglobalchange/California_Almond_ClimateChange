@@ -10,17 +10,17 @@ import netCDF4 as nc
 from numpy import genfromtxt
 
 
+save_path = '../intermediate_data/MACA_nc/'
+input_path_ACI = '../intermediate_data/MACA_ACI/'+str(model)+'/'
+input_path_yield = '../input_data/'
 
-data_ID='11_19'
 model='MIROC-ESM-CHEM'
-print(model)
-save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_nc/'
-load_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_ACI/'+str(model)+'/'
+
 
 aci_num=13
 # create netcdf file
-Almond = nc.Dataset(str(save_path)+str(model)+'_hist_ACI.nc', 'w', format = 'NETCDF4')
-yield_csv = genfromtxt('/home/shqwu/Almond_code_git/almond_yield_1980_2020.csv', delimiter = ',')
+Almond = nc.Dataset(save_path+str(model)+'_hist_ACI.nc', 'w', format = 'NETCDF4')
+yield_csv = genfromtxt(input_path_yield+'/almond_yield_1980_2020.csv', delimiter = ',')
 
 ## define dimensions
 Almond.createDimension('Time', size = 55)
@@ -50,7 +50,7 @@ for i in range(0,aci_num):
 for county_id in range(0,16):
     for ACI_id in range(0,aci_num):
         ACI_id_name = ACI_list[ACI_id]
-        ACI_id_data = genfromtxt(str(load_path)+str(county_list[county_id])+'_hist_'+str(ACI_id_name)+'.csv', delimiter = ',')
+        ACI_id_data = genfromtxt(input_path+str(county_list[county_id])+'_hist_'+str(ACI_id_name)+'.csv', delimiter = ',')
         ACI_len = len(ACI_id_data)-56
         ACI_id_data = ACI_id_data[ACI_len+1:][:,1]
         for year_id in range(0,55):
@@ -77,7 +77,7 @@ for i in range(0,aci_num):
 for county_id in range(0,16):
     for ACI_id in range(0,aci_num):
         ACI_id_name = ACI_list[ACI_id]
-        ACI_id_data = genfromtxt(str(load_path)+str(county_list[county_id])+'_rcp45_'+str(ACI_id_name)+'.csv', delimiter = ',')[:,1]
+        ACI_id_data = genfromtxt(input_path+str(county_list[county_id])+'_rcp45_'+str(ACI_id_name)+'.csv', delimiter = ',')[:,1]
         for year_id in range(0,94):
             ACI_values[year_id, county_id, ACI_id] = ACI_id_data[year_id]
 Almond_rcp45.close()
@@ -102,7 +102,7 @@ for county_id in range(0,16):
     for ACI_id in range(0,aci_num):
         print(ACI_id)
         ACI_id_name = ACI_list[ACI_id]
-        ACI_id_data = genfromtxt(str(load_path)+str(county_list[county_id])+'_rcp85_'+str(ACI_id_name)+'.csv', delimiter = ',')[:,1]
+        ACI_id_data = genfromtxt(input_path+str(county_list[county_id])+'_rcp85_'+str(ACI_id_name)+'.csv', delimiter = ',')[:,1]
         for year_id in range(0,94):
             ACI_values[year_id, county_id, ACI_id] = ACI_id_data[year_id]
 Almond_rcp85.close()
