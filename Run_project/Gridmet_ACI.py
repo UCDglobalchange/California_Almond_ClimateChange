@@ -1,5 +1,3 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import xarray
@@ -13,11 +11,13 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import math
 
-data_ID='11_19'
-save_path ='/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_ACI/'
+input_path = '../input_data/Gridmet/GridMet_mask_no_almond/'
+save_path = '../intermediate_data/Gridmet_ACI/'
+shp_path = '../input_data/CA_Counties/'
+
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-shapefile = salem.read_shapefile('/home/shqwu/Almond_code_git/CA_Counties/Counties.shp')
+shapefile = salem.read_shapefile(shp_path+'/CA_Counties/Counties.shp')
 for county in county_list:
      locals()[str(county)+'_shp'] = shapefile.loc[shapefile['NAME'].isin([str(county)])]
 
@@ -25,7 +25,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))    
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -37,7 +37,7 @@ for year in range(1980, 2021):
             fall_start = 212
             fall_end = 303
         data = roi.potential_evapotranspiration[fall_start:fall_end+1].values
-        locals()[str(county)+'_sum'][year-1980,0] = year   
+        locals()[str(county)+'_sum'][year-1980,0] = year
         data = np.nansum(data, axis = 0)
         for lat in range(0,data.shape[0]):
             for lon in range(0, data.shape[1]):
@@ -50,7 +50,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -77,7 +77,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -105,8 +105,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -142,7 +142,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -169,8 +169,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -205,7 +205,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -231,8 +231,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -267,8 +267,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    pre_ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year-1)+'.nc')
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year)+'.nc')
+    pre_ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year-1)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -307,8 +307,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    pre_ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year-1)+'.nc')
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year)+'.nc')
+    pre_ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year-1)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -347,10 +347,10 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
-    pre_ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year-1)+'.nc')
-    pre_ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year-1)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
+    pre_ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year-1)+'.nc')
+    pre_ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year-1)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -415,8 +415,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -461,8 +461,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -508,8 +508,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -560,8 +560,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -611,8 +611,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -647,8 +647,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -683,8 +683,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -720,8 +720,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -758,8 +758,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -795,8 +795,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -833,8 +833,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -871,7 +871,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmin = ncdatatmin.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmin = subsettmin.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)                    
@@ -898,10 +898,10 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
-    pre_ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year-1)+'.nc')
-    pre_ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year-1)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
+    pre_ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year-1)+'.nc')
+    pre_ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year-1)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -969,10 +969,10 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
-    pre_ncdatatmax = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmax.'+str(year-1)+'.nc')
-    pre_ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year-1)+'.nc')
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
+    pre_ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year-1)+'.nc')
+    pre_ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year-1)+'.nc')
     for county in county_list:
         subsettmax = ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -1038,7 +1038,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatsph = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.SpH._'+str(year)+'.nc')
+    ncdatatsph = salem.open_xr_dataset(input_path+'sph_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdatatsph.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -1065,7 +1065,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatsph = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.WndSpd._'+str(year)+'.nc')
+    ncdatatsph = salem.open_xr_dataset(input_path+'vs_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdatatsph.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -1093,7 +1093,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2)) 
 for year in range(1980, 2021):
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Precip.'+str(year)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pr_'+str(year)+'.nc')
     for county in county_list:
         subset = ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -1120,7 +1120,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmin = ncdatatmin.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmin = subsettmin.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)                    
@@ -1149,8 +1149,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    pre_ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year-1)+'.nc')
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year)+'.nc')
+    pre_ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year-1)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year)+'.nc')
     for county in county_list:
         subset = pre_ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -1177,8 +1177,8 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    pre_ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year-1)+'.nc')
-    ncdata = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.ETo._'+str(year)+'.nc')
+    pre_ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year-1)+'.nc')
+    ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year)+'.nc')
     for county in county_list:
         subset = pre_ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -1203,7 +1203,7 @@ for county in county_list:
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
 for year in range(1980, 2021):
-    ncdatatmin = salem.open_xr_dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.Tmin.'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
     for county in county_list:
         subsettmin = ncdatatmin.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)
         roitmin = subsettmin.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
