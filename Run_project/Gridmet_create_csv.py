@@ -10,8 +10,10 @@ from numpy import genfromtxt
 from numpy import savetxt
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 
-data_ID='11_19'
-almond_hist = nc.Dataset('/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_nc/gridmet_ACI.nc')
+input_path = '../intermediate_data/Gridmet_nc/'
+save_path = '../intermediate_data/Gridmet_csv/'
+
+almond_hist = nc.Dataset(input_path+'gridmet_ACI.nc')
 aci_num=13
 ACI_sum = np.zeros((0,aci_num*2))
 non_clim_coef_sum = np.zeros((0,32))
@@ -28,5 +30,5 @@ for region_id in range(0,16):
     ACI_sum = np.row_stack((ACI_sum, aci))
     non_clim_coef_sum = np.row_stack((non_clim_coef_sum, non_clim_coef))
 X = np.column_stack((ACI_sum,non_clim_coef_sum))
-savetxt('/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_csv/Gridmet.csv', X, delimiter = ',')
+savetxt(save_path+'Gridmet.csv', X, delimiter = ',')
 
