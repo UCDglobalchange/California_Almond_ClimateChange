@@ -1,7 +1,5 @@
 ##Code to run LASSO regression model with gridMET-ACI (X) and historical almond yield (Y)
 
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
 import math
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -21,16 +19,19 @@ from numpy import savetxt
 from sklearn.linear_model import LassoCV
 import yellowbrick
 from yellowbrick.regressor import cooks_distance
-
-data_ID='11_19'
-save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/lasso_model/'
 import sys
+
+
+save_path = '../intermediate_data/lasso_model/'
+input_path_ACI = '../intermediate_data/Gridmet_csv/'
+input_path_yield = '../input_data/'
+
 trial=np.int(sys.argv[1])
 aci_num=13
 model_list = ['bcc-csm1-1','bcc-csm1', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
-X = genfromtxt('/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/Gridmet_csv/Gridmet.csv', delimiter = ',')
-Y = genfromtxt('/home/shqwu/MACA/almond_yield_1980_2020.csv', delimiter = ',')[:,1:].flatten('F')
-distance = yellowbrick.regressor.influence.cooks_distance(X,Y, show = False).distance_ ##2/17 data remove by cook's distance
+X = genfromtxt(input_path_ACI+'Gridmet.csv', delimiter = ',')
+Y = genfromtxt(input_path_yield+'almond_yield_1980_2020.csv', delimiter = ',')[:,1:].flatten('F')
+distance = yellowbrick.regressor.influence.cooks_distance(X,Y, show = False).distance_ ##data remove by cook's distance
 threhold = yellowbrick.regressor.influence.cooks_distance(X,Y, show = False).influence_threshold_
 X=np.delete(X, np.where(distance>threhold), axis = 0)
 Y=np.delete(Y, np.where(distance>threhold), axis = 0)
