@@ -12,12 +12,12 @@ from numpy import savetxt
 
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-data_ID='11_19'
 
 aci_num = 13
 
-load_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_nc/'
-save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/'
+input_path = '../intermediate_data/MACA_nc/'
+save_path = '../intermediate_data/MACA_csv/'
+
 model_list = ['bcc-csm1-1','bcc-csm1-1-m', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
 middle_tech_scenario = np.zeros(80)
 middle_tech_scenario[0] = 41
@@ -25,9 +25,9 @@ for i in range(1,80):
     middle_tech_scenario[i] = middle_tech_scenario[i-1] + (80 - i)/80
 for model_id in range(0,17):
     print(model_id)
-    almond_hist = nc.Dataset(str(load_path)+str(model_list[model_id])+'_hist_ACI.nc')
-    almond_rcp45 = nc.Dataset(str(load_path)+str(model_list[model_id])+'_rcp45_ACI.nc')
-    almond_rcp85 = nc.Dataset(str(load_path)+str(model_list[model_id])+'_rcp85_ACI.nc')
+    almond_hist = nc.Dataset(input_path+str(model_list[model_id])+'_hist_ACI.nc')
+    almond_rcp45 = nc.Dataset(input_path+str(model_list[model_id])+'_rcp45_ACI.nc')
+    almond_rcp85 = nc.Dataset(input_path+str(model_list[model_id])+'_rcp85_ACI.nc')
     ACI_rcp45_1980_2020_sum = np.zeros((0,aci_num*2+32))
     ACI_rcp45_s_1980_2020_sum = np.zeros((0,aci_num*2+32))
     ACI_rcp45_m_1980_2020_sum = np.zeros((0,aci_num*2+32))
