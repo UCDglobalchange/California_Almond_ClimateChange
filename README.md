@@ -12,6 +12,9 @@ which can be downloaded at: https://www.northwestknowledge.net/metdata/data/
 
 **Cropland Data Layer:** geospatial data of Cropland Data Layer(CDL) across contiguous U.S. provided by the USDA, which can be exported from the CropScape web app (https://nassgeodata.gmu.edu/CropScape/)
 
+## Python packages required ##
+We used the following python packages:
+- scikit-learn ([Scikit-learn: Machine Learning in Python](https://jmlr.csail.mit.edu/papers/v12/pedregosa11a.html), Pedregosa et al., JMLR 12, pp. 2825-2830, 2011).
 
 ## Data processing
 **Almond cropland mask:** The spatial resolution of CDL (30m)is different from those of climate datasets (4km). To filter out gridcells without almond croplands from gridMET and MACA, we used ArcGIS Pro to aggregrate and re-coordinate CDL raster data to match the resolution and geospatial coordinate of climate datasets. The CDL of almonds in California is available from 2007 to 2022 and the netCDF files produced from ArcGIS Pro are available in folder ***Almond_cropland_nc***
@@ -19,7 +22,7 @@ which can be downloaded at: https://www.northwestknowledge.net/metdata/data/
 **Calculte ACIs:** Python codes to calculate ACIs from gridMET and MACA are available in folder ***Calculate_ACI***
 
 ## Run LASSO regression ##
-We used the function *sklearn.linear_model.LassoCV*  from Python package —— scikit-learn ([Scikit-learn: Machine Learning in Python](https://jmlr.csail.mit.edu/papers/v12/pedregosa11a.html), Pedregosa et al., JMLR 12, pp. 2825-2830, 2011). We calibrated the function by providing a list of alphas (penalty parameters), passing intergers (1-1000) to random state for reproducible outputs, and passing fit_intercept to *False*. The code to run LASSO regression is ***Almond_lasso.py***.
+ We calibrated the function by providing a list of alphas (penalty parameters), passing intergers (1-1000) to random state for reproducible outputs, and passing fit_intercept to *False*. The code to run LASSO regression is ***Almond_lasso.py***.
 
 ## Yield projection ##
 After obtaining statistical relationship between gridMET-ACIs and historical county-level yields, we run ***MACA_projection.py*** to project yield based on MACA climate datasets(historical:1950-2005; future:2006-2099 under RCP4.5 and RCP8.5) and compute cropland area-weighted California statewide almond yield. 
