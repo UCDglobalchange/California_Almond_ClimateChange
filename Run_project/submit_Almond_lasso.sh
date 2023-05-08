@@ -1,7 +1,5 @@
 #!/bin/bash -l
 
-home_path=''
-
 # setting name of job
 #SBATCH -J Lasso_model
 
