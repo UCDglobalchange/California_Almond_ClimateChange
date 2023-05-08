@@ -15,6 +15,14 @@ which can be downloaded at: https://www.northwestknowledge.net/metdata/data/
 ## Python packages required ##
 We used the following python packages:
 - scikit-learn ([Scikit-learn: Machine Learning in Python](https://jmlr.csail.mit.edu/papers/v12/pedregosa11a.html), Pedregosa et al., JMLR 12, pp. 2825-2830, 2011).
+- matplotlib
+- pandas
+- numpy
+- netCDF4
+- seaborn
+- scipy
+- xarray
+- geopandas
 
 ## Data processing
 **Almond cropland mask:** The spatial resolution of CDL (30m)is different from those of climate datasets (4km). To filter out gridcells without almond croplands from gridMET and MACA, we used ArcGIS Pro to aggregrate and re-coordinate CDL raster data to match the resolution and geospatial coordinate of climate datasets. The CDL of almonds in California is available from 2007 to 2022 and the netCDF files produced from ArcGIS Pro are available in folder ***Almond_cropland_nc***
