@@ -18,11 +18,10 @@ from scipy import stats
 from matplotlib.lines import Line2D
 import matplotlib as mpl
 
-data_ID='11_19'
-
-load_lasso_coef_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/lasso_model/'
-load_MACA_ACI_csv_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_csv/'
-save_projected_yield_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/projection/'
+input_path_model = '../intermediate_data/lasso_model/'
+input_path_MACA = '../intermediate_data/MACA_csv/'
+input_path_area = '../input_data/'
+save_path = '../output_data/'
 
 aci_num = 13
 for i in range(1,11):
@@ -30,7 +29,7 @@ for i in range(1,11):
 coef_sum = np.zeros((0,aci_num*2+32))
 for i in range(1,1001):
     print(i)
-    locals()['coef'+str(((i-1)//100)+1)][i%100-1] = genfromtxt(str(load_lasso_coef_path)+'coef_'+str(i)+'.csv', delimiter = ',')
+    locals()['coef'+str(((i-1)//100)+1)][i%100-1] = genfromtxt(input_path_model+'coef_'+str(i)+'.csv', delimiter = ',')
 for i in range(1,11):
     coef_sum = np.row_stack((coef_sum, locals()['coef'+str(i)]))
 
@@ -41,7 +40,7 @@ county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 
 
 model_list = ['bcc-csm1-1-m', 'bcc-csm1-1','BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
 
-area_csv = genfromtxt('/home/shqwu/Almond_code_git/almond_area.csv', delimiter = ',')
+area_csv = genfromtxt(input_path_area+'almond_area.csv', delimiter = ',')
 
 
 ##hist for new model
@@ -53,12 +52,12 @@ for trial in range(1,11):
         simulation_rcp85 = np.zeros((656,100))
         simulation_rcp85_s = np.zeros((656,100))
         simulation_rcp85_m = np.zeros((656,100))
-        aci_rcp45 = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'hist_rcp45_ACI.csv', delimiter = ',')
-        aci_rcp45_s = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'hist_rcp45_s_ACI.csv', delimiter = ',')
-        aci_rcp45_m = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'hist_rcp45_m_ACI.csv', delimiter = ',')
-        aci_rcp85 = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'hist_rcp85_ACI.csv', delimiter = ',')
-        aci_rcp85_s = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'hist_rcp85_s_ACI.csv', delimiter = ',')
-        aci_rcp85_m = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'hist_rcp85_m_ACI.csv', delimiter = ',')
+        aci_rcp45 = genfromtxt(input_path_MACA+str(model_list[model])+'hist_rcp45_ACI.csv', delimiter = ',')
+        aci_rcp45_s = genfromtxt(input_path_MACA+str(model_list[model])+'hist_rcp45_s_ACI.csv', delimiter = ',')
+        aci_rcp45_m = genfromtxt(input_path_MACA+str(model_list[model])+'hist_rcp45_m_ACI.csv', delimiter = ',')
+        aci_rcp85 = genfromtxt(input_path_MACA+str(model_list[model])+'hist_rcp85_ACI.csv', delimiter = ',')
+        aci_rcp85_s = genfromtxt(input_path_MACA+str(model_list[model])+'hist_rcp85_s_ACI.csv', delimiter = ',')
+        aci_rcp85_m = genfromtxt(input_path_MACA+str(model_list[model])+'hist_rcp85_m_ACI.csv', delimiter = ',')
         for i in range(0,656):
             for j in range(0,100):
                 simulation_rcp45[i,j] = np.nansum(aci_rcp45[i,:]*locals()['coef'+str(trial)][j,:])
@@ -67,12 +66,12 @@ for trial in range(1,11):
                 simulation_rcp85[i,j] = np.nansum(aci_rcp85[i,:]*locals()['coef'+str(trial)][j,:])
                 simulation_rcp85_s[i,j] = np.nansum(aci_rcp85_s[i,:]*locals()['coef'+str(trial)][j,:])
                 simulation_rcp85_m[i,j] = np.nansum(aci_rcp85_m[i,:]*locals()['coef'+str(trial)][j,:])
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp45.csv', simulation_rcp45, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp45_s.csv', simulation_rcp45_s, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp45_m.csv', simulation_rcp45_m, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp85.csv', simulation_rcp85, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp85_s.csv', simulation_rcp85_s, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp85_m.csv', simulation_rcp85_m, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp45.csv', simulation_rcp45, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp45_s.csv', simulation_rcp45_s, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp45_m.csv', simulation_rcp45_m, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp85.csv', simulation_rcp85, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp85_s.csv', simulation_rcp85_s, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_hist_prediction_'+str(trial)+'_rcp85_m.csv', simulation_rcp85_m, delimiter = ',')
 
 ##future
 for trial in range(1,11):
@@ -83,12 +82,12 @@ for trial in range(1,11):
         simulation_rcp85 = np.zeros((1264,100))
         simulation_rcp85_s = np.zeros((1264,100))
         simulation_rcp85_m = np.zeros((1264,100))
-        aci_rcp45 = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'future_rcp45_ACI.csv', delimiter = ',')
-        aci_rcp45_s = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'future_rcp45_s_ACI.csv', delimiter = ',')
-        aci_rcp45_m = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'future_rcp45_m_ACI.csv', delimiter = ',')
-        aci_rcp85 = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'future_rcp85_ACI.csv', delimiter = ',')
-        aci_rcp85_s = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'future_rcp85_s_ACI.csv', delimiter = ',')
-        aci_rcp85_m = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'future_rcp85_m_ACI.csv', delimiter = ',')
+        aci_rcp45 = genfromtxt(input_path_MACA+str(model_list[model])+'future_rcp45_ACI.csv', delimiter = ',')
+        aci_rcp45_s = genfromtxt(input_path_MACA+str(model_list[model])+'future_rcp45_s_ACI.csv', delimiter = ',')
+        aci_rcp45_m = genfromtxt(input_path_MACA+str(model_list[model])+'future_rcp45_m_ACI.csv', delimiter = ',')
+        aci_rcp85 = genfromtxt(input_path_MACA+str(model_list[model])+'future_rcp85_ACI.csv', delimiter = ',')
+        aci_rcp85_s = genfromtxt(input_path_MACA+str(model_list[model])+'future_rcp85_s_ACI.csv', delimiter = ',')
+        aci_rcp85_m = genfromtxt(input_path_MACA+str(model_list[model])+'future_rcp85_m_ACI.csv', delimiter = ',')
 
         for i in range(0,1264):
             for j in range(0,100):
@@ -98,12 +97,12 @@ for trial in range(1,11):
                 simulation_rcp85[i,j] = np.nansum(aci_rcp85[i,:]*locals()['coef'+str(trial)][j,:])
                 simulation_rcp85_s[i,j] = np.nansum(aci_rcp85_s[i,:]*locals()['coef'+str(trial)][j,:])
                 simulation_rcp85_m[i,j] = np.nansum(aci_rcp85_m[i,:]*locals()['coef'+str(trial)][j,:])
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp45.csv', simulation_rcp45, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp45_s.csv', simulation_rcp45_s, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp45_m.csv', simulation_rcp45_m, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp85.csv', simulation_rcp85, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp85_s.csv', simulation_rcp85_s, delimiter = ',')
-        savetxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp85_m.csv', simulation_rcp85_m, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp45.csv', simulation_rcp45, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp45_s.csv', simulation_rcp45_s, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp45_m.csv', simulation_rcp45_m, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp85.csv', simulation_rcp85, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp85_s.csv', simulation_rcp85_s, delimiter = ',')
+        savetxt(input_path_MACA+str(model_list[model])+'_future_prediction_'+str(trial)+'_rcp85_m.csv', simulation_rcp85_m, delimiter = ',')
 
 
 
@@ -116,7 +115,7 @@ average_model = np.zeros((656,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((656,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp45.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp45.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_hist'][locals()[str(model_list[model_id])+str(trial)+'_hist']<0] = 0
         yield_all_hist = np.column_stack((yield_all_hist,locals()[str(model_list[model_id])+str(trial)+'_hist']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_hist']))
@@ -158,10 +157,10 @@ for year in range(0,41):
     yield_across_state_hist_rcp45[year,:] = production_across_state_hist[year,:]/np.sum(area[year])
     yield_average_model_hist_rcp45[year,:] = production_average_model_across_state_hist[year,:]/np.sum(area[year])
     yield_all_hist_rcp45[year,:] = production_all_hist_split_across_state[year,:]/np.sum(area[year])
-np.save(str(save_projected_yield_path)+'yield_across_state_hist_rcp45.npy',yield_across_state_hist_rcp45)
-np.save(str(save_projected_yield_path)+'yield_average_model_hist_rcp45.npy',yield_average_model_hist_rcp45)
-np.save(str(save_projected_yield_path)+'yield_all_hist_rcp45.npy',yield_all_hist_rcp45)
-np.save(str(save_projected_yield_path)+'yield_1980_rcp45.npy',yield_1980_rcp45)
+np.save(save_path+'yield_across_state_hist_rcp45.npy',yield_across_state_hist_rcp45)
+np.save(save_path+'yield_average_model_hist_rcp45.npy',yield_average_model_hist_rcp45)
+np.save(save_path+'yield_all_hist_rcp45.npy',yield_all_hist_rcp45)
+np.save(save_path+'yield_1980_rcp45.npy',yield_1980_rcp45)
 
 
 
@@ -171,7 +170,7 @@ average_model = np.zeros((656,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((656,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp45_s.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp45_s.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_hist'][locals()[str(model_list[model_id])+str(trial)+'_hist']<0] = 0
         yield_all_hist = np.column_stack((yield_all_hist,locals()[str(model_list[model_id])+str(trial)+'_hist']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_hist']))
@@ -211,9 +210,9 @@ for year in range(0,41):
     yield_across_state_hist_rcp45_s[year,:] = production_across_state_hist[year,:]/np.sum(area[year])
     yield_average_model_hist_rcp45_s[year,:] = production_average_model_across_state_hist[year,:]/np.sum(area[year])
     yield_all_hist_rcp45_s[year,:] = production_all_hist_split_across_state[year,:]/np.sum(area[year])
-np.save(str(save_projected_yield_path)+'yield_across_state_hist_rcp45_s.npy',yield_across_state_hist_rcp45_s)
-np.save(str(save_projected_yield_path)+'yield_average_model_hist_rcp45_s.npy',yield_average_model_hist_rcp45_s)
-np.save(str(save_projected_yield_path)+'yield_all_hist_rcp45_s.npy',yield_all_hist_rcp45_s)
+np.save(save_path+'yield_across_state_hist_rcp45_s.npy',yield_across_state_hist_rcp45_s)
+np.save(save_path+'yield_average_model_hist_rcp45_s.npy',yield_average_model_hist_rcp45_s)
+np.save(save_path+'yield_all_hist_rcp45_s.npy',yield_all_hist_rcp45_s)
 
 
 yield_all_hist = np.zeros((656,0))
@@ -222,7 +221,7 @@ average_model = np.zeros((656,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((656,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp45_m.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp45_m.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_hist'][locals()[str(model_list[model_id])+str(trial)+'_hist']<0] = 0
         yield_all_hist = np.column_stack((yield_all_hist,locals()[str(model_list[model_id])+str(trial)+'_hist']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_hist']))
@@ -262,9 +261,9 @@ for year in range(0,41):
     yield_across_state_hist_rcp45_m[year,:] = production_across_state_hist[year,:]/np.sum(area[year])
     yield_average_model_hist_rcp45_m[year,:] = production_average_model_across_state_hist[year,:]/np.sum(area[year])
     yield_all_hist_rcp45_m[year,:] = production_all_hist_split_across_state[year,:]/np.sum(area[year])
-np.save(str(save_projected_yield_path)+'yield_across_state_hist_rcp45_m.npy',yield_across_state_hist_rcp45_m)
-np.save(str(save_projected_yield_path)+'yield_average_model_hist_rcp45_m.npy',yield_average_model_hist_rcp45_m)
-np.save(str(save_projected_yield_path)+'yield_all_hist_rcp45_m.npy',yield_all_hist_rcp45_m)
+np.save(save_path+'yield_across_state_hist_rcp45_m.npy',yield_across_state_hist_rcp45_m)
+np.save(save_path+'yield_average_model_hist_rcp45_m.npy',yield_average_model_hist_rcp45_m)
+np.save(save_path+'yield_all_hist_rcp45_m.npy',yield_all_hist_rcp45_m)
 
 
 
@@ -274,7 +273,7 @@ average_model = np.zeros((656,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((656,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp85.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp85.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_hist'][locals()[str(model_list[model_id])+str(trial)+'_hist']<0] = 0
         yield_all_hist = np.column_stack((yield_all_hist,locals()[str(model_list[model_id])+str(trial)+'_hist']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_hist']))
@@ -316,10 +315,10 @@ for year in range(0,41):
     yield_across_state_hist_rcp85[year,:] = production_across_state_hist[year,:]/np.sum(area[year])
     yield_average_model_hist_rcp85[year,:] = production_average_model_across_state_hist[year,:]/np.sum(area[year])
     yield_all_hist_rcp85[year,:] = production_all_hist_split_across_state[year,:]/np.sum(area[year])
-np.save(str(save_projected_yield_path)+'yield_across_state_hist_rcp85.npy',yield_across_state_hist_rcp85)
-np.save(str(save_projected_yield_path)+'yield_average_model_hist_rcp85.npy',yield_average_model_hist_rcp85)
-np.save(str(save_projected_yield_path)+'yield_all_hist_rcp85.npy',yield_all_hist_rcp85)
-np.save(str(save_projected_yield_path)+'yield_1980_rcp85.npy',yield_1980_rcp85)
+np.save(save_path+'yield_across_state_hist_rcp85.npy',yield_across_state_hist_rcp85)
+np.save(save_path+'yield_average_model_hist_rcp85.npy',yield_average_model_hist_rcp85)
+np.save(save_path+'yield_all_hist_rcp85.npy',yield_all_hist_rcp85)
+np.save(save_path+'yield_1980_rcp85.npy',yield_1980_rcp85)
 
 
 
@@ -331,7 +330,7 @@ average_model = np.zeros((656,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((656,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp85_s.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp85_s.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_hist'][locals()[str(model_list[model_id])+str(trial)+'_hist']<0] = 0
         yield_all_hist = np.column_stack((yield_all_hist,locals()[str(model_list[model_id])+str(trial)+'_hist']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_hist']))
@@ -371,9 +370,9 @@ for year in range(0,41):
     yield_across_state_hist_rcp85_s[year,:] = production_across_state_hist[year,:]/np.sum(area[year])
     yield_average_model_hist_rcp85_s[year,:] = production_average_model_across_state_hist[year,:]/np.sum(area[year])
     yield_all_hist_rcp85_s[year,:] = production_all_hist_split_across_state[year,:]/np.sum(area[year])
-np.save(str(save_projected_yield_path)+'yield_across_state_hist_rcp85_s.npy',yield_across_state_hist_rcp85_s)
-np.save(str(save_projected_yield_path)+'yield_average_model_hist_rcp85_s.npy',yield_average_model_hist_rcp85_s)
-np.save(str(save_projected_yield_path)+'yield_all_hist_rcp85_s.npy',yield_all_hist_rcp85_s)
+np.save(save_path+'yield_across_state_hist_rcp85_s.npy',yield_across_state_hist_rcp85_s)
+np.save(save_path+'yield_average_model_hist_rcp85_s.npy',yield_average_model_hist_rcp85_s)
+np.save(save_path+'yield_all_hist_rcp85_s.npy',yield_all_hist_rcp85_s)
 
 
 ##hist rcp85 m
@@ -382,7 +381,7 @@ yield_all_hist = np.zeros((656,0))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((656,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp85_m.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_hist'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_hist_prediction_'+str(trial)+'_rcp85_m.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_hist'][locals()[str(model_list[model_id])+str(trial)+'_hist']<0] = 0
         yield_all_hist = np.column_stack((yield_all_hist,locals()[str(model_list[model_id])+str(trial)+'_hist']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_hist']))
@@ -422,9 +421,9 @@ for year in range(0,41):
     yield_across_state_hist_rcp85_m[year,:] = production_across_state_hist[year,:]/np.sum(area[year])
     yield_average_model_hist_rcp85_m[year,:] = production_average_model_across_state_hist[year,:]/np.sum(area[year])
     yield_all_hist_rcp85_m[year,:] = production_all_hist_split_across_state[year,:]/np.sum(area[year])
-np.save(str(save_projected_yield_path)+'yield_across_state_hist_rcp85_m.npy',yield_across_state_hist_rcp85_m)
-np.save(str(save_projected_yield_path)+'yield_average_model_hist_rcp85_m.npy',yield_average_model_hist_rcp85_m)
-np.save(str(save_projected_yield_path)+'yield_all_hist_rcp85_m.npy',yield_all_hist_rcp85_m)
+np.save(save_path+'yield_across_state_hist_rcp85_m.npy',yield_across_state_hist_rcp85_m)
+np.save(save_path+'yield_average_model_hist_rcp85_m.npy',yield_average_model_hist_rcp85_m)
+np.save(save_path+'yield_all_hist_rcp85_m.npy',yield_all_hist_rcp85_m)
 
 
 
@@ -436,7 +435,7 @@ average_model = np.zeros((1264,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((1264,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_rcp45'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp45.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_rcp45'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp45.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_rcp45'][locals()[str(model_list[model_id])+str(trial)+'_rcp45']<0] = 0
         yield_all = np.column_stack((yield_all,locals()[str(model_list[model_id])+str(trial)+'_rcp45']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_rcp45']))
@@ -475,9 +474,9 @@ for year in range(0,79):
     yield_across_state_future_rcp45[year,:] = production_across_state_rcp45[year,:]/np.sum(area)
     yield_average_model_future_rcp45[year,:] = production_average_model_across_state_rcp45[year,:]/np.sum(area)
     yield_all_future_rcp45[year,:] = production_all_split_across_state[year,:]/np.sum(area)
-np.save(str(save_projected_yield_path)+'yield_across_state_future_rcp45.npy',yield_across_state_future_rcp45)
-np.save(str(save_projected_yield_path)+'yield_average_model_future_rcp45.npy',yield_average_model_future_rcp45)
-np.save(str(save_projected_yield_path)+'yield_all_future_rcp45.npy',yield_all_future_rcp45)
+np.save(save_path+'yield_across_state_future_rcp45.npy',yield_across_state_future_rcp45)
+np.save(save_path+'yield_average_model_future_rcp45.npy',yield_average_model_future_rcp45)
+np.save(save_path+'yield_all_future_rcp45.npy',yield_all_future_rcp45)
 
 
 # future rcp45_s
@@ -488,7 +487,7 @@ for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((1264,0))
     for trial in range(1,11):
         print(trial)
-        locals()[str(model_list[model_id])+str(trial)+'_rcp45'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp45_s.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_rcp45'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp45_s.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_rcp45'][locals()[str(model_list[model_id])+str(trial)+'_rcp45']<0] = 0
         yield_all = np.column_stack((yield_all,locals()[str(model_list[model_id])+str(trial)+'_rcp45']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_rcp45']))
@@ -527,9 +526,9 @@ for year in range(0,79):
     yield_across_state_future_rcp45_s[year,:] = production_across_state_rcp45[year,:]/np.sum(area)
     yield_average_model_future_rcp45_s[year,:] = production_average_model_across_state_rcp45[year,:]/np.sum(area)
     yield_all_future_rcp45_s[year,:] = production_all_split_across_state[year,:]/np.sum(area)
-np.save(str(save_projected_yield_path)+'yield_across_state_future_rcp45_s.npy',yield_across_state_future_rcp45_s)
-np.save(str(save_projected_yield_path)+'yield_average_model_future_rcp45_s.npy',yield_average_model_future_rcp45_s)
-np.save(str(save_projected_yield_path)+'yield_all_future_rcp45_s.npy',yield_all_future_rcp45_s)
+np.save(save_path+'yield_across_state_future_rcp45_s.npy',yield_across_state_future_rcp45_s)
+np.save(save_path+'yield_average_model_future_rcp45_s.npy',yield_average_model_future_rcp45_s)
+np.save(save_path+'yield_all_future_rcp45_s.npy',yield_all_future_rcp45_s)
 
 # future rcp45_m
 yield_all = np.zeros((1264,0))
@@ -539,7 +538,7 @@ for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((1264,0))
     for trial in range(1,11):
         print(trial)
-        locals()[str(model_list[model_id])+str(trial)+'_rcp45'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp45_m.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_rcp45'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp45_m.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_rcp45'][locals()[str(model_list[model_id])+str(trial)+'_rcp45']<0] = 0
         yield_all = np.column_stack((yield_all,locals()[str(model_list[model_id])+str(trial)+'_rcp45']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_rcp45']))
@@ -578,9 +577,9 @@ for year in range(0,79):
     yield_across_state_future_rcp45_m[year,:] = production_across_state_rcp45[year,:]/np.sum(area)
     yield_average_model_future_rcp45_m[year,:] = production_average_model_across_state_rcp45[year,:]/np.sum(area)
     yield_all_future_rcp45_m[year,:] = production_all_split_across_state[year,:]/np.sum(area)
-np.save(str(save_projected_yield_path)+'yield_across_state_future_rcp45_m.npy',yield_across_state_future_rcp45_m)
-np.save(str(save_projected_yield_path)+'yield_average_model_future_rcp45_m.npy',yield_average_model_future_rcp45_m)
-np.save(str(save_projected_yield_path)+'yield_all_future_rcp45_m.npy',yield_all_future_rcp45_m)
+np.save(save_path+'yield_across_state_future_rcp45_m.npy',yield_across_state_future_rcp45_m)
+np.save(save_path+'yield_average_model_future_rcp45_m.npy',yield_average_model_future_rcp45_m)
+np.save(save_path+'yield_all_future_rcp45_m.npy',yield_all_future_rcp45_m)
 
 
 
@@ -590,7 +589,7 @@ average_model = np.zeros((1264,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((1264,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_rcp85'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp85.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_rcp85'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp85.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_rcp85'][locals()[str(model_list[model_id])+str(trial)+'_rcp85']<0] = 0
         yield_all = np.column_stack((yield_all,locals()[str(model_list[model_id])+str(trial)+'_rcp85']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_rcp85']))
@@ -629,9 +628,9 @@ for year in range(0,79):
     yield_across_state_future_rcp85[year,:] = production_across_state_rcp85[year,:]/np.sum(area)
     yield_average_model_future_rcp85[year,:] = production_average_model_across_state_rcp85[year,:]/np.sum(area)
     yield_all_future_rcp85[year,:] = production_all_split_across_state[year,:]/np.sum(area)
-np.save(str(save_projected_yield_path)+'yield_across_state_future_rcp85.npy',yield_across_state_future_rcp85)
-np.save(str(save_projected_yield_path)+'yield_average_model_future_rcp85.npy',yield_average_model_future_rcp85)
-np.save(str(save_projected_yield_path)+'yield_all_future_rcp85.npy',yield_all_future_rcp85)
+np.save(save_path+'yield_across_state_future_rcp85.npy',yield_across_state_future_rcp85)
+np.save(save_path+'yield_average_model_future_rcp85.npy',yield_average_model_future_rcp85)
+np.save(save_path+'yield_all_future_rcp85.npy',yield_all_future_rcp85)
 
 #rcp85_stop_tech
 yield_all = np.zeros((1264,0))
@@ -639,7 +638,7 @@ average_model = np.zeros((1264,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((1264,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_rcp85'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp85_s.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_rcp85'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp85_s.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_rcp85'][locals()[str(model_list[model_id])+str(trial)+'_rcp85']<0] = 0
         yield_all = np.column_stack((yield_all,locals()[str(model_list[model_id])+str(trial)+'_rcp85']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_rcp85']))
@@ -679,9 +678,9 @@ for year in range(0,79):
     yield_average_model_future_rcp85_s[year,:] = production_average_model_across_state_rcp85[year,:]/np.sum(area)
     yield_all_future_rcp85_s[year,:] = production_all_split_across_state[year,:]/np.sum(area)
 
-np.save(str(save_projected_yield_path)+'yield_across_state_future_rcp85_s.npy',yield_across_state_future_rcp85_s)
-np.save(str(save_projected_yield_path)+'yield_average_model_future_rcp85_s.npy',yield_average_model_future_rcp85_s)
-np.save(str(save_projected_yield_path)+'yield_all_future_rcp85_s.npy',yield_all_future_rcp85_s)
+np.save(save_path+'yield_across_state_future_rcp85_s.npy',yield_across_state_future_rcp85_s)
+np.save(save_path+'yield_average_model_future_rcp85_s.npy',yield_average_model_future_rcp85_s)
+np.save(save_path+'yield_all_future_rcp85_s.npy',yield_all_future_rcp85_s)
 
 
 
@@ -691,7 +690,7 @@ average_model = np.zeros((1264,1000))
 for model_id in range(0,17):
     locals()['model_'+str(model_id)] = np.zeros((1264,0))
     for trial in range(1,11):
-        locals()[str(model_list[model_id])+str(trial)+'_rcp85'] = genfromtxt(str(load_MACA_ACI_csv_path)+''+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp85_m.csv', delimiter=',')
+        locals()[str(model_list[model_id])+str(trial)+'_rcp85'] = genfromtxt(input_path_MACA+str(model_list[model_id])+'_future_prediction_'+str(trial)+'_rcp85_m.csv', delimiter=',')
         locals()[str(model_list[model_id])+str(trial)+'_rcp85'][locals()[str(model_list[model_id])+str(trial)+'_rcp85']<0] = 0
         yield_all = np.column_stack((yield_all,locals()[str(model_list[model_id])+str(trial)+'_rcp85']))
         locals()['model_'+str(model_id)] = np.column_stack((locals()['model_'+str(model_id)], locals()[str(model_list[model_id])+str(trial)+'_rcp85']))
@@ -731,36 +730,36 @@ for year in range(0,79):
     yield_average_model_future_rcp85_m[year,:] = production_average_model_across_state_rcp85[year,:]/np.sum(area)
     yield_all_future_rcp85_m[year,:] = production_all_split_across_state[year,:]/np.sum(area)
 
-np.save(str(save_projected_yield_path)+'yield_across_state_future_rcp85_m.npy',yield_across_state_future_rcp85_m)
-np.save(str(save_projected_yield_path)+'yield_average_model_future_rcp85_m.npy',yield_average_model_future_rcp85_m)
-np.save(str(save_projected_yield_path)+'yield_all_future_rcp85_m.npy',yield_all_future_rcp85_m)
+np.save(save_path+'yield_across_state_future_rcp85_m.npy',yield_across_state_future_rcp85_m)
+np.save(save_path+'yield_average_model_future_rcp85_m.npy',yield_average_model_future_rcp85_m)
+np.save(save_path+'yield_all_future_rcp85_m.npy',yield_all_future_rcp85_m)
 
 
 
 
-np.save(str(save_projected_yield_path)+'yield_all_model_hist_rcp45.npy',yield_all_model_hist_rcp45)
+np.save(save_path+'yield_all_model_hist_rcp45.npy',yield_all_model_hist_rcp45)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_hist_rcp45_s.npy',yield_all_model_hist_rcp45_s)
+np.save(save_path+'yield_all_model_hist_rcp45_s.npy',yield_all_model_hist_rcp45_s)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_hist_rcp45_m.npy',yield_all_model_hist_rcp45_m)
+np.save(save_path+'yield_all_model_hist_rcp45_m.npy',yield_all_model_hist_rcp45_m)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_hist_rcp85.npy',yield_all_model_hist_rcp85)
+np.save(save_path+'yield_all_model_hist_rcp85.npy',yield_all_model_hist_rcp85)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_hist_rcp85_s.npy',yield_all_model_hist_rcp85_s)
+np.save(save_path+'yield_all_model_hist_rcp85_s.npy',yield_all_model_hist_rcp85_s)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_hist_rcp85_m.npy',yield_all_model_hist_rcp85_m)
+np.save(save_path+'yield_all_model_hist_rcp85_m.npy',yield_all_model_hist_rcp85_m)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_future_rcp45.npy',yield_all_model_future_rcp45)
+np.save(save_path+'yield_all_model_future_rcp45.npy',yield_all_model_future_rcp45)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_future_rcp45_s.npy',yield_all_model_future_rcp45_s)
+np.save(save_path+'yield_all_model_future_rcp45_s.npy',yield_all_model_future_rcp45_s)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_future_rcp45_m.npy',yield_all_model_future_rcp45_m)
+np.save(save_path+'yield_all_model_future_rcp45_m.npy',yield_all_model_future_rcp45_m)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_future_rcp85.npy',yield_all_model_future_rcp85)
+np.save(save_path+'yield_all_model_future_rcp85.npy',yield_all_model_future_rcp85)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_future_rcp85_s.npy',yield_all_model_future_rcp85_s)
+np.save(save_path+'yield_all_model_future_rcp85_s.npy',yield_all_model_future_rcp85_s)
 
-np.save(str(save_projected_yield_path)+'yield_all_model_future_rcp85_m.npy',yield_all_model_future_rcp85_m)
+np.save(save_path+'yield_all_model_future_rcp85_m.npy',yield_all_model_future_rcp85_m)
 
 
 
