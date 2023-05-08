@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import math 
 import matplotlib.pyplot as plt 
 import pandas as pd
@@ -27,56 +25,60 @@ from matplotlib.patches import PathPatch
 from matplotlib import cm
 from matplotlib import gridspec
 
+input_path_gridmet = '../intermediate_data/Gridmet_csv/'
+input_path_projection = '../output_data/projection/'
+input_path_projection = '../output_data/aci_contribution/'
+input_path_model = '../intermediate_data/lasso_model/'
+input_path = '../input_data/'
+save_path = '../output_data/plots/'
+shp_path = '../input_data/CA_Counties/'
 
-data_ID='11_19'
-data_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID) ## set path to the project_path/saved_data/data_ID 
-home_path = '/home/shqwu/Almond_code_git'
 ## Load yield simulations
-yield_all_future_rcp45 = np.load(str(data_path)+'/projection/yield_all_future_rcp45.npy')
-yield_all_future_rcp45_s = np.load(str(data_path)+'/projection/yield_all_future_rcp45_s.npy')
-yield_all_future_rcp45_m = np.load(str(data_path)+'/projection/yield_all_future_rcp45_m.npy')
-yield_all_future_rcp85 = np.load(str(data_path)+'/projection/yield_all_future_rcp85.npy')
-yield_all_future_rcp85_s = np.load(str(data_path)+'/projection/yield_all_future_rcp85_s.npy')
-yield_all_future_rcp85_m = np.load(str(data_path)+'/projection/yield_all_future_rcp85_m.npy')
-yield_all_hist_rcp45 = np.load(str(data_path)+'/projection/yield_all_hist_rcp45.npy')
-yield_all_hist_rcp45_s = np.load(str(data_path)+'/projection/yield_all_hist_rcp45_s.npy')
-yield_all_hist_rcp45_m = np.load(str(data_path)+'/projection/yield_all_hist_rcp45_m.npy')
-yield_all_hist_rcp85 = np.load(str(data_path)+'/projection/yield_all_hist_rcp85.npy')
-yield_all_hist_rcp85_s = np.load(str(data_path)+'/projection/yield_all_hist_rcp85_s.npy')
-yield_all_hist_rcp85_m = np.load(str(data_path)+'/projection/yield_all_hist_rcp85_m.npy')
+yield_all_future_rcp45 = np.load(input_path_projection+'yield_all_future_rcp45.npy')
+yield_all_future_rcp45_s = np.load(input_path_projection+'yield_all_future_rcp45_s.npy')
+yield_all_future_rcp45_m = np.load(input_path_projection+'yield_all_future_rcp45_m.npy')
+yield_all_future_rcp85 = np.load(input_path_projection+'yield_all_future_rcp85.npy')
+yield_all_future_rcp85_s = np.load(input_path_projection+'yield_all_future_rcp85_s.npy')
+yield_all_future_rcp85_m = np.load(input_path_projection+'yield_all_future_rcp85_m.npy')
+yield_all_hist_rcp45 = np.load(input_path_projection+'yield_all_hist_rcp45.npy')
+yield_all_hist_rcp45_s = np.load(input_path_projection+'yield_all_hist_rcp45_s.npy')
+yield_all_hist_rcp45_m = np.load(input_path_projection+'yield_all_hist_rcp45_m.npy')
+yield_all_hist_rcp85 = np.load(input_path_projection+'yield_all_hist_rcp85.npy')
+yield_all_hist_rcp85_s = np.load(input_path_projection+'yield_all_hist_rcp85_s.npy')
+yield_all_hist_rcp85_m = np.load(input_path_projection+'yield_all_hist_rcp85_m.npy')
 
-yield_across_state_hist_rcp45 = np.load(str(data_path)+'/projection/yield_across_state_hist_rcp45.npy')
-yield_across_state_hist_rcp45_s = np.load(str(data_path)+'/projection/yield_across_state_hist_rcp45_s.npy')
-yield_across_state_hist_rcp85 = np.load(str(data_path)+'/projection/yield_across_state_hist_rcp85.npy')
-yield_across_state_hist_rcp85_s = np.load(str(data_path)+'/projection/yield_across_state_hist_rcp85_s.npy')
-yield_across_state_future_rcp45 = np.load(str(data_path)+'/projection/yield_across_state_future_rcp45.npy')
-yield_across_state_future_rcp45_s = np.load(str(data_path)+'/projection/yield_across_state_future_rcp45_s.npy')
-yield_across_state_future_rcp85 = np.load(str(data_path)+'/projection/yield_across_state_future_rcp85.npy')
-yield_across_state_future_rcp85_s = np.load(str(data_path)+'/projection/yield_across_state_future_rcp85_s.npy')
+yield_across_state_hist_rcp45 = np.load(input_path_projection+'yield_across_state_hist_rcp45.npy')
+yield_across_state_hist_rcp45_s = np.load(input_path_projection+'yield_across_state_hist_rcp45_s.npy')
+yield_across_state_hist_rcp85 = np.load(input_path_projection+'yield_across_state_hist_rcp85.npy')
+yield_across_state_hist_rcp85_s = np.load(input_path_projection+'yield_across_state_hist_rcp85_s.npy')
+yield_across_state_future_rcp45 = np.load(input_path_projection+'yield_across_state_future_rcp45.npy')
+yield_across_state_future_rcp45_s = np.load(input_path_projection+'yield_across_state_future_rcp45_s.npy')
+yield_across_state_future_rcp85 = np.load(input_path_projection+'yield_across_state_future_rcp85.npy')
+yield_across_state_future_rcp85_s = np.load(input_path_projection+'yield_across_state_future_rcp85_s.npy')
 
-yield_average_model_hist_rcp45 = np.load(str(data_path)+'/projection/yield_average_model_hist_rcp45.npy')
-yield_average_model_hist_rcp45_s = np.load(str(data_path)+'/projection/yield_average_model_hist_rcp45_s.npy')
-yield_average_model_hist_rcp85 = np.load(str(data_path)+'/projection/yield_average_model_hist_rcp85.npy')
-yield_average_model_hist_rcp85_s = np.load(str(data_path)+'/projection/yield_average_model_hist_rcp85_s.npy')
-yield_average_model_future_rcp45 = np.load(str(data_path)+'/projection/yield_average_model_future_rcp45.npy')
-yield_average_model_future_rcp45_s = np.load(str(data_path)+'/projection/yield_average_model_future_rcp45_s.npy')
-yield_average_model_future_rcp85 = np.load(str(data_path)+'/projection/yield_average_model_future_rcp85.npy')
-yield_average_model_future_rcp85_s = np.load(str(data_path)+'/projection/yield_average_model_future_rcp85_s.npy')
+yield_average_model_hist_rcp45 = np.load(input_path_projection+'yield_average_model_hist_rcp45.npy')
+yield_average_model_hist_rcp45_s = np.load(input_path_projection+'yield_average_model_hist_rcp45_s.npy')
+yield_average_model_hist_rcp85 = np.load(input_path_projection+'yield_average_model_hist_rcp85.npy')
+yield_average_model_hist_rcp85_s = np.load(input_path_projection+'yield_average_model_hist_rcp85_s.npy')
+yield_average_model_future_rcp45 = np.load(input_path_projection+'yield_average_model_future_rcp45.npy')
+yield_average_model_future_rcp45_s = np.load(input_path_projection+'yield_average_model_future_rcp45_s.npy')
+yield_average_model_future_rcp85 = np.load(input_path_projection+'yield_average_model_future_rcp85.npy')
+yield_average_model_future_rcp85_s = np.load(input_path_projection+'yield_average_model_future_rcp85_s.npy')
 
-yield_all_hist_rcp45 = np.load(str(data_path)+'/projection/yield_all_hist_rcp45.npy')
-yield_all_hist_rcp45_s = np.load(str(data_path)+'/projection/yield_all_hist_rcp45_s.npy')
-yield_all_hist_rcp85 = np.load(str(data_path)+'/projection/yield_all_hist_rcp85.npy')
-yield_all_hist_rcp85_s = np.load(str(data_path)+'/projection/yield_all_hist_rcp85_s.npy')
+yield_all_hist_rcp45 = np.load(input_path_projection+'yield_all_hist_rcp45.npy')
+yield_all_hist_rcp45_s = np.load(input_path_projection+'yield_all_hist_rcp45_s.npy')
+yield_all_hist_rcp85 = np.load(input_path_projection+'yield_all_hist_rcp85.npy')
+yield_all_hist_rcp85_s = np.load(input_path_projection+'yield_all_hist_rcp85_s.npy')
 
-yield_all_model_hist_rcp45 = np.load(str(data_path)+'/projection/yield_all_model_hist_rcp45.npy')
-yield_all_model_hist_rcp45_s = np.load(str(data_path)+'/projection/yield_all_model_hist_rcp45_s.npy')
-yield_all_model_future_rcp45 = np.load(str(data_path)+'/projection/yield_all_model_future_rcp45.npy')
-yield_all_model_future_rcp45_s = np.load(str(data_path)+'/projection/yield_all_model_future_rcp45_s.npy')
+yield_all_model_hist_rcp45 = np.load(input_path_projection+'yield_all_model_hist_rcp45.npy')
+yield_all_model_hist_rcp45_s = np.load(input_path_projection+'yield_all_model_hist_rcp45_s.npy')
+yield_all_model_future_rcp45 = np.load(input_path_projection+'yield_all_model_future_rcp45.npy')
+yield_all_model_future_rcp45_s = np.load(input_path_projection+'yield_all_model_future_rcp45_s.npy')
 
-yield_all_model_hist_rcp85 = np.load(str(data_path)+'/projection/yield_all_model_hist_rcp85.npy')
-yield_all_model_hist_rcp85_s = np.load(str(data_path)+'/projection/yield_all_model_hist_rcp85_s.npy')
-yield_all_model_future_rcp85 = np.load(str(data_path)+'/projection/yield_all_model_future_rcp85.npy')
-yield_all_model_future_rcp85_s = np.load(str(data_path)+'/projection/yield_all_model_future_rcp85_s.npy')
+yield_all_model_hist_rcp85 = np.load(input_path_projection+'yield_all_model_hist_rcp85.npy')
+yield_all_model_hist_rcp85_s = np.load(input_path_projection+'yield_all_model_hist_rcp85_s.npy')
+yield_all_model_future_rcp85 = np.load(input_path_projection+'yield_all_model_future_rcp85.npy')
+yield_all_model_future_rcp85_s = np.load(input_path_projection+'yield_all_model_future_rcp85_s.npy')
 
 ##load coefficient from lasso 1000 models 
 aci_num = 13
@@ -85,17 +87,17 @@ for i in range(1,11):
 coef_sum = np.zeros((0,aci_num*2+32))
 for i in range(1,1001):
     print(i)
-    locals()['coef'+str(((i-1)//100)+1)][i%100-1] = genfromtxt(str(data_path)+'/lasso_model/coef_'+str(i)+'.csv', delimiter = ',')
+    locals()['coef'+str(((i-1)//100)+1)][i%100-1] = genfromtxt(input_path_model+'coef_'+str(i)+'.csv', delimiter = ',')
 for i in range(1,11):
     coef_sum = np.row_stack((coef_sum, locals()['coef'+str(i)]))
 
 
 
 
-area = genfromtxt(str(home_path)+'/almond_area.csv', delimiter = ',')
-production = genfromtxt(str(home_path)+'/almond_production.csv', delimiter = ',')
-gridmet = genfromtxt(str(data_path)+'/Gridmet_csv/Gridmet.csv', delimiter = ',')
-yield_csv = genfromtxt(str(home_path)+'/almond_yield_1980_2020.csv', delimiter = ',')
+area = genfromtxt(input_path+'/almond_area.csv', delimiter = ',')
+production = genfromtxt(input_path+'/almond_production.csv', delimiter = ',')
+gridmet = genfromtxt(input_path_gridmet+'/Gridmet_csv/Gridmet.csv', delimiter = ',')
+yield_csv = genfromtxt(input_path+'/almond_yield_1980_2020.csv', delimiter = ',')
 
 simulation_gridmet = np.zeros((656, 1000))
 production_gridmet = np.zeros((656, 1000))
@@ -562,7 +564,7 @@ cbar.ax.tick_params(labelsize=30)
 cbar.set_label('Probability', fontsize = 35, labelpad=0.1)
 plt.title('2080-2099', fontsize = 35, y = 1.05)
 plt.text(-6.8, -4.25, 'RCP8.5', fontsize = 35)
-plt.savefig(str(data_path)+'/plot/yield_time_series.pdf', dpi = 300)
+plt.savefig(save_path+'yield_time_series.pdf', dpi = 300)
 plt.show()
 
 
@@ -612,8 +614,8 @@ tech_change_for_shp_45_2099_int[:] = np.nan
 
 N_S_order = np.zeros((16))
 
-ca = geopandas.read_file(str(home_path)+'/CA_Counties/CA_Counties_TIGER2016.shp')
-ca_county_remove_shp = geopandas.read_file(str(home_path)+'/CA_Counties/CA_Counties_TIGER2016.shp')
+ca = geopandas.read_file(shp_path+'CA_Counties_TIGER2016.shp')
+ca_county_remove_shp = geopandas.read_file(shp_path+'CA_Counties_TIGER2016.shp')
 ca_county_remove = ['Sierra', 'Sacramento', 'Santa Barbara', 'Calaveras', 'Ventura','Los Angeles', 'Sonoma', 'San Diego', 'Placer', 'San Francisco', 'Marin', 'Mariposa', 'Lassen', 'Napa',
                     'Shasta', 'Monterey','Trinity', 'Mendocino', 'Inyo', 'Mono', 'Tuolumne', 'San Bernardino', 'Contra Costa', 'Alpine', 'El Dorado', 'San Benito', 'Humboldt','Riverside',
                     'Del Norte', 'Modoc', 'Santa Clara', 'Alameda', 'Nevada', 'Orange', 'Imperial', 'Amador', 'Lake', 'Plumas', 'San Mateo', 'Siskiyou', 'Santa Cruz','San Luis Obispo']
@@ -809,7 +811,7 @@ plt.axvline(x=-100, linestyle = 'dashed', color = 'r')
 plt.axvline(x=0, linestyle = 'dashed', color = 'r')
 ax4_box.spines['top'].set_visible(False)
 ax4_box.spines['right'].set_visible(False)
-plt.savefig(str(data_path)+'/plot/map.pdf', dpi = 300, bbox_inches='tight')
+plt.savefig(save_path+'map.pdf', dpi = 300, bbox_inches='tight')
 
 
 
@@ -1171,7 +1173,7 @@ plt.xticks(fontsize =35, rotation = 35)
 plt.yticks(np.linspace(20,100,5).astype(int),np.linspace(20,100,5).astype(int),fontsize = 35)
 plt.title('Fractional contribution to total uncertainty (%)' , fontsize = 35, y = 1.06)
 
-plt.savefig(str(data_path)+'/plot/uncertainty.pdf', bbox_inches='tight', dpi =300)
+plt.savefig(save_path+'uncertainty.pdf', bbox_inches='tight', dpi =300)
 
 
 
@@ -1179,8 +1181,8 @@ plt.savefig(str(data_path)+'/plot/uncertainty.pdf', bbox_inches='tight', dpi =30
 ##Figure 4: State-level waterfall ACI analysis
 ACI_list = ['Dormancy_Freeze','Dormancy_ETo','Jan_P','Bloom_P','Bloom_Tmin' ,'Bloom_ETo', 'Bloom_GDD4','Bloom_Humidity','Bloom_Windydays','Growing_ETo','Growing_GDD4', 'Growing_KDD30','Harvest_P']
 
-aci_contribution_rcp45_total = np.load(str(data_path)+'/aci_contribution/aci_contribution_rcp45_total.npy')
-aci_contribution_rcp85_total = np.load(str(data_path)+'/aci_contribution/aci_contribution_rcp85_total.npy')
+aci_contribution_rcp45_total = np.load(input_path_projection+'aci_contribution_rcp45_total.npy')
+aci_contribution_rcp85_total = np.load(input_path_projection+'/aci_contribution/aci_contribution_rcp85_total.npy')
 
 aci_contribution_rcp45_2001_2020 = np.mean(aci_contribution_rcp45_total[21:41,:,:], axis=0)
 aci_contribution_rcp85_2001_2020 = np.mean(aci_contribution_rcp85_total[21:41,:,:], axis=0)
@@ -1224,10 +1226,10 @@ median_rcp85_2041_2060 = np.nanmedian(aci_contribution_rcp85_change_percent_2041
 median_rcp45_2080_2099 = np.nanmedian(aci_contribution_rcp45_change_percent_2080_2099, axis=0)
 median_rcp85_2080_2099 = np.nanmedian(aci_contribution_rcp85_change_percent_2080_2099, axis=0)
 
-aci_contribution_rcp45_county_2050_change_percent = np.load(str(data_path)+'/aci_contribution/aci_contribution_rcp45_county_2050_change_percent.npy')
-aci_contribution_rcp45_county_2090_change_percent = np.load(str(data_path)+'/aci_contribution/aci_contribution_rcp45_county_2090_change_percent.npy')
-aci_contribution_rcp85_county_2050_change_percent = np.load(str(data_path)+'/aci_contribution/aci_contribution_rcp85_county_2050_change_percent.npy')
-aci_contribution_rcp85_county_2090_change_percent = np.load(str(data_path)+'/aci_contribution/aci_contribution_rcp85_county_2090_change_percent.npy')
+aci_contribution_rcp45_county_2050_change_percent = np.load(input_path_contribution+'aci_contribution_rcp45_county_2050_change_percent.npy')
+aci_contribution_rcp45_county_2090_change_percent = np.load(input_path_contribution+'aci_contribution_rcp45_county_2090_change_percent.npy')
+aci_contribution_rcp85_county_2050_change_percent = np.load(input_path_contribution+'aci_contribution_rcp85_county_2050_change_percent.npy')
+aci_contribution_rcp85_county_2090_change_percent = np.load(input_path_contribution+'aci_contribution_rcp85_county_2090_change_percent.npy')
 
 aci_contribution_rcp45_county_2050_change_percent_median = np.median(aci_contribution_rcp45_county_2050_change_percent, axis=1)
 aci_contribution_rcp45_county_2090_change_percent_median = np.median(aci_contribution_rcp45_county_2090_change_percent, axis=1)
@@ -1558,7 +1560,7 @@ plt.annotate('', xy = (0.7, annotate_y), xycoords = 'axes fraction', xytext = (0
 plt.annotate('Growth', xy = (0.73, annotate_y-0.1), xycoords = 'axes fraction', fontsize = 35)
 plt.annotate('', xy = (0.9, annotate_y), xycoords = 'axes fraction', xytext = (0.97,annotate_y), arrowprops = dict(arrowstyle = '<|-|>, head_width = 2, head_length = 2', linewidth = 5, color = 'k'))
 plt.annotate('Harvest', xy = (0.87, annotate_y-0.1), xycoords = 'axes fraction', fontsize = 35)
-plt.savefig(str(data_path)+'/plot/waterfall_state_all.pdf', dpi = 300,bbox_inches='tight')
+plt.savefig(save_path+'waterfall_state_all.pdf', dpi = 300,bbox_inches='tight')
 
 
 
@@ -1740,16 +1742,7 @@ plt.annotate('', xy = (0.75, -3.5), xycoords = 'axes fraction', xytext = (0.87,-
 plt.annotate('Growth', xy = (0.77, -4.3), xycoords = 'axes fraction', fontsize = 35)
 plt.annotate('', xy = (0.905, -3.5), xycoords = 'axes fraction', xytext = (0.965,-3.5), arrowprops = dict(arrowstyle = '<|-|>, head_width = 2, head_length = 2', linewidth = 5, color = 'k'))
 plt.annotate('Harvest', xy = (0.89, -4.3), xycoords = 'axes fraction', fontsize = 35)
-plt.savefig(str(data_path)+'/plot/waterfall_total_2050_rcp85.pdf', dpi = 300,bbox_inches='tight')
-
-
-
-
-
-
-
-
-
+plt.savefig(save_path+'waterfall_total_2050_rcp85.pdf', dpi = 300,bbox_inches='tight')
 
 
 
