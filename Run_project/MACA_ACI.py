@@ -14,24 +14,26 @@ from numpy import savetxt
 import netCDF4 as nc
 import math
 
-data_ID='11_19'
+save_path = '../intermediate_data/MACA_ACI/'+str(model_name)+'/'
+shp_path = '../input_data/CA_Counties/'
+input_path = '../input_data/MACA/'
+
 model_name='MRI-CGCM3'
-save_path = '/home/shqwu/Almond_code_git/saved_data/'+str(data_ID)+'/MACA_ACI/'+str(model_name)+'/'
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-shapefile = salem.read_shapefile('/home/pgzikala/Shapefiles/CA_Counties/Counties.shp')
+shapefile = salem.read_shapefile(shp_path+'/CA_Counties/Counties.shp')
 for county in county_list:
      locals()[str(county)+'_shp'] = shapefile.loc[shapefile['NAME'].isin([str(county)])]
 
 period_list = ['1950_1954', '1955_1959', '1960_1964', '1965_1969','1970_1974', '1975_1979', '1980_1984', '1985_1989', '1990_1994', '1995_1999', '2000_2004', '2005_2005']
 
 var_list = ['pr', 'tasmin', 'tasmax','huss', 'rhsmax', 'rhsmin', 'rsds', 'vpd', 'uas', 'vas']
-cropland_reference = salem.open_xr_dataset('/group/moniergrp/MACA/MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
+cropland_reference = salem.open_xr_dataset(input_path+'MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
 for county in county_list:
     locals()[str(county)+'_reference'] = cropland_reference.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False).air_temperature
 for var in var_list:
     print(var)
     for period in period_list:
-        nc_change_lon = nc.Dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
+        nc_change_lon = nc.Dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
         if nc_change_lon.variables['lon'][0]+0<-800:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]+720
         elif nc_change_lon.variables['lon'][0]+0<-400:
@@ -41,7 +43,7 @@ for var in var_list:
         elif nc_change_lon.variables['lon'][0]+0>0:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]-360
         nc_change_lon.close()
-        locals()[str(var)+str(period)] = salem.open_xr_dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc')
+        locals()[str(var)+str(period)] = salem.open_xr_dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc')
         for county in county_list:
             if np.int(np.int(period)/10000) != 2005:
                 year_1 = np.int(np.int(period)/10000)
@@ -1462,12 +1464,12 @@ for county in county_list:
 
 period_list = ['2006_2010', '2011_2015', '2016_2020', '2021_2025','2026_2030', '2031_2035', '2036_2040', '2041_2045', '2046_2050', '2051_2055', '2056_2060', '2061_2065', '2066_2070', '2071_2075', '2076_2080', '2081_2085', '2086_2090', '2091_2095', '2096_2099']
 
-cropland_reference = salem.open_xr_dataset('/group/moniergrp/MACA/MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
+cropland_reference = salem.open_xr_dataset(input_path+'MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
 for county in county_list:
     locals()[str(county)+'_reference'] = cropland_reference.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False).air_temperature
 for var in var_list:
     for period in period_list:
-        nc_change_lon = nc.Dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp85_'+str(period)+'_CONUS_daily.nc', 'r+')
+        nc_change_lon = nc.Dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp85_'+str(period)+'_CONUS_daily.nc', 'r+')
         if nc_change_lon.variables['lon'][0]+0<-800:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]+720
         elif nc_change_lon.variables['lon'][0]+0<-400:
@@ -1477,7 +1479,7 @@ for var in var_list:
         elif nc_change_lon.variables['lon'][0]+0>0:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]-360
         nc_change_lon.close()
-        locals()[str(var)+str(period)] = salem.open_xr_dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp85_'+str(period)+'_CONUS_daily.nc')
+        locals()[str(var)+str(period)] = salem.open_xr_dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp85_'+str(period)+'_CONUS_daily.nc')
         for county in county_list:
             if np.int(np.int(period)/10000) != 2096:
                 year_1 = np.int(np.int(period)/10000)
@@ -1491,7 +1493,7 @@ for var in var_list:
 period_list = ['2005_2005']
 for var in var_list:
     for period in period_list:
-        nc_change_lon = nc.Dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
+        nc_change_lon = nc.Dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
         if nc_change_lon.variables['lon'][0]+0<-800:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]+720
         elif nc_change_lon.variables['lon'][0]+0<-400:
@@ -1501,7 +1503,7 @@ for var in var_list:
         elif nc_change_lon.variables['lon'][0]+0>0:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]-360
         nc_change_lon.close()
-        locals()[str(var)+str(period)] = salem.open_xr_dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc')
+        locals()[str(var)+str(period)] = salem.open_xr_dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc')
         for county in county_list:
             year = 2005
             locals()[str(county)+str(var)+str(year)+'_roi'] = locals()[str(var)+str(period)].salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
@@ -2911,12 +2913,12 @@ period_list = ['2006_2010', '2011_2015', '2016_2020', '2021_2025','2026_2030', '
 
 #model='bcc-csm1-1-m_r1i1p1'
 var_list = ['pr', 'tasmin', 'tasmax','huss', 'rhsmax', 'rhsmin', 'rsds', 'vpd', 'uas', 'vas']
-cropland_reference = salem.open_xr_dataset('/group/moniergrp/MACA/MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
+cropland_reference = salem.open_xr_dataset(input_path+'MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
 for county in county_list:
     locals()[str(county)+'_reference'] = cropland_reference.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False).air_temperature
 for var in var_list:
     for period in period_list:
-        nc_change_lon = nc.Dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp45_'+str(period)+'_CONUS_daily.nc', 'r+')
+        nc_change_lon = nc.Dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp45_'+str(period)+'_CONUS_daily.nc', 'r+')
         if nc_change_lon.variables['lon'][0]+0<-800:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]+720
         elif nc_change_lon.variables['lon'][0]+0<-400:
@@ -2926,7 +2928,7 @@ for var in var_list:
         elif nc_change_lon.variables['lon'][0]+0>0:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]-360
         nc_change_lon.close()
-        locals()[str(var)+str(period)] = salem.open_xr_dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp45_'+str(period)+'_CONUS_daily.nc')
+        locals()[str(var)+str(period)] = salem.open_xr_dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_rcp45_'+str(period)+'_CONUS_daily.nc')
         for county in county_list:
             if np.int(np.int(period)/10000) != 2096:
                 year_1 = np.int(np.int(period)/10000)
@@ -2940,7 +2942,7 @@ for var in var_list:
 period_list = ['2005_2005']
 for var in var_list:
     for period in period_list:
-        nc_change_lon = nc.Dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
+        nc_change_lon = nc.Dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
         if nc_change_lon.variables['lon'][0]+0<-800:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]+720
         elif nc_change_lon.variables['lon'][0]+0<-400:
@@ -2950,7 +2952,7 @@ for var in var_list:
         elif nc_change_lon.variables['lon'][0]+0>0:
             nc_change_lon.variables['lon'][:] = nc_change_lon.variables['lon'][:]-360
         nc_change_lon.close()
-        locals()[str(var)+str(period)] = salem.open_xr_dataset('/group/moniergrp/MACA/macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc')
+        locals()[str(var)+str(period)] = salem.open_xr_dataset(input_path+'macav2metdata_'+str(var)+'_'+str(model_name)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc')
         for county in county_list:
             year = 2005
             locals()[str(county)+str(var)+str(year)+'_roi'] = locals()[str(var)+str(period)].salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
