@@ -21,7 +21,7 @@ import matplotlib as mpl
 input_path_model = '../intermediate_data/lasso_model/'
 input_path_MACA = '../intermediate_data/MACA_csv/'
 input_path_area = '../input_data/'
-save_path = '../output_data/'
+save_path = '../output_data/projection/'
 
 aci_num = 13
 for i in range(1,11):
