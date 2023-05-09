@@ -21,10 +21,10 @@ import yellowbrick
 from yellowbrick.regressor import cooks_distance
 import sys
 
-
-save_path = '../intermediate_data/lasso_model/'
-input_path_ACI = '../intermediate_data/Gridmet_csv/'
-input_path_yield = '../input_data/'
+home_path=
+save_path = home_path+'/intermediate_data/lasso_model/'
+input_path_ACI = home_path+'/intermediate_data/Gridmet_csv/'
+input_path_yield = home_path+'/input_data/'
 
 trial=np.int(sys.argv[1])
 aci_num=13
