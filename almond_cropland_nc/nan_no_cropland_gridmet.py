@@ -14,10 +14,14 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import netCDF4 as nc
 
+home_path=
+input_path_CDL = home_path+'/input_data/almond_cropland_nc/'
+input_path_gridmet = home_path+'/input_data/Gridmet/'
+
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
 for year in range(2007,2022):
-    cropland_nc = nc.Dataset('/home/shqwu/MACA/almond_cropland_nc/almond_cropland_'+str(year)+'.nc')
+    cropland_nc = nc.Dataset(input_path_CDL+'almond_cropland_'+str(year)+'.nc')
     cropland = cropland_nc.variables['almond'][:]
     cropland_lat = cropland_nc.variables['lat'][:]
     cropland_lon = cropland_nc.variables['lon'][:]
@@ -54,25 +58,16 @@ for i in range(0,gridmet_almond_lat_lon.shape[1]):
 
 
 ## nan gridmet nc 
-var_list_1 = ['ETo', 'SpH', 'WndSpd']
-var_name_list_1 = ['potential_evapotranspiration', 'specific_humidity', 'wind_speed']
-var_list_2 = ['Precip', 'Tmax', 'Tmin']
-var_name_list_2 = ['precipitation_amount', 'air_temperature', 'air_temperature']
-for k in range(0,3):
+var_list = ['pet', 'sph', 'vs', 'pr', 'tmmx', 'tmmn']
+var_name_list = ['potential_evapotranspiration', 'specific_humidity', 'wind_speed','precipitation_amount', 'air_temperature', 'air_temperature']
+
+for k in range(0,6):
     for year in range(1979,2021):
-        nc_data = nc.Dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.'+str(var_list_1[k])+'._'+str(year)+'.nc', 'r+')
+        nc_data = nc.Dataset(input_path_gridmet+str(var_list[k])+'_'+str(year)+'.nc', 'r+')
         if nc_data.variables[str(var_name_list_1[k])][:].shape[0] == 366:
-           nc_data.variables[str(var_name_list_1[k])][:] = nc_data.variables[str(var_name_list_1[k])][:]*matrix_366
+           nc_data.variables[str(var_name_list_1[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_366
         if nc_data.variables[str(var_name_list_1[k])][:].shape[0] == 365:
-           nc_data.variables[str(var_name_list_1[k])][:] = nc_data.variables[str(var_name_list_1[k])][:]*matrix_365
+           nc_data.variables[str(var_name_list_1[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_365
         nc_data.close()
 
-for k in range(0,3):
-    for year in range(1979,2021):
-        nc_data = nc.Dataset('/group/moniergrp/GridMet/GridMet_mask_no_almond/CA_GridMet.'+str(var_list_2[k])+'.'+str(year)+'.nc', 'r+')
-        if nc_data.variables[str(var_name_list_2[k])][:].shape[0] == 366:
-           nc_data.variables[str(var_name_list_2[k])][:] = nc_data.variables[str(var_name_list_2[k])][:]*matrix_366
-        if nc_data.variables[str(var_name_list_2[k])][:].shape[0] == 365:
-           nc_data.variables[str(var_name_list_2[k])][:] = nc_data.variables[str(var_name_list_2[k])][:]*matrix_365
-        nc_data.close()
 
