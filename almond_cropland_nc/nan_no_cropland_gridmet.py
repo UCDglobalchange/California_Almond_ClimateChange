@@ -64,10 +64,10 @@ var_name_list = ['potential_evapotranspiration', 'specific_humidity', 'wind_spee
 for k in range(0,6):
     for year in range(1979,2021):
         nc_data = nc.Dataset(input_path_gridmet+str(var_list[k])+'_'+str(year)+'.nc', 'r+')
-        if nc_data.variables[str(var_name_list_1[k])][:].shape[0] == 366:
-           nc_data.variables[str(var_name_list_1[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_366
-        if nc_data.variables[str(var_name_list_1[k])][:].shape[0] == 365:
-           nc_data.variables[str(var_name_list_1[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_365
+        if nc_data.variables[str(var_name_list[k])][:].shape[0] == 366:
+           nc_data.variables[str(var_name_list[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_366
+        if nc_data.variables[str(var_name_list[k])][:].shape[0] == 365:
+           nc_data.variables[str(var_name_list[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_365
         nc_data.close()
 
 
