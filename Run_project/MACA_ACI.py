@@ -14,13 +14,14 @@ from numpy import savetxt
 import netCDF4 as nc
 import math
 
+model_name='MRI-CGCM3'
+
 save_path = '../intermediate_data/MACA_ACI/'+str(model_name)+'/'
 shp_path = '../input_data/CA_Counties/'
 input_path = '../input_data/MACA/'
 
-model_name='MRI-CGCM3'
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-shapefile = salem.read_shapefile(shp_path+'/CA_Counties/Counties.shp')
+shapefile = salem.read_shapefile(shp_path+'Counties.shp')
 for county in county_list:
      locals()[str(county)+'_shp'] = shapefile.loc[shapefile['NAME'].isin([str(county)])]
 
