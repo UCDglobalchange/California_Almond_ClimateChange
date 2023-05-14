@@ -23,6 +23,9 @@ We used the following python packages:
 - scipy - 1.10.1
 - xarray - 2023.4.2
 - geopandas - 0.13.0
+- yellowbrick - 1.5
+- salem - 1.5
+- cartopy - 0.21.1
 
 ## Data processing
 **Almond cropland mask:** The spatial resolution of CDL (30m)is different from those of climate datasets (4km). To filter out gridcells without almond croplands from gridMET and MACA, we used ArcGIS Pro to aggregrate and re-coordinate CDL raster data to match the resolution and geospatial coordinate of climate datasets. The CDL of almonds in California is available from 2007 to 2022 and the netCDF files produced from ArcGIS Pro are available in folder ***Almond_cropland_nc***
