@@ -1,11 +1,16 @@
 #!/bin/bash -l
 
 # setting name of job
-#SBATCH -J Gridmet_ACI
+#SBATCH -J mask_Cropland
 
 # setting home directory
-#SBATCH -D
+#SBATCH -D /home/shqwu/California_Almond_ClimateChange-main/almond_cropland_nc
 
+# setting standard error output
+#SBATCH -e /home/shqwu/NEX-GDDP/slurm_log/sterror_%j.txt
+
+# setting standard output
+#SBATCH -o /home/shqwu/NEX-GDDP/slurm_log/stdoutput_%j.txt
 
 # setting medium priority
 #SBATCH -p high2
@@ -22,5 +27,4 @@
 # send mail here
 #SBATCH --mail-user=
 
-srun python  Gridmet_ACI.py
-
+srun python  MACA_mask_previous.py
