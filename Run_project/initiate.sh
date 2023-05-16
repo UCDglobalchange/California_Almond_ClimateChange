@@ -22,10 +22,25 @@ mkdir $home_path/output_data/plots
 sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/MACA_ACI.py
 sed -i "s,home_path=.*,home_path=$home_path,g" $home_path/run_MACA_ACI.sh
 sed -i "s,home_path=.*,home_path=$home_path,g" $home_path/run_MACA_create_nc.sh
+sed -i "s,home_path=.*,home_path=$home_path,g" $home_path/mask_cropland_Gridmet.py
+sed -i "s,home_path=.*,home_path=$home_path,g" $home_path/mask_cropland_MACA.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/Almond_lasso.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/Gridmet_ACI.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/Gridmet_create_csv.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/Gridmet_create_nc.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/MACA_create_csv.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/MACA_create_nc.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/MACA_projection.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/aci_contribution.py
+sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/plot.py
+
+
+
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_Almond_lasso.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_Gridmet_ACI.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_MACA_ACI.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_MACA_projection.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_aci_contribution.sh
-sed -i "s,-D.*,-D $home_path,g" $home_path/mask_cropland_MACA.py
-sed -i "s,-D.*,-D $home_path,g" $home_path/mask_cropland_Gridmet.py
+sed -i "s,-D.*,-D $home_path,g" $home_path/submit_mask_Gridmet.sh
+sed -i "s,-D.*,-D $home_path,g" $home_path/submit_mask_MACA.sh
+
