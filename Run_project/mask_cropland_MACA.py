@@ -1,5 +1,3 @@
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import xarray
@@ -17,7 +15,7 @@ home_path=''
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
 for year in range(2007,2022):
-    cropland_nc = nc.Dataset('/home/shqwu/California_Almond_ClimateChange-main/almond_cropland_nc/almond_cropland_'+str(year)+'.nc')
+    cropland_nc = nc.Dataset(home_path+'/almond_cropland_nc/almond_cropland_'+str(year)+'.nc')
     cropland = cropland_nc.variables['almond'][:]
     cropland_lat = cropland_nc.variables['lat'][:]
     cropland_lon = cropland_nc.variables['lon'][:]
@@ -52,7 +50,7 @@ period_list = ['1950_1954', '1955_1959', '1960_1964', '1965_1969','1970_1974', '
 k=1
 model = 'bcc-csm1-1'
 period = '1950_1954'
-nc_data = nc.Dataset('/home/shqwu/California_Almond_ClimateChange-main/almond_cropland_nc/macav2metdata_'+str(var_list[k])+'_'+str(model)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
+nc_data = nc.Dataset(home_path+'/input_data/MACA/reference_cropland/macav2metdata_'+str(var_list[k])+'_'+str(model)+'_r1i1p1_historical_'+str(period)+'_CONUS_daily.nc', 'r+')
 day_num = nc_data.variables[str(var_name_list[k])].shape[0]
 matrix = np.zeros((day_num, 585,1386))
 matrix[:] = np.nan
