@@ -8,7 +8,9 @@ running steps:
 
 3. Download MACA datasets to the GridMet folder under home_path/input_data/MACA/ (which was created by Step.1). E.g. /home/username/Run_project/input_data/MACA/
 
-4. Copy the MACA file macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc from home_path/input_data/MACA/ to home_path/input_data/MACA/reference_cropland/ by typing
+4. Copy the MACA file macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc from home_path/input_data/MACA/ to home_path/input_data/MACA/reference_cropland/ 
+
+5. 
 
 1. replace the data_ID with customized ID (I usually use date) in initiate.sh; make sure use single quotation mark such as '11_19'. 
 2. type . initiate.sh to run. The data_ID in python scripts will be replaced and the folder containing outputs will be created under the name of 
