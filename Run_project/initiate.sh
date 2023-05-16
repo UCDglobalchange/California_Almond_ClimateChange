@@ -26,4 +26,5 @@ sed -i "s,-D.*,-D $home_path,g" $home_path/submit_Gridmet_ACI.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_MACA_ACI.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_MACA_projection.sh
 sed -i "s,-D.*,-D $home_path,g" $home_path/submit_aci_contribution.sh
-
+sed -i "s,-D.*,-D $home_path,g" $home_path/mask_cropland_MACA.py
+sed -i "s,-D.*,-D $home_path,g" $home_path/mask_cropland_Gridmet.py
