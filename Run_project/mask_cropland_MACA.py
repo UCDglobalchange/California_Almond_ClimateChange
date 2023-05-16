@@ -13,6 +13,7 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import netCDF4 as nc
 
+home_path=''
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
 for year in range(2007,2022):
