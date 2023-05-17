@@ -20,10 +20,11 @@ import matplotlib as mpl
 
 aci_num = 13
 
-input_path_model = '../intermediate_data/lasso_model/'
-input_path_ACI = '../intermediate_data/MACA_csv/'
-input_path_area = '../input_data/'
-save_path = '../output_data/aci_contribution/'
+home_path=
+input_path_model = home_path+'/intermediate_data/lasso_model/'
+input_path_ACI = home_path+'/intermediate_data/MACA_csv/'
+input_path_area = home_path+'/input_data/'
+save_path = home_path+'/output_data/aci_contribution/'
 
 
 area_csv = genfromtxt(input_path_area+'almond_area.csv', delimiter = ',')
