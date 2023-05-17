@@ -9,10 +9,10 @@ import pandas as pd
 import netCDF4 as nc
 from numpy import genfromtxt
 
-
-save_path = '../intermediate_data/MACA_nc/'
-input_path_ACI = '../intermediate_data/MACA_ACI/'+str(model)+'/'
-input_path_yield = '../input_data/'
+home_path=
+save_path = home_path+'/intermediate_data/MACA_nc/'
+input_path_ACI = home_path+'/intermediate_data/MACA_ACI/'+str(model)+'/'
+input_path_yield = home_path+'/input_data/'
 
 model='MIROC-ESM-CHEM'
 
