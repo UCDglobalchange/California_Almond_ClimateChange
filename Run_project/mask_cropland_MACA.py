@@ -15,7 +15,7 @@ home_path=''
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
 for year in range(2007,2022):
-    cropland_nc = nc.Dataset(home_path+'/almond_cropland_nc/almond_cropland_'+str(year)+'.nc')
+    cropland_nc = nc.Dataset(home_path+'/input_data/almond_cropland_nc/almond_cropland_'+str(year)+'.nc')
     cropland = cropland_nc.variables['almond'][:]
     cropland_lat = cropland_nc.variables['lat'][:]
     cropland_lon = cropland_nc.variables['lon'][:]
