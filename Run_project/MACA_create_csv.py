@@ -15,6 +15,7 @@ county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 
 
 aci_num = 13
 
+home_path=
 input_path = '../intermediate_data/MACA_nc/'
 save_path = '../intermediate_data/MACA_csv/'
 
