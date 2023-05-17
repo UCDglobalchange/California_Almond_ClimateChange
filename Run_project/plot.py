@@ -25,13 +25,14 @@ from matplotlib.patches import PathPatch
 from matplotlib import cm
 from matplotlib import gridspec
 
-input_path_gridmet = '../intermediate_data/Gridmet_csv/'
-input_path_projection = '../output_data/projection/'
-input_path_projection = '../output_data/aci_contribution/'
-input_path_model = '../intermediate_data/lasso_model/'
-input_path = '../input_data/'
-save_path = '../output_data/plots/'
-shp_path = '../input_data/CA_Counties/'
+home_path=
+input_path_gridmet = home_path+'/intermediate_data/Gridmet_csv/'
+input_path_projection = home_path+'/output_data/projection/'
+input_path_projection = home_path+'../output_data/aci_contribution/'
+input_path_model = home_path+'/intermediate_data/lasso_model/'
+input_path = home_path+'/input_data/'
+save_path = home_path+'/output_data/plots/'
+shp_path = home_path+'/input_data/CA_Counties/'
 
 ## Load yield simulations
 yield_all_future_rcp45 = np.load(input_path_projection+'yield_all_future_rcp45.npy')
