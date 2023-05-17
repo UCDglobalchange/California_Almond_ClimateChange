@@ -14,7 +14,7 @@ running steps:
 
 6. submit job to process ACI of MACA by typing . run_MACA_ACI.sh (this will take some time to complete the job submitting since we submit job for each MACA model)
 
-
+7. create gridmet_ACI.nc by typing python Gridmet_create_nc.py; create Gridmet.csv by typing python Gridmet_create_csv.py
 
 1. replace the data_ID with customized ID (I usually use date) in initiate.sh; make sure use single quotation mark such as '11_19'. 
 2. type . initiate.sh to run. The data_ID in python scripts will be replaced and the folder containing outputs will be created under the name of 
