@@ -10,6 +10,7 @@ import netCDF4 as nc
 from numpy import genfromtxt
 import math
 
+home_path=
 input_path_ACI = '../intermediate_data/Gridmet_ACI/'
 input_path_yield = '../input_data/'
 save_path = '../intermediate_data/Gridmet_nc/'
