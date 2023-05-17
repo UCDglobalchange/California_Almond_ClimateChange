@@ -18,10 +18,11 @@ from scipy import stats
 from matplotlib.lines import Line2D
 import matplotlib as mpl
 
-input_path_model = '../intermediate_data/lasso_model/'
-input_path_MACA = '../intermediate_data/MACA_csv/'
-input_path_area = '../input_data/'
-save_path = '../output_data/projection/'
+home_path=
+input_path_model = home_path+'/intermediate_data/lasso_model/'
+input_path_MACA = home+path+'/intermediate_data/MACA_csv/'
+input_path_area = home_path+'/input_data/'
+save_path = home_path+'/output_data/projection/'
 
 aci_num = 13
 for i in range(1,11):
