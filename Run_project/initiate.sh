@@ -3,7 +3,6 @@
 home_path=''
 
 mkdir $home_path/intermediate_data
-mkdir $home_path/input_data
 mkdir $home_path/input_data/GridMet
 mkdir $home_path/input_data/MACA
 mkdir $home_path/input_data/MACA/reference_cropland
