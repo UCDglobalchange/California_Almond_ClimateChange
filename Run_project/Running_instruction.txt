@@ -10,7 +10,11 @@ running steps:
 
 4. Copy the MACA file macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc from home_path/input_data/MACA/ to home_path/input_data/MACA/reference_cropland/ 
 
-5. 
+5. submit job to process ACI of Gridmet by typing sbatch submit_Gridmet_ACI.sh
+
+6. submit job to process ACI of MACA by typing . run_MACA_ACI.sh (this will take some time to complete the job submitting since we submit job for each MACA model)
+
+
 
 1. replace the data_ID with customized ID (I usually use date) in initiate.sh; make sure use single quotation mark such as '11_19'. 
 2. type . initiate.sh to run. The data_ID in python scripts will be replaced and the folder containing outputs will be created under the name of 
