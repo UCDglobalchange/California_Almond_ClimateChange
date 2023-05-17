@@ -10,6 +10,7 @@ from numpy import genfromtxt
 from numpy import savetxt
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 
+home_path=
 input_path = '../intermediate_data/Gridmet_nc/'
 save_path = '../intermediate_data/Gridmet_csv/'
 
