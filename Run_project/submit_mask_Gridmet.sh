@@ -9,6 +9,12 @@
 # setting medium priority
 #SBATCH -p high2
 
+# setting standard error output
+#SBATCH -e 
+
+# setting standard output
+#SBATCH -o 
+
 #SBATCH --mem=64G
 
 # setting the max time
