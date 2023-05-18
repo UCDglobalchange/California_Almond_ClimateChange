@@ -11,8 +11,8 @@ from numpy import savetxt
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 
 home_path=
-input_path = '../intermediate_data/Gridmet_nc/'
-save_path = '../intermediate_data/Gridmet_csv/'
+input_path = home_path+'/intermediate_data/Gridmet_nc/'
+save_path = home_path+'/intermediate_data/Gridmet_csv/'
 
 almond_hist = nc.Dataset(input_path+'gridmet_ACI.nc')
 aci_num=13
@@ -22,7 +22,7 @@ for region_id in range(0,16):
     non_clim_coef = np.zeros((41,32))
     non_clim_coef[:,region_id] = np.arange(1,42,1)
     non_clim_coef[:,(region_id+16)] = 1
-    aci = np.array(almond_hist.variables['ACI_value'][:,region_id,:], dtype = np.float)
+    aci = np.array(almond_hist.variables['ACI_value'][:,region_id,:], dtype = float)
     aci_mean = np.mean(aci, axis = 0)
     aci_std = np.std(aci,axis=0)
     for j in range(0,aci_num):
