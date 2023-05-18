@@ -11,9 +11,9 @@ from numpy import genfromtxt
 import math
 
 home_path=
-input_path_ACI = '../intermediate_data/Gridmet_ACI/'
-input_path_yield = '../input_data/'
-save_path = '../intermediate_data/Gridmet_nc/'
+input_path_ACI = home_path+'/intermediate_data/Gridmet_ACI/'
+input_path_yield = home_path+'/input_data/'
+save_path = home_path'/intermediate_data/Gridmet_nc/'
 
 # create netcdf file
 Almond = nc.Dataset(str(save_path)+'gridmet_ACI.nc', 'w', format = 'NETCDF4')
