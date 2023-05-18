@@ -7,6 +7,11 @@
 # setting home directory
 #SBATCH -D 
 
+# setting standard error output
+#SBATCH -e 
+
+# setting standard output
+#SBATCH -o 
 
 # setting medium priority
 #SBATCH -p high2
