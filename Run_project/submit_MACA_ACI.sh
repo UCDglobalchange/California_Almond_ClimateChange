@@ -11,6 +11,12 @@
 
 #SBATCH --mem=64G
 
+# setting standard error output
+#SBATCH -e 
+
+# setting standard output
+#SBATCH -o 
+
 # setting the max time
 #SBATCH -t 20:00:00
 
