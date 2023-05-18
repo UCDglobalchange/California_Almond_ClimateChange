@@ -16,6 +16,8 @@ running steps:
 
 7. create gridmet_ACI.nc by typing python Gridmet_create_nc.py; create Gridmet.csv by typing python Gridmet_create_csv.py
 
+8. run lasso regression analysis by typing sbatch submit_Almond_lasso.sh
+
 1. replace the data_ID with customized ID (I usually use date) in initiate.sh; make sure use single quotation mark such as '11_19'. 
 2. type . initiate.sh to run. The data_ID in python scripts will be replaced and the folder containing outputs will be created under the name of 
    data_ID in the folder saved_data.
