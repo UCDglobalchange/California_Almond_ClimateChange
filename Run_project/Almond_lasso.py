@@ -45,7 +45,7 @@ score_train = np.zeros((1))
 times = 0
 while times <=0:
     X_train,X_test,y_train,y_test=train_test_split(X,Y, test_size=0.3)
-    lassocv = LassoCV(alphas=[0,0.5,0.1,0.05,0.01,0.005,0.001,0.0005,0.0001,0.00005,0.00001,0.000005,0.000001,0.0000005], max_iter = 10e6, fit_intercept=False, random_state = trial)
+    lassocv = LassoCV(alphas=[0,0.5,0.1,0.05,0.01,0.005,0.001,0.0005,0.0001,0.00005,0.00001,0.000005,0.000001,0.0000005], max_iter = np.int64(10e6), fit_intercept=False, random_state = trial)
     lassocv.fit(X_train, y_train) 
     coef[:] = lassocv.coef_
     score_sum[:] = lassocv.score(X,Y)
