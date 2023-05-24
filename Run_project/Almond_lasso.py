@@ -26,7 +26,7 @@ save_path = home_path+'/intermediate_data/lasso_model/'
 input_path_ACI = home_path+'/intermediate_data/Gridmet_csv/'
 input_path_yield = home_path+'/input_data/'
 
-trial=np.int(sys.argv[1])
+trial=np.int64(sys.argv[1])
 aci_num=13
 model_list = ['bcc-csm1-1','bcc-csm1', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
 X = genfromtxt(input_path_ACI+'Gridmet.csv', delimiter = ',')
