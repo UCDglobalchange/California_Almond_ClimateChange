@@ -18,6 +18,8 @@ running steps:
 
 8. run lasso regression analysis by typing sbatch submit_Almond_lasso.sh
 
+9. create MACA.nc by typing . run_MACA_create_nc.sh; this should generate _hist_ACI.nc, _rcp45_ACI.nc, _rcp85_ACI.nc for each cliamte model
+
 1. replace the data_ID with customized ID (I usually use date) in initiate.sh; make sure use single quotation mark such as '11_19'. 
 2. type . initiate.sh to run. The data_ID in python scripts will be replaced and the folder containing outputs will be created under the name of 
    data_ID in the folder saved_data.
