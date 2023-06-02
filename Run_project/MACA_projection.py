@@ -1,4 +1,3 @@
-
 ##Code to use statistical relationship obtained from Lasso regression between gridMET-ACI and historical almond yield to 
 ##project almond yield based on MACA climate datasets for each county, and compute almond cropand area-weighted yield of California. 
 
@@ -125,7 +124,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_hist = average_model
 production_average_model = np.zeros((656,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_hist_rcp45 = yield_all_hist
 yield_all_model_hist_rcp45_average_model = yield_all_model
 production_all_model = np.zeros((656,18))
@@ -180,7 +179,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_hist = average_model
 production_average_model = np.zeros((656,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_hist_rcp45_s = yield_all_hist
 yield_all_model_hist_rcp45_s_average_model = yield_all_model
 production_all_model = np.zeros((656,18))
@@ -231,7 +230,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_hist = average_model
 production_average_model = np.zeros((656,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_hist_rcp45_m = yield_all_hist
 yield_all_model_hist_rcp45_m_average_model = yield_all_model
 production_all_model = np.zeros((656,18))
@@ -283,7 +282,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_hist = average_model
 production_average_model = np.zeros((656,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_hist_rcp85 = yield_all_hist
 yield_all_model_hist_rcp85_average_model = yield_all_model
 production_all_model = np.zeros((656,18))
@@ -340,7 +339,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_hist = average_model
 production_average_model = np.zeros((656,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_hist_rcp85_s = yield_all_hist
 yield_all_model_hist_rcp85_s_average_model = yield_all_model
 production_all_model = np.zeros((656,18))
@@ -391,7 +390,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_hist = average_model
 production_average_model = np.zeros((656,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_hist_rcp85_m = yield_all_hist
 yield_all_model_hist_rcp85_m_average_model = yield_all_model
 production_all_model = np.zeros((656,18))
@@ -445,7 +444,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_rcp45 = average_model
 production_average_model = np.zeros((1264,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_future_rcp45 = yield_all
 production_all_model = np.zeros((1264,18))
 production_all = np.zeros((1264,18000))
@@ -497,7 +496,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_rcp45 = average_model
 production_average_model = np.zeros((1264,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_future_rcp45_s = yield_all
 production_all_model = np.zeros((1264,18))
 production_all = np.zeros((1264,18000))
@@ -548,7 +547,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_rcp45 = average_model
 production_average_model = np.zeros((1264,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_future_rcp45_m = yield_all
 production_all_model = np.zeros((1264,18))
 production_all = np.zeros((1264,18000))
@@ -599,7 +598,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_rcp85 = average_model
 production_average_model = np.zeros((1264,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_future_rcp85 = yield_all
 production_all_model = np.zeros((1264,18))
 production_all = np.zeros((1264,18000))
@@ -648,7 +647,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_rcp85 = average_model
 production_average_model = np.zeros((1264,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_future_rcp85_s = yield_all
 production_all_model = np.zeros((1264,18))
 production_all = np.zeros((1264,18000))
@@ -700,7 +699,7 @@ for model_id in range(0,18):
 average_model = average_model/18
 average_model_rcp85 = average_model
 production_average_model = np.zeros((1264,1000))
-yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average))
+yield_all_model = np.column_stack((model_0_average, model_1_average,model_2_average,model_3_average,model_4_average,model_5_average,model_6_average,model_7_average,model_8_average, model_9_average, model_10_average, model_11_average, model_12_average, model_13_average, model_14_average, model_15_average, model_16_average, model_17_average))
 yield_all_model_future_rcp85_m = yield_all
 production_all_model = np.zeros((1264,18))
 production_all = np.zeros((1264,18000))
