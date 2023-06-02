@@ -28,7 +28,7 @@ from matplotlib import gridspec
 home_path=
 input_path_gridmet = home_path+'/intermediate_data/Gridmet_csv/'
 input_path_projection = home_path+'/output_data/projection/'
-input_path_projection = home_path+'/output_data/aci_contribution/'
+input_path_contribution = home_path+'/output_data/aci_contribution/'
 input_path_model = home_path+'/intermediate_data/lasso_model/'
 input_path = home_path+'/input_data/'
 save_path = home_path+'/output_data/plots/'
@@ -1182,8 +1182,8 @@ plt.savefig(save_path+'uncertainty.pdf', bbox_inches='tight', dpi =300)
 ##Figure 4: State-level waterfall ACI analysis
 ACI_list = ['Dormancy_Freeze','Dormancy_ETo','Jan_P','Bloom_P','Bloom_Tmin' ,'Bloom_ETo', 'Bloom_GDD4','Bloom_Humidity','Bloom_Windydays','Growing_ETo','Growing_GDD4', 'Growing_KDD30','Harvest_P']
 
-aci_contribution_rcp45_total = np.load(input_path_projection+'aci_contribution_rcp45_total.npy')
-aci_contribution_rcp85_total = np.load(input_path_projection+'/aci_contribution/aci_contribution_rcp85_total.npy')
+aci_contribution_rcp45_total = np.load(input_path_contribution+'aci_contribution_rcp45_total.npy')
+aci_contribution_rcp85_total = np.load(input_path_contribution+'aci_contribution_rcp85_total.npy')
 
 aci_contribution_rcp45_2001_2020 = np.mean(aci_contribution_rcp45_total[21:41,:,:], axis=0)
 aci_contribution_rcp85_2001_2020 = np.mean(aci_contribution_rcp85_total[21:41,:,:], axis=0)
