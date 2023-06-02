@@ -28,7 +28,7 @@ from matplotlib import gridspec
 home_path=
 input_path_gridmet = home_path+'/intermediate_data/Gridmet_csv/'
 input_path_projection = home_path+'/output_data/projection/'
-input_path_projection = home_path+'../output_data/aci_contribution/'
+input_path_projection = home_path+'/output_data/aci_contribution/'
 input_path_model = home_path+'/intermediate_data/lasso_model/'
 input_path = home_path+'/input_data/'
 save_path = home_path+'/output_data/plots/'
@@ -145,25 +145,25 @@ future_tech_trend_county_rcp45_int = np.zeros((120,16,1000))
 for i in range(16):
     for year in range(0,120):
         for trial in range(1000):
-            future_tech_trend_county_rcp45_con[year,i,trial] = tech_trend_county_con[i,year,trial] + np.mean(np.split(yield_all_model_hist_rcp45_s,16)[i][-1,:].reshape(17,1000), axis=0)[trial]
-            future_tech_trend_county_rcp45_int[year,i,trial] = tech_trend_county_int[i,year,trial] + np.mean(np.split(yield_all_model_hist_rcp45_s,16)[i][-1,:].reshape(17,1000), axis=0)[trial]
+            future_tech_trend_county_rcp45_con[year,i,trial] = tech_trend_county_con[i,year,trial] + np.mean(np.split(yield_all_model_hist_rcp45_s,16)[i][-1,:].reshape(18,1000), axis=0)[trial]
+            future_tech_trend_county_rcp45_int[year,i,trial] = tech_trend_county_int[i,year,trial] + np.mean(np.split(yield_all_model_hist_rcp45_s,16)[i][-1,:].reshape(18,1000), axis=0)[trial]
 
 ##Figure 1: yield time series
-df_2080_2099_20yrmean_yield_rcp45 = pd.DataFrame({'scenario' : np.repeat('rcp45', 17000),'mean_yield' : np.mean(yield_all_future_rcp45[-20:],axis=0), 'tech' : np.repeat('yes',17000)})
-df_2080_2099_20yrmean_yield_rcp45_s = pd.DataFrame({'scenario' : np.repeat('rcp45', 17000),'mean_yield' : np.mean(yield_all_future_rcp45_s[-20:],axis=0), 'tech' : np.repeat('no',17000)})
-df_2080_2099_20yrmean_yield_rcp45_m = pd.DataFrame({'scenario' : np.repeat('rcp45', 17000),'mean_yield' : np.mean(yield_all_future_rcp45_m[-20:],axis=0), 'tech' : np.repeat('m',17000)})
-df_2080_2099_20yrmean_yield_rcp85 = pd.DataFrame({'scenario' : np.repeat('rcp85', 17000),'mean_yield' : np.mean(yield_all_future_rcp85[-20:],axis=0), 'tech' : np.repeat('yes',17000)})
-df_2080_2099_20yrmean_yield_rcp85_s = pd.DataFrame({'scenario' : np.repeat('rcp85', 17000),'mean_yield' : np.mean(yield_all_future_rcp85_s[-20:],axis=0), 'tech' : np.repeat('no',17000)})
-df_2080_2099_20yrmean_yield_rcp85_m = pd.DataFrame({'scenario' : np.repeat('rcp85', 17000),'mean_yield' : np.mean(yield_all_future_rcp85_m[-20:],axis=0), 'tech' : np.repeat('m',17000)})
+df_2080_2099_20yrmean_yield_rcp45 = pd.DataFrame({'scenario' : np.repeat('rcp45', 18000),'mean_yield' : np.mean(yield_all_future_rcp45[-20:],axis=0), 'tech' : np.repeat('yes',18000)})
+df_2080_2099_20yrmean_yield_rcp45_s = pd.DataFrame({'scenario' : np.repeat('rcp45', 18000),'mean_yield' : np.mean(yield_all_future_rcp45_s[-20:],axis=0), 'tech' : np.repeat('no',18000)})
+df_2080_2099_20yrmean_yield_rcp45_m = pd.DataFrame({'scenario' : np.repeat('rcp45', 18000),'mean_yield' : np.mean(yield_all_future_rcp45_m[-20:],axis=0), 'tech' : np.repeat('m',18000)})
+df_2080_2099_20yrmean_yield_rcp85 = pd.DataFrame({'scenario' : np.repeat('rcp85', 18000),'mean_yield' : np.mean(yield_all_future_rcp85[-20:],axis=0), 'tech' : np.repeat('yes',18000)})
+df_2080_2099_20yrmean_yield_rcp85_s = pd.DataFrame({'scenario' : np.repeat('rcp85', 18000),'mean_yield' : np.mean(yield_all_future_rcp85_s[-20:],axis=0), 'tech' : np.repeat('no',18000)})
+df_2080_2099_20yrmean_yield_rcp85_m = pd.DataFrame({'scenario' : np.repeat('rcp85', 18000),'mean_yield' : np.mean(yield_all_future_rcp85_m[-20:],axis=0), 'tech' : np.repeat('m',18000)})
 df_2080_2099_20yrmean_yield_rcp45_total = df_2080_2099_20yrmean_yield_rcp45.append(df_2080_2099_20yrmean_yield_rcp45_s).append(df_2080_2099_20yrmean_yield_rcp45_m)
 df_2080_2099_20yrmean_yield_rcp85_total = df_2080_2099_20yrmean_yield_rcp85.append(df_2080_2099_20yrmean_yield_rcp85_s).append(df_2080_2099_20yrmean_yield_rcp85_m)
 
-yield_change_to_simulate2020_rcp45 = ((np.mean(yield_all_future_rcp45[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(17,1000)
-yield_change_to_simulate2020_rcp85 = ((np.mean(yield_all_future_rcp85[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(17,1000)
-yield_change_to_simulate2020_rcp45_s = ((np.mean(yield_all_future_rcp45_s[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(17,1000)
-yield_change_to_simulate2020_rcp85_s = ((np.mean(yield_all_future_rcp85_s[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(17,1000)
-yield_change_to_simulate2020_rcp45_m = ((np.mean(yield_all_future_rcp45_m[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(17,1000)
-yield_change_to_simulate2020_rcp85_m = ((np.mean(yield_all_future_rcp85_m[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(17,1000)
+yield_change_to_simulate2020_rcp45 = ((np.mean(yield_all_future_rcp45[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(18,1000)
+yield_change_to_simulate2020_rcp85 = ((np.mean(yield_all_future_rcp85[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(18,1000)
+yield_change_to_simulate2020_rcp45_s = ((np.mean(yield_all_future_rcp45_s[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(18,1000)
+yield_change_to_simulate2020_rcp85_s = ((np.mean(yield_all_future_rcp85_s[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(18,1000)
+yield_change_to_simulate2020_rcp45_m = ((np.mean(yield_all_future_rcp45_m[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(18,1000)
+yield_change_to_simulate2020_rcp85_m = ((np.mean(yield_all_future_rcp85_m[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(18,1000)
 
 yield_change_to_simulate2020_rcp45_ave = np.median(np.mean(yield_change_to_simulate2020_rcp45, axis=0), axis = 0)
 yield_change_to_simulate2020_rcp85_ave = np.median(np.mean(yield_change_to_simulate2020_rcp85, axis=0), axis = 0)
@@ -263,22 +263,22 @@ def adjust_box_widths(g, fac):
                         l.set_xdata([xmin_new, xmax_new])
                         
 
-matrix_percent_loss_num_year_rcp45_2090 = np.zeros((21,17000))
-matrix_percent_loss_num_year_rcp85_2090 = np.zeros((21,17000))
-matrix_percent_loss_num_year_rcp45_2050 = np.zeros((21,17000))
-matrix_percent_loss_num_year_rcp85_2050 = np.zeros((21,17000))
-for trial in range(17000):
+matrix_percent_loss_num_year_rcp45_2090 = np.zeros((21,18000))
+matrix_percent_loss_num_year_rcp85_2090 = np.zeros((21,18000))
+matrix_percent_loss_num_year_rcp45_2050 = np.zeros((21,18000))
+matrix_percent_loss_num_year_rcp85_2050 = np.zeros((21,18000))
+for trial in range(18000):
     matrix_percent_loss_num_year_rcp45_2090[:,trial] = get_num_year_with_loss(yield_all_hist_rcp45_s[-1,trial], yield_all_future_rcp45_s[-20:,trial])
     matrix_percent_loss_num_year_rcp85_2090[:,trial] = get_num_year_with_loss(yield_all_hist_rcp85_s[-1,trial], yield_all_future_rcp85_s[-20:,trial])
     matrix_percent_loss_num_year_rcp45_2050[:,trial] = get_num_year_with_loss(yield_all_hist_rcp45_s[-1,trial], yield_all_future_rcp45_s[19:39,trial])
     matrix_percent_loss_num_year_rcp85_2050[:,trial] = get_num_year_with_loss(yield_all_hist_rcp85_s[-1,trial], yield_all_future_rcp85_s[19:39,trial])
     
-matrix_percent_loss_all_trial_rcp45_2090 = np.zeros((20,21,17000))
-matrix_percent_loss_all_trial_rcp85_2090 = np.zeros((20,21,17000))
-matrix_percent_loss_all_trial_rcp45_2050 = np.zeros((20,21,17000))
-matrix_percent_loss_all_trial_rcp85_2050 = np.zeros((20,21,17000))
+matrix_percent_loss_all_trial_rcp45_2090 = np.zeros((20,21,18000))
+matrix_percent_loss_all_trial_rcp85_2090 = np.zeros((20,21,18000))
+matrix_percent_loss_all_trial_rcp45_2050 = np.zeros((20,21,18000))
+matrix_percent_loss_all_trial_rcp85_2050 = np.zeros((20,21,18000))
 loss_percent_axis = np.linspace(0, 1, 21)
-for trial in range(17000):
+for trial in range(18000):
     for percent_loss in range(0,21):
         matrix_percent_loss_all_trial_rcp45_2090[:,percent_loss,trial] = (np.arange(1,21) <= matrix_percent_loss_num_year_rcp45_2090[percent_loss,trial])*1
         matrix_percent_loss_all_trial_rcp85_2090[:,percent_loss,trial] = (np.arange(1,21) <= matrix_percent_loss_num_year_rcp85_2090[percent_loss,trial])*1
@@ -329,8 +329,8 @@ second_legend = plt.legend(handles=[blue_patch, purple_patch, red_patch],fontsiz
 plt.gca().add_artist(second_legend)
 #font = font_manager.FontProperties(weight='bold', size=30)
 #plt.legend(handles=[blank_patch],fontsize = 30,fancybox=False, shadow=False, ncol = 1, bbox_to_anchor=(0.33, -1.35), edgecolor = 'white', prop = font)
-box_legend = np.zeros((17000,5))
-box_legend[:,0] = np.random.normal(2,0.16,size = (17000))
+box_legend = np.zeros((18000,5))
+box_legend[:,0] = np.random.normal(2,0.16,size = (18000))
 box_legend[:,1] = box_legend[:,0]
 box_legend[:,2] = box_legend[:,0]
 box_legend[:,3] = box_legend[:,0]
@@ -581,19 +581,19 @@ for i in range(0,16):
 
 
 for i in range(0,16):
-    locals()[str(county_list[i])+'county_yield_change_2020'] = np.zeros((17000,4))
+    locals()[str(county_list[i])+'county_yield_change_2020'] = np.zeros((18000,4))
     locals()[str(county_list[i])+'county_yield_change_2020'][:,0] = locals()[str(county_list[i])+'yield_rcp45'][40,:]
     locals()[str(county_list[i])+'county_yield_change_2020'][:,1] = locals()[str(county_list[i])+'yield_rcp45_s'][40,:]
     locals()[str(county_list[i])+'county_yield_change_2020'][:,2] = locals()[str(county_list[i])+'yield_rcp85'][40,:]
     locals()[str(county_list[i])+'county_yield_change_2020'][:,3] = locals()[str(county_list[i])+'yield_rcp85_s'][40,:]
-    locals()[str(county_list[i])+'county_yield_change_2099'] = np.zeros((17000,4))
+    locals()[str(county_list[i])+'county_yield_change_2099'] = np.zeros((18000,4))
     locals()[str(county_list[i])+'county_yield_change_2099'][:,0] = ((np.nanmean(locals()[str(county_list[i])+'yield_rcp45'][100:120,:], axis=0))-locals()[str(county_list[i])+'county_yield_change_2020'][:,0])*100/locals()[str(county_list[i])+'county_yield_change_2020'][:,0]
     locals()[str(county_list[i])+'county_yield_change_2099'][:,1] = ((np.nanmean(locals()[str(county_list[i])+'yield_rcp45_s'][100:120,:], axis=0))-locals()[str(county_list[i])+'county_yield_change_2020'][:,1])*100/locals()[str(county_list[i])+'county_yield_change_2020'][:,1]
     locals()[str(county_list[i])+'county_yield_change_2099'][:,2] = ((np.nanmean(locals()[str(county_list[i])+'yield_rcp85'][100:120,:], axis=0))-locals()[str(county_list[i])+'county_yield_change_2020'][:,2])*100/locals()[str(county_list[i])+'county_yield_change_2020'][:,2]
     locals()[str(county_list[i])+'county_yield_change_2099'][:,3] = ((np.nanmean(locals()[str(county_list[i])+'yield_rcp85_s'][100:120,:], axis=0))-locals()[str(county_list[i])+'county_yield_change_2020'][:,3])*100/locals()[str(county_list[i])+'county_yield_change_2020'][:,3]
     locals()[str(county_list[i])+'county_tech_change_2099'] = np.zeros((1000,2))
-    locals()[str(county_list[i])+'county_tech_change_2099'][:,0] = 100 * (np.mean(future_tech_trend_county_rcp45_con[100:120,i,:], axis=0) - np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(17,1000), axis=0)) / np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(17,1000), axis=0)
-    locals()[str(county_list[i])+'county_tech_change_2099'][:,1] = 100 * (np.mean(future_tech_trend_county_rcp45_int[100:120,i,:], axis=0) - np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(17,1000), axis=0)) / np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(17,1000), axis=0)
+    locals()[str(county_list[i])+'county_tech_change_2099'][:,0] = 100 * (np.mean(future_tech_trend_county_rcp45_con[100:120,i,:], axis=0) - np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(18,1000), axis=0)) / np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(18,1000), axis=0)
+    locals()[str(county_list[i])+'county_tech_change_2099'][:,1] = 100 * (np.mean(future_tech_trend_county_rcp45_int[100:120,i,:], axis=0) - np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(18,1000), axis=0)) / np.mean(locals()[str(county_list[i])+'county_yield_change_2020'][:,0].reshape(18,1000), axis=0)
 
 
 median_yield_change_2099 = np.zeros((16,4))
@@ -838,12 +838,12 @@ yield_all_sum_rcp85_m = np.row_stack((yield_all_hist_rcp85_m, yield_all_future_r
 
 
 poly_X = np.arange(1980,2100)
-yield_all_sum_rcp45_s_poly = poly_transform(poly_X, yield_all_sum_rcp45_s).reshape(120,17,1000)[40:120]
-yield_all_sum_rcp85_s_poly = poly_transform(poly_X, yield_all_sum_rcp85_s).reshape(120,17,1000)[40:120]
-yield_all_sum_rcp45_m_poly = poly_transform(poly_X, yield_all_sum_rcp45_m).reshape(120,17,1000)[40:120]
-yield_all_sum_rcp85_m_poly = poly_transform(poly_X, yield_all_sum_rcp85_m).reshape(120,17,1000)[40:120]
-yield_all_sum_rcp45_poly = poly_transform(poly_X, yield_all_sum_rcp45).reshape(120,17,1000)[40:120]
-yield_all_sum_rcp85_poly = poly_transform(poly_X, yield_all_sum_rcp85).reshape(120,17,1000)[40:120]
+yield_all_sum_rcp45_s_poly = poly_transform(poly_X, yield_all_sum_rcp45_s).reshape(120,18,1000)[40:120]
+yield_all_sum_rcp85_s_poly = poly_transform(poly_X, yield_all_sum_rcp85_s).reshape(120,18,1000)[40:120]
+yield_all_sum_rcp45_m_poly = poly_transform(poly_X, yield_all_sum_rcp45_m).reshape(120,18,1000)[40:120]
+yield_all_sum_rcp85_m_poly = poly_transform(poly_X, yield_all_sum_rcp85_m).reshape(120,18,1000)[40:120]
+yield_all_sum_rcp45_poly = poly_transform(poly_X, yield_all_sum_rcp45).reshape(120,18,1000)[40:120]
+yield_all_sum_rcp85_poly = poly_transform(poly_X, yield_all_sum_rcp85).reshape(120,18,1000)[40:120]
 
 yield_all_sum_rcp45_2020_2099 = yield_all_sum_rcp45[40:120]
 yield_all_sum_rcp45_s_2020_2099 =  yield_all_sum_rcp45_s[40:120]
@@ -855,7 +855,7 @@ yield_all_sum_rcp85_m_2020_2099=  yield_all_sum_rcp85_m[40:120]
 num_rcp = 2
 num_stat_model = 1000
 num_tech = 3
-num_clim_model = 17
+num_clim_model = 18
 
 ## calculate climate model uncertainty MC
 MC_rcp45 = np.zeros(80)
@@ -892,11 +892,11 @@ MS_time_series = (MS_rcp45 + MS_rcp45_s + MS_rcp45_m + MS_rcp85 + MS_rcp85_s + M
 
 
 ## calculate tech trend scenario uncertainty ST
-yield_all_sum_rcp45_tech_scenario = np.zeros((80,17,1000,3))    
+yield_all_sum_rcp45_tech_scenario = np.zeros((80,18,1000,3))    
 yield_all_sum_rcp45_tech_scenario[:,:,:,0] = yield_all_sum_rcp45_poly
 yield_all_sum_rcp45_tech_scenario[:,:,:,1] = yield_all_sum_rcp45_s_poly
 yield_all_sum_rcp45_tech_scenario[:,:,:,2] = yield_all_sum_rcp45_m_poly
-yield_all_sum_rcp85_tech_scenario = np.zeros((80,17,1000,3))    
+yield_all_sum_rcp85_tech_scenario = np.zeros((80,18,1000,3))    
 yield_all_sum_rcp85_tech_scenario[:,:,:,0] = yield_all_sum_rcp85_poly
 yield_all_sum_rcp85_tech_scenario[:,:,:,1] = yield_all_sum_rcp85_s_poly
 yield_all_sum_rcp85_tech_scenario[:,:,:,2] = yield_all_sum_rcp85_m_poly
@@ -909,13 +909,13 @@ for year in range(0,80):
 ST_time_series = ((ST_rcp45 + ST_rcp85)/2)
 
 ## calculate rcp scenario uncertainty SR
-yield_all_sum_rcp_scenario_tech = np.zeros((80,17,1000,2))    
+yield_all_sum_rcp_scenario_tech = np.zeros((80,18,1000,2))    
 yield_all_sum_rcp_scenario_tech[:,:,:,0] = yield_all_sum_rcp45_poly
 yield_all_sum_rcp_scenario_tech[:,:,:,1] = yield_all_sum_rcp85_poly
-yield_all_sum_rcp_scenario_no_tech = np.zeros((80,17,1000,2))    
+yield_all_sum_rcp_scenario_no_tech = np.zeros((80,18,1000,2))    
 yield_all_sum_rcp_scenario_no_tech[:,:,:,0] = yield_all_sum_rcp45_s_poly
 yield_all_sum_rcp_scenario_no_tech[:,:,:,1] = yield_all_sum_rcp85_s_poly
-yield_all_sum_rcp_scenario_int_tech = np.zeros((80,17,1000,2))    
+yield_all_sum_rcp_scenario_int_tech = np.zeros((80,18,1000,2))    
 yield_all_sum_rcp_scenario_int_tech[:,:,:,0] = yield_all_sum_rcp45_m_poly
 yield_all_sum_rcp_scenario_int_tech[:,:,:,1] = yield_all_sum_rcp85_m_poly
 
@@ -936,21 +936,21 @@ Intvar_rcp45_m = np.zeros(80)
 Intvar_rcp85 = np.zeros(80)
 Intvar_rcp85_s = np.zeros(80)
 Intvar_rcp85_m = np.zeros(80)
-residual_rcp45 = np.zeros((80,17,1000))
-residual_rcp45_s = np.zeros((80,17,1000))
-residual_rcp45_m = np.zeros((80,17,1000))
-residual_rcp85 = np.zeros((80,17,1000))
-residual_rcp85_s = np.zeros((80,17,1000))
-residual_rcp85_m = np.zeros((80,17,1000))
+residual_rcp45 = np.zeros((80,18,1000))
+residual_rcp45_s = np.zeros((80,18,1000))
+residual_rcp45_m = np.zeros((80,18,1000))
+residual_rcp85 = np.zeros((80,18,1000))
+residual_rcp85_s = np.zeros((80,18,1000))
+residual_rcp85_m = np.zeros((80,18,1000))
 
 for trial in range(0,1000):
-    for climate in range(0,17):
-        residual_rcp45[:,climate,trial] = yield_all_sum_rcp45_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp45_s[:,climate,trial] =  yield_all_sum_rcp45_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_s_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp45_m[:,climate,trial] =  yield_all_sum_rcp45_m_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_m_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp85[:,climate,trial] =  yield_all_sum_rcp85_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp85_s[:,climate,trial] =  yield_all_sum_rcp85_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_s_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp85_m[:,climate,trial] =  yield_all_sum_rcp85_m_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_m_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+    for climate in range(0,18):
+        residual_rcp45[:,climate,trial] = yield_all_sum_rcp45_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp45_s[:,climate,trial] =  yield_all_sum_rcp45_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_s_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp45_m[:,climate,trial] =  yield_all_sum_rcp45_m_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_m_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp85[:,climate,trial] =  yield_all_sum_rcp85_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp85_s[:,climate,trial] =  yield_all_sum_rcp85_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_s_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp85_m[:,climate,trial] =  yield_all_sum_rcp85_m_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_m_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
 
 
 for year in range(0,80):
@@ -963,12 +963,12 @@ for year in range(0,80):
 Intvar_time_series = ((Intvar_rcp45+Intvar_rcp45_s+Intvar_rcp45_m+Intvar_rcp85+Intvar_rcp85_s+Intvar_rcp85_m)/6)
 
 #####calculate mean/median yield + uncertainty
-mean_median_yield_2020_2099_rcp45 = np.median(np.mean(yield_all_sum_rcp45_2020_2099.reshape(80,17,1000),axis=1),axis=1)
-mean_median_yield_2020_2099_rcp45_s =  np.median(np.mean(yield_all_sum_rcp45_s_2020_2099.reshape(80,17,1000),axis=1),axis=1)
-mean_median_yield_2020_2099_rcp45_m =  np.median(np.mean(yield_all_sum_rcp45_m_2020_2099.reshape(80,17,1000),axis=1),axis=1)
-mean_median_yield_2020_2099_rcp85 =  np.median(np.mean(yield_all_sum_rcp85_2020_2099.reshape(80,17,1000),axis=1),axis=1)
-mean_median_yield_2020_2099_rcp85_s =  np.median(np.mean(yield_all_sum_rcp85_s_2020_2099.reshape(80,17,1000),axis=1),axis=1)
-mean_median_yield_2020_2099_rcp85_m =  np.median(np.mean(yield_all_sum_rcp85_m_2020_2099.reshape(80,17,1000),axis=1),axis=1)
+mean_median_yield_2020_2099_rcp45 = np.median(np.mean(yield_all_sum_rcp45_2020_2099.reshape(80,18,1000),axis=1),axis=1)
+mean_median_yield_2020_2099_rcp45_s =  np.median(np.mean(yield_all_sum_rcp45_s_2020_2099.reshape(80,18,1000),axis=1),axis=1)
+mean_median_yield_2020_2099_rcp45_m =  np.median(np.mean(yield_all_sum_rcp45_m_2020_2099.reshape(80,18,1000),axis=1),axis=1)
+mean_median_yield_2020_2099_rcp85 =  np.median(np.mean(yield_all_sum_rcp85_2020_2099.reshape(80,18,1000),axis=1),axis=1)
+mean_median_yield_2020_2099_rcp85_s =  np.median(np.mean(yield_all_sum_rcp85_s_2020_2099.reshape(80,18,1000),axis=1),axis=1)
+mean_median_yield_2020_2099_rcp85_m =  np.median(np.mean(yield_all_sum_rcp85_m_2020_2099.reshape(80,18,1000),axis=1),axis=1)
 
 mean_median_yield_2020_2099_rcp45_10_yr_running_mean = pd.DataFrame(mean_median_yield_2020_2099_rcp45).rolling(10,min_periods=5, center = True).mean()
 mean_median_yield_2020_2099_rcp45_s_10_yr_running_mean = pd.DataFrame(mean_median_yield_2020_2099_rcp45_s).rolling(10,min_periods=5, center = True).mean()
@@ -1018,7 +1018,7 @@ MS_time_series_tech = (MS_rcp45 + MS_rcp85)/2
 
 
 ## calculate rcp scenario uncertainty SR
-yield_all_sum_rcp_scenario_tech = np.zeros((80,17,1000,2))    
+yield_all_sum_rcp_scenario_tech = np.zeros((80,18,1000,2))    
 yield_all_sum_rcp_scenario_tech[:,:,:,0] = yield_all_sum_rcp45_poly
 yield_all_sum_rcp_scenario_tech[:,:,:,1] = yield_all_sum_rcp85_poly
 
@@ -1032,14 +1032,14 @@ SR_time_series_tech = SR_tech
 ## calculate internal 
 Intvar_rcp45 = np.zeros(80)
 Intvar_rcp85 = np.zeros(80)
-residual_rcp45 = np.zeros((80,17,1000))
-residual_rcp85 = np.zeros((80,17,1000))
+residual_rcp45 = np.zeros((80,18,1000))
+residual_rcp85 = np.zeros((80,18,1000))
 
 
 for trial in range(0,1000):
-    for climate in range(0,17):
-        residual_rcp45[:,climate,trial] = yield_all_sum_rcp45_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp85[:,climate,trial] =  yield_all_sum_rcp85_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+    for climate in range(0,18):
+        residual_rcp45[:,climate,trial] = yield_all_sum_rcp45_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp85[:,climate,trial] =  yield_all_sum_rcp85_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
 
 
 for year in range(0,80):
@@ -1083,7 +1083,7 @@ MS_time_series_no_tech = (MS_rcp45_s + MS_rcp85_s)/2
 
 
 ## calculate rcp scenario uncertainty SR
-yield_all_sum_rcp_scenario_no_tech = np.zeros((80,17,1000,2))    
+yield_all_sum_rcp_scenario_no_tech = np.zeros((80,18,1000,2))    
 yield_all_sum_rcp_scenario_no_tech[:,:,:,0] = yield_all_sum_rcp45_s_poly
 yield_all_sum_rcp_scenario_no_tech[:,:,:,1] = yield_all_sum_rcp85_s_poly
 
@@ -1096,14 +1096,14 @@ SR_time_series_no_tech = SR_no_tech
 ## calculate internal 
 Intvar_rcp45_s = np.zeros(80)
 Intvar_rcp85_s = np.zeros(80)
-residual_rcp45_s = np.zeros((80,17,1000))
-residual_rcp85_s = np.zeros((80,17,1000))
+residual_rcp45_s = np.zeros((80,18,1000))
+residual_rcp85_s = np.zeros((80,18,1000))
 
 
 for trial in range(0,1000):
-    for climate in range(0,17):
-        residual_rcp45_s[:,climate,trial] =  yield_all_sum_rcp45_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_s_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
-        residual_rcp85_s[:,climate,trial] =  yield_all_sum_rcp85_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_s_2020_2099.reshape(80,17,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+    for climate in range(0,18):
+        residual_rcp45_s[:,climate,trial] =  yield_all_sum_rcp45_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp45_s_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
+        residual_rcp85_s[:,climate,trial] =  yield_all_sum_rcp85_s_poly[:,climate,trial]-np.array(pd.DataFrame(yield_all_sum_rcp85_s_2020_2099.reshape(80,18,1000)[:,climate,trial]).rolling(10,min_periods=5, center = True).mean()).reshape(80)
 
 
 for year in range(0,80):
@@ -1589,7 +1589,7 @@ total = trans.sum().amount
 step = blank.reset_index(drop=True).repeat(3).shift(-1)
 step[1::3] = np.nan
 #blank.loc['net'] = 0
-trans.loc[trans['positive'] > 1, 'positive'] = 99
+trans.loc[trans['positive'] > 1, 'positive'] = 99a
 trans.loc[trans['positive'] < 0, 'positive'] = 99
 trans.loc[(trans['positive'] > 0) & (trans['positive'] < 1), 'positive'] = 99
 trans['color'] = trans['positive']
