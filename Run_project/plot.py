@@ -95,10 +95,10 @@ for i in range(1,11):
 
 
 
-area = genfromtxt(input_path+'/almond_area.csv', delimiter = ',')
-production = genfromtxt(input_path+'/almond_production.csv', delimiter = ',')
-gridmet = genfromtxt(input_path_gridmet+'/Gridmet_csv/Gridmet.csv', delimiter = ',')
-yield_csv = genfromtxt(input_path+'/almond_yield_1980_2020.csv', delimiter = ',')
+area = genfromtxt(input_path+'almond_area.csv', delimiter = ',')
+production = genfromtxt(input_path+'almond_production.csv', delimiter = ',')
+gridmet = genfromtxt(input_path_gridmet+'Gridmet.csv', delimiter = ',')
+yield_csv = genfromtxt(input_path+'almond_yield_1980_2020.csv', delimiter = ',')
 
 simulation_gridmet = np.zeros((656, 1000))
 production_gridmet = np.zeros((656, 1000))
