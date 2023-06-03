@@ -155,8 +155,8 @@ df_2080_2099_20yrmean_yield_rcp45_m = pd.DataFrame({'scenario' : np.repeat('rcp4
 df_2080_2099_20yrmean_yield_rcp85 = pd.DataFrame({'scenario' : np.repeat('rcp85', 18000),'mean_yield' : np.mean(yield_all_future_rcp85[-20:],axis=0), 'tech' : np.repeat('yes',18000)})
 df_2080_2099_20yrmean_yield_rcp85_s = pd.DataFrame({'scenario' : np.repeat('rcp85', 18000),'mean_yield' : np.mean(yield_all_future_rcp85_s[-20:],axis=0), 'tech' : np.repeat('no',18000)})
 df_2080_2099_20yrmean_yield_rcp85_m = pd.DataFrame({'scenario' : np.repeat('rcp85', 18000),'mean_yield' : np.mean(yield_all_future_rcp85_m[-20:],axis=0), 'tech' : np.repeat('m',18000)})
-df_2080_2099_20yrmean_yield_rcp45_total = df_2080_2099_20yrmean_yield_rcp45.append(df_2080_2099_20yrmean_yield_rcp45_s).append(df_2080_2099_20yrmean_yield_rcp45_m)
-df_2080_2099_20yrmean_yield_rcp85_total = df_2080_2099_20yrmean_yield_rcp85.append(df_2080_2099_20yrmean_yield_rcp85_s).append(df_2080_2099_20yrmean_yield_rcp85_m)
+df_2080_2099_20yrmean_yield_rcp45_total = pd.concat((df_2080_2099_20yrmean_yield_rcp45, df_2080_2099_20yrmean_yield_rcp45_s, df_2080_2099_20yrmean_yield_rcp45_m))
+df_2080_2099_20yrmean_yield_rcp85_total = pd.concat((df_2080_2099_20yrmean_yield_rcp85, df_2080_2099_20yrmean_yield_rcp85_s, df_2080_2099_20yrmean_yield_rcp85_m))
 
 yield_change_to_simulate2020_rcp45 = ((np.mean(yield_all_future_rcp45[-20:],axis=0) - yield_all_hist_rcp45[-1])*100/yield_all_hist_rcp45[-1]).reshape(18,1000)
 yield_change_to_simulate2020_rcp85 = ((np.mean(yield_all_future_rcp85[-20:],axis=0) - yield_all_hist_rcp85[-1])*100/yield_all_hist_rcp85[-1]).reshape(18,1000)
@@ -660,14 +660,13 @@ df_county_yield_rcp45_tech_con = pd.DataFrame()
 df_county_yield_rcp45_tech_int = pd.DataFrame()
 for i in range(0,16):
     df_county_yield_rcp45_ind = pd.DataFrame({'County' : str(county_list[i]) , 'Yield Change % by 2099' : locals()[str(county_list[i])+'county_yield_change_2099'][:,1]})
-    df_county_yield_rcp45 = df_county_yield_rcp45.append(df_county_yield_rcp45_ind)
+    df_county_yield_rcp45 = pd.concat((df_county_yield_rcp45, df_county_yield_rcp45_ind))
     df_county_yield_rcp85_ind = pd.DataFrame({'County' : str(county_list[i]) , 'Yield Change % by 2099' : locals()[str(county_list[i])+'county_yield_change_2099'][:,3]})
-    df_county_yield_rcp85 = df_county_yield_rcp85.append(df_county_yield_rcp85_ind)
+    df_county_yield_rcp85 = pd.concat((df_county_yield_rcp85, df_county_yield_rcp85_ind))
     df_county_yield_rcp45_tech_con_ind = pd.DataFrame({'County' : str(county_list[i]) , 'Yield Change % by 2099' :  locals()[str(county_list[i])+'county_tech_change_2099'][:,0]})
-    df_county_yield_rcp45_tech_con = df_county_yield_rcp45_tech_con.append(df_county_yield_rcp45_tech_con_ind)
+    df_county_yield_rcp45_tech_con = pd.concat((df_county_yield_rcp45_tech_con, df_county_yield_rcp45_tech_con_ind))
     df_county_yield_rcp45_tech_int_ind = pd.DataFrame({'County' : str(county_list[i]) , 'Yield Change % by 2099' :  locals()[str(county_list[i])+'county_tech_change_2099'][:,1]})
-    df_county_yield_rcp45_tech_int = df_county_yield_rcp45_tech_int.append(df_county_yield_rcp45_tech_int_ind)
-    
+    df_county_yield_rcp45_tech_int = pd.concat((df_county_yield_rcp45_tech_int, df_county_yield_rcp45_tech_int_ind))
 yield_for_shp_obs_2020 = np.zeros((58))
 yield_for_shp_obs_2020[:] = np.nan
 for i in range(0,58):
