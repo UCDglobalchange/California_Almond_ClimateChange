@@ -1136,7 +1136,7 @@ Var_total_10yr_mean[:,4] = Intvar_time_series
 for year in range(0,80):
     Var_total_10yr_mean[year,:] = Var_total_10yr_mean[year,:] * 100 / np.sum(Var_total_10yr_mean[year,:])
 plt.stackplot(np.arange(2020,2100), Var_total_10yr_mean[:,0],Var_total_10yr_mean[:,1],Var_total_10yr_mean[:,2]
-              ,Var_total_10yr_mean[:,3],Var_total_10yr_mean[:,4],labels = ['Climate Model', 'Stats Model', 'Tech Scenario','RCP Scenario','Internal'], colors = ['354AA1', '85B1D4','lightgreen', '007F3C', 'FF6E04'])
+              ,Var_total_10yr_mean[:,3],Var_total_10yr_mean[:,4],labels = ['Climate Model', 'Stats Model', 'Tech Scenario','RCP Scenario','Internal'], colors = ['#354AA1', '#85B1D4','lightgreen', '#007F3C', '#FF6E04'])
 plt.ylim(0,100)
 plt.xlim(2020,2100)
 plt.xticks(fontsize =35, rotation = 35)
@@ -1166,7 +1166,7 @@ Var_total_10yr_mean[:,3] = Intvar_time_series_no_tech
 for year in range(0,80):
     Var_total_10yr_mean[year,:] = Var_total_10yr_mean[year,:] * 100 / np.sum(Var_total_10yr_mean[year,:])
 plt.stackplot(np.arange(2020,2100), Var_total_10yr_mean[:,0],Var_total_10yr_mean[:,1],Var_total_10yr_mean[:,2]
-              ,Var_total_10yr_mean[:,3], labels = ['Climate Model', 'Stats Model', 'RCP Scenario','Internal'], colors = ['354AA1', '85B1D4', '007F3C', 'FF6E04'])
+              ,Var_total_10yr_mean[:,3], labels = ['Climate Model', 'Stats Model', 'RCP Scenario','Internal'], colors = ['#354AA1', '#85B1D4', '#007F3C', '#FF6E04'])
 plt.ylim(0,100)
 plt.xlim(2020,2100)
 plt.xticks(fontsize =35, rotation = 35)
