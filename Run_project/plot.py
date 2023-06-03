@@ -1588,7 +1588,7 @@ total = trans.sum().amount
 step = blank.reset_index(drop=True).repeat(3).shift(-1)
 step[1::3] = np.nan
 #blank.loc['net'] = 0
-trans.loc[trans['positive'] > 1, 'positive'] = 99a
+trans.loc[trans['positive'] > 1, 'positive'] = 99
 trans.loc[trans['positive'] < 0, 'positive'] = 99
 trans.loc[(trans['positive'] > 0) & (trans['positive'] < 1), 'positive'] = 99
 trans['color'] = trans['positive']
