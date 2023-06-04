@@ -17,7 +17,7 @@ from scipy import stats
 from matplotlib.lines import Line2D
 import matplotlib as mpl
 
-home_path=
+home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
 input_path_model = home_path+'/intermediate_data/lasso_model/'
 input_path_MACA = home_path+'/intermediate_data/MACA_csv/'
 input_path_area = home_path+'/input_data/'
