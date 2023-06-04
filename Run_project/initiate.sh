@@ -21,7 +21,7 @@ mkdir $home_path/output_data/plots
 mkdir $home_path/slurm_log
 
 sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/MACA_ACI.py
-sed -i "s,home_path=.*,home_path=$home_path,g" $home_path/run_MACA_ACI.sh
+sed -i "s,home_path=.*,home_path=$home_path,g" $home_path/loop_submit_MACA_ACI.sh
 sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/run_MACA_create_nc.sh
 sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/mask_cropland_Gridmet.py
 sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/mask_cropland_MACA.py
