@@ -13,8 +13,17 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import netCDF4 as nc
 import math
+import argparse
 
-model_name='MRI-CGCM3'
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model', type=str)
+    args = vars(parser.parse_args())
+    return args
+
+args = get_args()
+
+model_name=str(args['model'])
 
 home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
 save_path = home_path+'/intermediate_data/MACA_ACI/'+str(model_name)+'/'
