@@ -25,7 +25,7 @@ from matplotlib.patches import PathPatch
 from matplotlib import cm
 from matplotlib import gridspec
 
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path=
 input_path_gridmet = home_path+'/intermediate_data/Gridmet_csv/'
 input_path_projection = home_path+'/output_data/projection/'
 input_path_contribution = home_path+'/output_data/aci_contribution/'
