@@ -2322,7 +2322,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 60
+            fall_start = 59
             fall_end = 211
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
@@ -2349,7 +2349,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 60
+            fall_start = 9
             fall_end = 211
         datatmax = roitmax.values[fall_start:fall_end+1]
         Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
@@ -3771,7 +3771,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 60
+            fall_start = 59
             fall_end = 211
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
@@ -3798,7 +3798,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 60
+            fall_start = 59
             fall_end = 211
         datatmax = roitmax.values[fall_start:fall_end+1]
         Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
