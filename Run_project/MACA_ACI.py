@@ -2189,11 +2189,11 @@ for year in range(2006, 2100):
         roi = roi.precipitation[day_start:(day_end+1)]
         shapedata =  locals()[str(county)+'_reference'].values[1]
         if roi.values.shape[0] == 366:
-            fall_start = 244
-            fall_end = 334
+            fall_start = 213
+            fall_end = 304
         else:
-            fall_start = 243
-            fall_end = 333
+            fall_start = 212
+            fall_end = 303
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
         data = np.nansum(data, axis = 0)
@@ -2349,7 +2349,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 9
+            fall_start = 59
             fall_end = 211
         datatmax = roitmax.values[fall_start:fall_end+1]
         Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
@@ -3638,11 +3638,11 @@ for year in range(2006, 2100):
         roi = roi.precipitation[day_start:(day_end+1)]
         shapedata =  locals()[str(county)+'_reference'].values[1]
         if roi.values.shape[0] == 366:
-            fall_start = 244
-            fall_end = 334
+            fall_start = 213
+            fall_end = 304
         else:
-            fall_start = 243
-            fall_end = 333
+            fall_start = 212
+            fall_end = 303
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
         data = np.nansum(data, axis = 0)
