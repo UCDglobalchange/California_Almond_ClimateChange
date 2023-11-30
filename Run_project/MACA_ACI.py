@@ -24,7 +24,7 @@ def get_args():
 args = get_args()
 
 model_name=str(args['model'])
-
+print(model_name)
 home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
 save_path = home_path+'/intermediate_data/MACA_ACI/'+str(model_name)+'/'
 shp_path = home_path+'/input_data/CA_Counties/'
@@ -1473,11 +1473,79 @@ for year in range(1950, 2006):
 for county in county_list:
     savetxt(str(save_path)+str(county)+'_hist_BloomTmin.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
+##Bloom Frost days
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((56,2))
+for year in range(1950, 2006):
+    for county in county_list:
+        roitmin = locals()[str(county)+'tasmin'+str(year)+'_roi']
+        day_start = np.where(pd.to_datetime(roitmin.time.values).year==year)[0][0]
+        day_end = np.where(pd.to_datetime(roitmin.time.values).year==year)[0][-1]
+        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmin.values.shape[0] == 366:
+            fall_start = 31
+            fall_end = 74
+        else:
+            fall_start = 31
+            fall_end = 73
+        data = roitmin.values[fall_start:fall_end+1]-273.15
+        sumdays = np.zeros((data.shape[0], data.shape[1], data.shape[2]))
+        for day in range(data.shape[0]):
+            for lat in range(data.shape[1]):
+                for lon in range(data.shape[2]):
+                    if data[day,lat,lon] < 0:
+                       sumdays[day,lat,lon] = 1
+        sumdays = np.nansum(sumdays, axis=0)
+        for lat in range(0,sumdays.shape[0]):
+            for lon in range(0, sumdays.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    sumdays[lat,lon] = np.nan
+        locals()[str(county)+'_sum'][year-1950,0] = year
+        locals()[str(county)+'_sum'][year-1950,1] = np.nanmean(sumdays)
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_hist_BloomFrostDays.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+
+
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((56,2))
+for year in range(1951, 2006):
+    for county in county_list:
+        roitmax = locals()[str(county)+'tasmax'+str(year-1)+'_roi']
+        day_start = np.where(pd.to_datetime(roitmax.time.values).year==(year-1))[0][0]
+        day_end = np.where(pd.to_datetime(roitmax.time.values).year==(year-1))[0][-1]
+        roitmax = roitmax.air_temperature[day_start:(day_end+1)]
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmax.values.shape[0] == 366:
+            fall_start = 244
+            fall_end = 334
+        else:
+            fall_start = 243
+            fall_end = 333
+        datatmax = roitmax.values[fall_start:fall_end+1]
+        Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
+        for lat in range(0,Tmaxdata.shape[0]):
+            for lon in range(0, Tmaxdata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmaxdata[lat,lon] = np.nan
+        roitmin = locals()[str(county)+'tasmin'+str(year-1)+'_roi']
+        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
+        datatmin = roitmin.values[fall_start:fall_end+1]
+        Tmindata = np.nanmean(datatmin, axis = 0)-273.15
+        for lat in range(0,Tmindata.shape[0]):
+            for lon in range(0, Tmindata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmindata[lat,lon] = np.nan                    
+        locals()[str(county)+'_sum'][year-1950,0] = year           
+        locals()[str(county)+'_sum'][year-1950,1] = (np.nanmean(Tmindata)+np.nanmean(Tmaxdata))/2
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_hist_FallTmean.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
 
 
 period_list = ['2006_2010', '2011_2015', '2016_2020', '2021_2025','2026_2030', '2031_2035', '2036_2040', '2041_2045', '2046_2050', '2051_2055', '2056_2060', '2061_2065', '2066_2070', '2071_2075', '2076_2080', '2081_2085', '2086_2090', '2091_2095', '2096_2099']
 
-cropland_reference = salem.open_xr_dataset(input_path+'MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
 for county in county_list:
     locals()[str(county)+'_reference'] = cropland_reference.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False).air_temperature
 for var in var_list:
@@ -1522,41 +1590,6 @@ for var in var_list:
             locals()[str(county)+str(var)+str(year)+'_roi'] = locals()[str(var)+str(period)].salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
 
 
-## bloom >12.8
-for county in county_list:
-    locals()[str(county)+'_sum'] = np.zeros((94,2))
-for year in range(2006, 2100):
-    for county in county_list:
-        roitmax = locals()[str(county)+'tasmax'+str(year)+'_roi']
-        day_start = np.where(pd.to_datetime(roitmax.time.values).year==year)[0][0]
-        day_end = np.where(pd.to_datetime(roitmax.time.values).year==year)[0][-1]
-        roitmax = roitmax.air_temperature[day_start:(day_end+1)]
-        shapedata = locals()[str(county)+'_reference'].values[1]
-        if roitmax.values.shape[0] == 366:
-            fall_start = 31
-            fall_end = 74
-        else:
-            fall_start = 31
-            fall_end = 73
-        datatmax = roitmax.values[fall_start:fall_end+1]-273.15
-        roitmin = locals()[str(county)+'tasmin'+str(year)+'_roi']
-        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
-        datatmin = roitmin.values[fall_start:fall_end+1]-273.15
-        sumdays = np.zeros((datatmax.shape[0], datatmax.shape[1], datatmax.shape[2]))
-        for day in range(0, datatmax.shape[0]):
-            for lat in range(0,datatmax.shape[1]):
-                for lon in range(0,datatmax.shape[2]):
-                    if (datatmax[day, lat, lon]+datatmin[day, lat, lon])/2 > 12.8:
-                        sumdays[day,lat,lon] = 1
-        sumdays = np.nansum(sumdays, axis = 0)
-        for lat in range(0,sumdays.shape[0]):
-            for lon in range(0, sumdays.shape[1]):
-                if np.isnan(shapedata[lat,lon]):
-                    sumdays[lat,lon] = np.nan
-        locals()[str(county)+'_sum'][year-2006,0] = year
-        locals()[str(county)+'_sum'][year-2006,1] = np.nanmean(sumdays)
-for county in county_list:
-    savetxt(str(save_path)+str(county)+'_rcp85_T12.8.csv', locals()[str(county)+'_sum'], delimiter = ',')
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((94,2))
 for year in range(2006, 2100):
@@ -2189,11 +2222,11 @@ for year in range(2006, 2100):
         roi = roi.precipitation[day_start:(day_end+1)]
         shapedata =  locals()[str(county)+'_reference'].values[1]
         if roi.values.shape[0] == 366:
-            fall_start = 213
-            fall_end = 304
+            fall_start = 244
+            fall_end = 334
         else:
-            fall_start = 212
-            fall_end = 303
+            fall_start = 243
+            fall_end = 333
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
         data = np.nansum(data, axis = 0)
@@ -2322,7 +2355,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 59
+            fall_start = 60
             fall_end = 211
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
@@ -2349,7 +2382,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 59
+            fall_start = 60
             fall_end = 211
         datatmax = roitmax.values[fall_start:fall_end+1]
         Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
@@ -2902,31 +2935,80 @@ for county in county_list:
     savetxt(str(save_path)+str(county)+'_rcp85_windspeed.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
-import os
-os.environ['PROJ_LIB'] = r'/home/shqwu/miniconda3/pkgs/proj4-5.2.0-he1b5a44_1006/share/proj'
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-import xarray
-import pandas as pd
-import numpy as np
-import salem
-import cartopy.crs as ccrs
-import regionmask
-import cartopy.feature as cfeature
-from salem.utils import get_demo_file
-from numpy import savetxt
-import netCDF4 as nc
-import math
-county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-shapefile = salem.read_shapefile('/home/pgzikala/Shapefiles/CA_Counties/Counties.shp')
 for county in county_list:
-     locals()[str(county)+'_shp'] = shapefile.loc[shapefile['NAME'].isin([str(county)])]
+    locals()[str(county)+'_sum'] = np.zeros((94,2))
+for year in range(2006, 2100):
+    for county in county_list:
+        roitmin = locals()[str(county)+'tasmin'+str(year)+'_roi']
+        day_start = np.where(pd.to_datetime(roitmin.time.values).year==year)[0][0]
+        day_end = np.where(pd.to_datetime(roitmin.time.values).year==year)[0][-1]
+        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmin.values.shape[0] == 366:
+            fall_start = 31
+            fall_end = 74
+        else:
+            fall_start = 31
+            fall_end = 73
+        data = roitmin.values[fall_start:fall_end+1]-273.15
+        sumdays = np.zeros((data.shape[0], data.shape[1], data.shape[2]))
+        for day in range(data.shape[0]):
+            for lat in range(data.shape[1]):
+                for lon in range(data.shape[2]):
+                    if data[day,lat,lon] < 0:
+                       sumdays[day,lat,lon] = 1
+        sumdays = np.nansum(sumdays, axis=0)
+        for lat in range(0,sumdays.shape[0]):
+            for lon in range(0, sumdays.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    sumdays[lat,lon] = np.nan
+        locals()[str(county)+'_sum'][year-2006,0] = year
+        locals()[str(county)+'_sum'][year-2006,1] = np.nanmean(sumdays)
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_rcp85_BloomFrostDays.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((94,2))
+for year in range(2006, 2100):
+    for county in county_list:
+        roitmax = locals()[str(county)+'tasmax'+str(year-1)+'_roi']
+        day_start = np.where(pd.to_datetime(roitmax.time.values).year==(year-1))[0][0]
+        day_end = np.where(pd.to_datetime(roitmax.time.values).year==(year-1))[0][-1]
+        roitmax = roitmax.air_temperature[day_start:(day_end+1)]
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmax.values.shape[0] == 366:
+            fall_start = 244
+            fall_end = 334
+        else:
+            fall_start = 243
+            fall_end = 333
+        datatmax = roitmax.values[fall_start:fall_end+1]
+        Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
+        for lat in range(0,Tmaxdata.shape[0]):
+            for lon in range(0, Tmaxdata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmaxdata[lat,lon] = np.nan
+        roitmin = locals()[str(county)+'tasmin'+str(year-1)+'_roi']
+        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
+        datatmin = roitmin.values[fall_start:fall_end+1]
+        Tmindata = np.nanmean(datatmin, axis = 0)-273.15
+        for lat in range(0,Tmindata.shape[0]):
+            for lon in range(0, Tmindata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmindata[lat,lon] = np.nan                    
+        locals()[str(county)+'_sum'][year-2006,0] = year           
+        locals()[str(county)+'_sum'][year-2006,1] = (np.nanmean(Tmindata)+np.nanmean(Tmaxdata))/2
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_rcp85_FallTmean.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+
+
+
 
 period_list = ['2006_2010', '2011_2015', '2016_2020', '2021_2025','2026_2030', '2031_2035', '2036_2040', '2041_2045', '2046_2050', '2051_2055', '2056_2060', '2061_2065', '2066_2070', '2071_2075', '2076_2080', '2081_2085', '2086_2090', '2091_2095', '2096_2099']
 
 #model='bcc-csm1-1-m_r1i1p1'
 var_list = ['pr', 'tasmin', 'tasmax','huss', 'rhsmax', 'rhsmin', 'rsds', 'vpd', 'uas', 'vas']
-cropland_reference = salem.open_xr_dataset(input_path+'MACA_mask_no_almond/macav2metdata_tasmin_bcc-csm1-1_r1i1p1_historical_1950_1954_CONUS_daily.nc')
 for county in county_list:
     locals()[str(county)+'_reference'] = cropland_reference.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False).air_temperature
 for var in var_list:
@@ -3638,11 +3720,11 @@ for year in range(2006, 2100):
         roi = roi.precipitation[day_start:(day_end+1)]
         shapedata =  locals()[str(county)+'_reference'].values[1]
         if roi.values.shape[0] == 366:
-            fall_start = 213
-            fall_end = 304
+            fall_start = 244
+            fall_end = 334
         else:
-            fall_start = 212
-            fall_end = 303
+            fall_start = 243
+            fall_end = 333
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
         data = np.nansum(data, axis = 0)
@@ -3771,7 +3853,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 59
+            fall_start = 60
             fall_end = 211
         data = roi.values[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-2006,0] = year   
@@ -3798,7 +3880,7 @@ for year in range(2006, 2100):
             fall_start = 60
             fall_end = 212
         else:
-            fall_start = 59
+            fall_start = 60
             fall_end = 211
         datatmax = roitmax.values[fall_start:fall_end+1]
         Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
@@ -4349,5 +4431,79 @@ for year in range(2006, 2100):
         locals()[str(county)+'_sum'][year-2006,1] = np.nanmean(sumdays)
 for county in county_list:
     savetxt(str(save_path)+str(county)+'_rcp45_windspeed.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+
+##Bloom Frost days
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((94,2))
+for year in range(2006, 2100):
+    for county in county_list:
+        roitmin = locals()[str(county)+'tasmin'+str(year)+'_roi']
+        day_start = np.where(pd.to_datetime(roitmin.time.values).year==year)[0][0]
+        day_end = np.where(pd.to_datetime(roitmin.time.values).year==year)[0][-1]
+        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmin.values.shape[0] == 366:
+            fall_start = 31
+            fall_end = 74
+        else:
+            fall_start = 31
+            fall_end = 73
+        data = roitmin.values[fall_start:fall_end+1]-273.15
+        sumdays = np.zeros((data.shape[0], data.shape[1], data.shape[2]))
+        for day in range(data.shape[0]):
+            for lat in range(data.shape[1]):
+                for lon in range(data.shape[2]):
+                    if data[day,lat,lon] < 0:
+                       sumdays[day,lat,lon] = 1
+        sumdays = np.nansum(sumdays, axis=0)
+        for lat in range(0,sumdays.shape[0]):
+            for lon in range(0, sumdays.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    sumdays[lat,lon] = np.nan
+        locals()[str(county)+'_sum'][year-2006,0] = year
+        locals()[str(county)+'_sum'][year-2006,1] = np.nanmean(sumdays)
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_rcp45_BloomFrostDays.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+
+
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((94,2))
+for year in range(2006, 2100):
+    for county in county_list:
+        roitmax = locals()[str(county)+'tasmax'+str(year-1)+'_roi']
+        day_start = np.where(pd.to_datetime(roitmax.time.values).year==(year-1))[0][0]
+        day_end = np.where(pd.to_datetime(roitmax.time.values).year==(year-1))[0][-1]
+        roitmax = roitmax.air_temperature[day_start:(day_end+1)]
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmax.values.shape[0] == 366:
+            fall_start = 244
+            fall_end = 334
+        else:
+            fall_start = 243
+            fall_end = 333
+        datatmax = roitmax.values[fall_start:fall_end+1]
+        Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
+        for lat in range(0,Tmaxdata.shape[0]):
+            for lon in range(0, Tmaxdata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmaxdata[lat,lon] = np.nan
+        roitmin = locals()[str(county)+'tasmin'+str(year-1)+'_roi']
+        roitmin = roitmin.air_temperature[day_start:(day_end+1)]
+        datatmin = roitmin.values[fall_start:fall_end+1]
+        Tmindata = np.nanmean(datatmin, axis = 0)-273.15
+        for lat in range(0,Tmindata.shape[0]):
+            for lon in range(0, Tmindata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmindata[lat,lon] = np.nan                    
+        locals()[str(county)+'_sum'][year-2006,0] = year           
+        locals()[str(county)+'_sum'][year-2006,1] = (np.nanmean(Tmindata)+np.nanmean(Tmaxdata))/2
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_rcp45_FallTmean.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+
+
+
 
 
