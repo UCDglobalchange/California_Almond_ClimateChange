@@ -16,6 +16,7 @@ home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
 input_path = home_path+'/input_data/GridMet/'
 save_path = home_path+'/intermediate_data/Gridmet_ACI/'
 shp_path = home_path+'/input_data/CA_Counties/'
+reference_cropland_path = home_path+'/input_data/MACA/reference_cropland/'
 
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
@@ -23,16 +24,22 @@ shapefile = salem.read_shapefile(shp_path+'Counties.shp')
 for county in county_list:
      locals()[str(county)+'_shp'] = shapefile.loc[shapefile['NAME'].isin([str(county)])]
 
+cropland_reference = salem.open_xr_dataset(reference_cropland_path+'tmmn_1979.nc')
+for county in county_list:
+    locals()[str(county)+'_reference'] = cropland_reference.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0).salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False).air_temperature
+
 #harvest ETo
 var_name = 'potential_evapotranspiration'
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))    
 for year in range(1980, 2021):
+    print(year)
     ncdata = salem.open_xr_dataset(input_path+'pet_'+str(year)+'.nc')
     for county in county_list:
+        print(county)
         subset = getattr(( ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 213 
             fall_end = 304
@@ -59,7 +66,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr(( ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 213
             fall_end = 304
@@ -87,7 +94,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr(( ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 0
             fall_end = 30
@@ -117,12 +124,12 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
-            fall_start = 214
+            fall_start = 213
             fall_end = 304
         else:
-            fall_start = 213
+            fall_start = 212
             fall_end = 303
         datatmax = roitmax[fall_start:fall_end+1].values
         Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
@@ -154,7 +161,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr(( ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -183,7 +190,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -219,7 +226,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr(( ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 60
             fall_end = 212
@@ -247,7 +254,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 60
             fall_end = 212
@@ -284,7 +291,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr((ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 0
             fall_end = 30
@@ -296,7 +303,7 @@ for year in range(1980, 2021):
         
         subset = getattr((pre_ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 305
             fall_end = 365
@@ -325,7 +332,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr(( ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 0
             fall_end = 30
@@ -336,7 +343,7 @@ for year in range(1980, 2021):
         pre_data = np.nansum(data, axis = 0)        
         subset = getattr((pre_ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 305
             fall_end = 365
@@ -368,7 +375,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 0
             fall_end = 30
@@ -392,7 +399,7 @@ for year in range(1980, 2021):
         
         subsettmax = getattr((pre_ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 305
             fall_end = 365
@@ -434,7 +441,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 60
             fall_end = 212
@@ -480,7 +487,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -527,7 +534,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -579,7 +586,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 60
             fall_end = 212
@@ -635,7 +642,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 0
             fall_end = 30
@@ -648,7 +655,7 @@ for year in range(1980, 2021):
         Tmindata = roitmin[fall_start:fall_end+1].values-273.15
         subsettmax = getattr((pre_ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 305
             fall_end = 365
@@ -707,7 +714,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 0
             fall_end = 30
@@ -720,7 +727,7 @@ for year in range(1980, 2021):
         Tmindata = roitmin[fall_start:fall_end+1].values-273.15
         subsettmax = getattr((pre_ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmax[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 305
             fall_end = 365
@@ -774,7 +781,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr((ncdatatsph.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -802,7 +809,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr((ncdatatsph.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -811,12 +818,18 @@ for year in range(1980, 2021):
             fall_end = 73
         data = roi[fall_start:fall_end+1]
         locals()[str(county)+'_sum'][year-1980,0] = year   
-        data = np.nanmean(data, axis = 0)
-        for lat in range(0,data.shape[0]):
-            for lon in range(0, data.shape[1]):
+        sumdays = np.zeros((data.shape[0], data.shape[1], data.shape[2]))
+        for day in range(0, data.shape[0]):
+            for lat in range(0,data.shape[1]):
+                for lon in range(0,data.shape[2]):
+                    if data[day,lat,lon] > 6.6944:
+                        sumdays[day,lat,lon] = 1
+        sumdays = np.nansum(sumdays,axis=0)
+        for lat in range(0,sumdays.shape[0]):
+            for lon in range(0, sumdays.shape[1]):
                 if np.isnan(shapedata[lat,lon]):
-                    data[lat,lon] = np.nan
-        locals()[str(county)+'_sum'][year-1980,1] = np.nanmean(data)*3.6
+                    sumdays[lat,lon] = np.nan
+        locals()[str(county)+'_sum'][year-1980,1] = np.nanmean(sumdays)
 for county in county_list:
     savetxt(str(save_path)+str(county)+'_WndSpd.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
@@ -835,7 +848,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr((pre_ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)),var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -864,7 +877,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subset = getattr((pre_ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roi[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roi.shape[0] == 366:
             fall_start = 60
             fall_end = 212
@@ -890,7 +903,7 @@ for year in range(1980, 2021):
     for county in county_list:
         subsettmin = getattr((ncdatatmin.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
         roitmin = subsettmin.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = roitmin[1]
+        shapedata = locals()[str(county)+'_reference'].values[1]
         if roitmax.shape[0] == 366:
             fall_start = 31
             fall_end = 74
@@ -907,4 +920,75 @@ for year in range(1980, 2021):
         locals()[str(county)+'_sum'][year-1980,1] = np.nanmean(Tmindata)
 for county in county_list:
     savetxt(str(save_path)+str(county)+'_BloomTmin.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+
+
+##Bloom Frost days
+var_name = 'air_temperature'
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((41,2))
+for year in range(1980, 2021):
+    ncdata = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
+    for county in county_list:
+        subset = getattr((ncdata.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
+        roi = subset.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roi.shape[0] == 366:
+            fall_start = 31
+            fall_end = 74
+        else:
+            fall_start = 31
+            fall_end = 73
+        data = roi[fall_start:fall_end+1]-273.15
+        sumdays = np.zeros((data.shape[0], data.shape[1], data.shape[2]))
+        locals()[str(county)+'_sum'][year-1980,0] = year   
+        for day in range(data.shape[0]):
+            for lat in range(data.shape[1]):
+                for lon in range(data.shape[2]):
+                    if data[day,lat,lon] < 0:
+                       sumdays[day,lat,lon] = 1
+        sumdays = np.nansum(sumdays, axis = 0)
+        for lat in range(0,sumdays.shape[0]):
+            for lon in range(0, sumdays.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    sumdays[lat,lon] = np.nan
+        locals()[str(county)+'_sum'][year-1980,1] = np.nanmean(sumdays)
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_BloomFrostDays.csv', locals()[str(county)+'_sum'], delimiter = ',')
+
+##Fall Tmean
+var_name = 'air_temperature'
+for county in county_list:
+    locals()[str(county)+'_sum'] = np.zeros((41,2))
+for year in range(1980, 2021):
+    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
+    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
+    for county in county_list:
+        subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
+        roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
+        shapedata = locals()[str(county)+'_reference'].values[1]
+        if roitmax.shape[0] == 366:
+            fall_start = 244
+            fall_end = 334
+        else:
+            fall_start = 243
+            fall_end = 333
+        datatmax = roitmax[fall_start:fall_end+1].values
+        Tmaxdata = np.nanmean(datatmax, axis = 0)-273.15
+        for lat in range(0,Tmaxdata.shape[0]):
+            for lon in range(0, Tmaxdata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmaxdata[lat,lon] = np.nan
+        subsettmin = getattr((ncdatatmin.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
+        roitmin = subsettmin.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)                    
+        datatmin = roitmin[fall_start:fall_end+1].values
+        Tmindata = np.nanmean(datatmin, axis = 0)-273.15
+        for lat in range(0,Tmindata.shape[0]):
+            for lon in range(0, Tmindata.shape[1]):
+                if np.isnan(shapedata[lat,lon]):
+                    Tmindata[lat,lon] = np.nan                    
+        locals()[str(county)+'_sum'][year-1980,0] = year           
+        locals()[str(county)+'_sum'][year-1980,1] = (np.nanmean(Tmindata)+np.nanmean(Tmaxdata))/2
+for county in county_list:
+    savetxt(str(save_path)+str(county)+'_Fall_Tmean.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
