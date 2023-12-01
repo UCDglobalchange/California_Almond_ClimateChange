@@ -29,7 +29,7 @@ input_path_yield = home_path+'/input_data/'
 trial=np.int64(sys.argv[1])
 aci_num=14
 model_list = ['bcc-csm1-1','bcc-csm1', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM']
-X = genfromtxt(input_path_ACI+'Gridmet_std.csv', delimiter = ',')
+X = genfromtxt(input_path_ACI+'Gridmet.csv', delimiter = ',')
 Y = genfromtxt(input_path_yield+'almond_yield_1980_2020.csv', delimiter = ',')[:,1:].flatten('F')
 distance = yellowbrick.regressor.influence.cooks_distance(X,Y, show = False).distance_ ##data remove by cook's distance
 threhold = yellowbrick.regressor.influence.cooks_distance(X,Y, show = False).influence_threshold_
