@@ -21,7 +21,7 @@ from yellowbrick.regressor import cooks_distance
 import sys
 
 home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
-save_path = home_path+'/intermediate_data/lasso_model/Frost/'
+save_path = home_path+'/intermediate_data/lasso_model/'
 input_path_ACI = home_path+'/intermediate_data/Gridmet_csv/'
 input_path_yield = home_path+'/input_data/'
 
