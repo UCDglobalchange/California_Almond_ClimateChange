@@ -15,7 +15,7 @@ home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
 input_path = home_path+'/intermediate_data/Gridmet_nc/'
 save_path = home_path+'/intermediate_data/Gridmet_csv/'
 
-almond_hist = nc.Dataset(input_path+'gridmet_ACI_Frost.nc')
+almond_hist = nc.Dataset(input_path+'gridmet_ACI.nc')
 aci_num=14
 
 aci_sum_state = np.zeros((16*41,aci_num))
@@ -44,5 +44,5 @@ for region_id in range(0,16):
     ACI_sum = np.row_stack((ACI_sum, aci))
     non_clim_coef_sum = np.row_stack((non_clim_coef_sum, non_clim_coef))
 X = np.column_stack((ACI_sum,non_clim_coef_sum))
-savetxt(save_path+'Gridmet_std_11_9_Frost.csv', X, delimiter = ',')
+savetxt(save_path+'Gridmet.csv', X, delimiter = ',')
 
