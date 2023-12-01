@@ -16,8 +16,8 @@ county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 
 aci_num = 14
 
 home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
-input_path = home_path+'/intermediate_data/MACA_nc/Frost/'
-save_path = home_path+'/intermediate_data/MACA_csv/Frost/'
+input_path = home_path+'/intermediate_data/MACA_nc/'
+save_path = home_path+'/intermediate_data/MACA_csv/'
 
 model_list = ['bcc-csm1-1','bcc-csm1-1-m', 'BNU-ESM', 'CanESM2', 'CSIRO-Mk3-6-0', 'GFDL-ESM2G', 'GFDL-ESM2M', 'inmcm4', 'IPSL-CM5A-LR', 'IPSL-CM5A-MR','CNRM-CM5', 'HadGEM2-CC365','HadGEM2-ES365', 'IPSL-CM5B-LR', 'MIROC5', 'MIROC-ESM', 'MIROC-ESM-CHEM', 'MRI-CGCM3']
 middle_tech_scenario = np.zeros(80)
