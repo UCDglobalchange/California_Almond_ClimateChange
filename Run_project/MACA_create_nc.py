@@ -11,7 +11,7 @@ from numpy import genfromtxt
 
 model='MIROC-ESM-CHEM'
 home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
-save_path = home_path+'/intermediate_data/MACA_nc/Frost/'
+save_path = home_path+'/intermediate_data/MACA_nc/'
 input_path_ACI = home_path+'/intermediate_data/MACA_ACI/'+str(model)+'/'
 input_path_yield = home_path+'/input_data/'
 
