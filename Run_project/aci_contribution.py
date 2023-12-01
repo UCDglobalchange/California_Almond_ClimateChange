@@ -20,10 +20,10 @@ import matplotlib as mpl
 
 aci_num = 14
 home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
-input_path_model = home_path+'/intermediate_data/lasso_model/Frost_11_9/'
-input_path_ACI = home_path+'/intermediate_data/MACA_csv/Frost/'
+input_path_model = home_path+'/intermediate_data/lasso_model/'
+input_path_ACI = home_path+'/intermediate_data/MACA_csv/'
 input_path_area = home_path+'/input_data/'
-save_path = home_path+'/output_data/aci_contribution/Frost/'
+save_path = home_path+'/output_data/aci_contribution/'
 
 
 area_csv = genfromtxt(input_path_area+'almond_area.csv', delimiter = ',')
