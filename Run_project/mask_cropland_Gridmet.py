@@ -20,7 +20,7 @@ input_path_gridmet = home_path+'/input_data/GridMet/'
 
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
-for year in range(2007,2022):
+for year in range(2007,2021):
     cropland_nc = nc.Dataset(input_path_CDL+'almond_cropland_'+str(year)+'.nc')
     cropland = cropland_nc.variables['almond'][:]
     cropland_lat = cropland_nc.variables['lat'][:]
