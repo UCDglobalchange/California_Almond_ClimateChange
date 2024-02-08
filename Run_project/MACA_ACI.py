@@ -1072,7 +1072,7 @@ for year in range(1950, 2006):
                     if np.isnan(datatmax[day, lat,lon]):
                         pass
                     else:
-                        b = 30
+                        b = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat,lon] < b and datatmax[day, lat,lon]> b:
@@ -1087,7 +1087,7 @@ for year in range(1950, 2006):
         locals()[str(county)+'_sum'][year-1950,0] = year
         locals()[str(county)+'_sum'][year-1950,1] = np.nanmean(DD)
 for county in county_list:
-    savetxt(str(save_path)+str(county)+'_hist_GrowingKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
+    savetxt(str(save_path)+str(county)+'_hist_GrowingKDD35.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
 ## Bloom KDD30
@@ -1422,7 +1422,7 @@ for year in range(1950, 2006):
                         pass
                     else:
                         b = 4.5
-                        u = 30
+                        u = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat, lon] >=u:
@@ -2583,7 +2583,7 @@ for year in range(2006, 2100):
                     if np.isnan(datatmax[day, lat,lon]):
                         pass
                     else:
-                        b = 30
+                        b = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat,lon] < b and datatmax[day, lat,lon]> b:
@@ -2598,7 +2598,7 @@ for year in range(2006, 2100):
         locals()[str(county)+'_sum'][year-2006,0] = year
         locals()[str(county)+'_sum'][year-2006,1] = np.nanmean(DD)
 for county in county_list:
-    savetxt(str(save_path)+str(county)+'_rcp85_GrowingKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
+    savetxt(str(save_path)+str(county)+'_rcp85_GrowingKDD35.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
 
@@ -2874,7 +2874,7 @@ for year in range(2006, 2100):
                         pass
                     else:
                         b = 4.5
-                        u = 30
+                        u = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat, lon] >=u:
@@ -4081,7 +4081,7 @@ for year in range(2006, 2100):
                     if np.isnan(datatmax[day, lat,lon]):
                         pass
                     else:
-                        b = 30
+                        b = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat,lon] < b and datatmax[day, lat,lon]> b:
@@ -4096,7 +4096,7 @@ for year in range(2006, 2100):
         locals()[str(county)+'_sum'][year-2006,0] = year
         locals()[str(county)+'_sum'][year-2006,1] = np.nanmean(DD)
 for county in county_list:
-    savetxt(str(save_path)+str(county)+'_rcp45_GrowingKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
+    savetxt(str(save_path)+str(county)+'_rcp45_GrowingKDD35.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
 
@@ -4372,7 +4372,7 @@ for year in range(2006, 2100):
                         pass
                     else:
                         b = 4.5
-                        u = 30
+                        u = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat, lon] >=u:
