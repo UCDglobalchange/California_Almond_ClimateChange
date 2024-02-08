@@ -27,7 +27,7 @@ Almond.createDimension('ACI', size = 14)
 Years = Almond.createVariable('Year', 'f4', dimensions = 'Time')
 Countys = Almond.createVariable('County', str, dimensions = 'Region')
 ACIs = Almond.createVariable('ACI_name', 'U', dimensions = 'ACI')
-ACI_list = ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin' ,'BloomFrostDays','BloomETo', 'BloomGDD4','SpH','WndSpd','GrowingETo','GrowingGDD4', 'GrowingKDD30','harvest_Ppt']
+ACI_list = ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin' ,'BloomFrostDays','BloomETo', 'BloomGDD4','SpH','WndSpd','GrowingETo','GrowingGDD4', 'GrowingKDD35','harvest_Ppt']
 
 Yields = Almond.createVariable('Yield', 'f4', dimensions = ('Time', 'Region'))
 ACI_values = Almond.createVariable('ACI_value', 'f4', dimensions = ('Time', 'Region','ACI'))
