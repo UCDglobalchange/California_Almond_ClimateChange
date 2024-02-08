@@ -32,12 +32,12 @@ Countys = Almond.createVariable('County', str, dimensions = 'Region')
 ACIs = Almond.createVariable('ACI_name', 'U', dimensions = 'ACI')
 
 
-ACI_list = ['DormancyFreeze','DormancyETo','JanPpt','BloomPpt','BloomTmin','BloomFrostDays' ,'BloomETo', 'BloomGDD4','SpH','windspeed','GrowingETo','GrowingGDD4', 'GrowingKDD30','harvest_Ppt']
+ACI_list = ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin','BloomFrostDays' ,'BloomETo', 'BloomGDD4','SpH','windspeed','GrowingETo','GrowingGDD4', 'GrowingKDD35','harvest_Ppt']
 
 Yields = Almond.createVariable('Yield', 'f4', dimensions = ('Time', 'Region'))
 ACI_values = Almond.createVariable('ACI_value', 'f4', dimensions = ('Time', 'Region','ACI'))
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-ACI_name_unit=  ['DormancyFreeze', 'DormancyTmean','DormancyETo', 'JanPpt','FebTmin','BloomPpt','BloomFrostDays', 'BloomETo', 'BloomGDD4','SpH','windspeed','MarTmin', 'GrowingETo', 'GrowingGDD4', 'GrowingKDD30','harvest_Ppt']
+ACI_name_unit=  ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin','BloomFrostDays' ,'BloomETo', 'BloomGDD4','SpH','windspeed','GrowingETo','GrowingGDD4', 'GrowingKDD35','harvest_Ppt']
 
 
 ##add data
