@@ -34,7 +34,7 @@ We used the following python packages:
 **Calculte ACIs:** Python codes to calculate ACIs from gridMET and MACA are available in folder ***Run_project/MACA_ACI.py or Gridmet_ACI.py***
 
 ## Run LASSO regression ##
- We calibrated the function by providing a list of alphas (penalty parameters), passing intergers (1-1000) to random state for reproducible outputs, and passing fit_intercept to *False*. The code to run LASSO regression is ***Almond_lasso.py***.
+ We calibrated the function by providing a list of alphas (penalty parameters), passing intergers (1-1000) to random state for reproducible outputs, and passing fit_intercept to *False*. The code to run LASSO regression is ***Run_project/Almond_lasso.py***.
 
 ## Yield projection ##
 After obtaining statistical relationship between gridMET-ACIs and historical county-level yields, we run ***MACA_projection.py*** to project yield based on MACA climate datasets(historical:1950-2005; future:2006-2099 under RCP4.5 and RCP8.5) and compute cropland area-weighted California statewide almond yield. 
