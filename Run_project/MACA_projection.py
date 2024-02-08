@@ -35,7 +35,6 @@ for i in range(1,11):
     coef_sum = np.row_stack((coef_sum, locals()['coef'+str(i)]))
 
 
-ACI_list = ['Dormancy_Freeze','Dormancy_ETo','Jan_Ppt','Bloom_Ppt','Bloom_Tmin','BloomFrostDays' ,'Bloom_ETo', 'Bloom_GDD4','Bloom_Humidity','Windy_days','Growing_ETo','GrowingGDD4', 'Growing_KDD30','FallTmean','FallTmean','harvest_Ppt']
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 
