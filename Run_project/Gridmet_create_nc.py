@@ -32,7 +32,7 @@ ACI_list = ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin' ,'Bloo
 Yields = Almond.createVariable('Yield', 'f4', dimensions = ('Time', 'Region'))
 ACI_values = Almond.createVariable('ACI_value', 'f4', dimensions = ('Time', 'Region','ACI'))
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
-ACI_name_unit  = [ ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin' ,'BloomFrostDays','BloomETo', 'BloomGDD4','SpH','WndSpd','GrowingETo','GrowingGDD4', 'GrowingKDD30','harvest_Ppt']
+ACI_name_unit  = [ ['DormancyChill','DormancyETo','JanPpt','BloomPpt','BloomTmin' ,'BloomFrostDays','BloomETo', 'BloomGDD4','SpH','WndSpd','GrowingETo','GrowingGDD4', 'GrowingKDD35','harvest_Ppt']
 
 
 
