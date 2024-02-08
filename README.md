@@ -31,7 +31,7 @@ We used the following python packages:
 **Almond cropland mask:** The spatial resolution of CDL (30m)is different from those of climate datasets (4km). To filter out gridcells without almond croplands from gridMET and MACA, we used ArcGIS Pro to aggregrate and re-coordinate CDL raster data to match the resolution and geospatial coordinate of climate datasets. The CDL of almonds in California is available from 2007 to 2020 and the netCDF files produced from ArcGIS Pro are available in folder 
 ***Run_project/input_data/almond_cropland_nc/***
 
-**Calculte ACIs:** Python codes to calculate ACIs from gridMET and MACA are available in folder ***Calculate_ACI***
+**Calculte ACIs:** Python codes to calculate ACIs from gridMET and MACA are available in folder ***Run_project/MACA_ACI.py or Gridmet_ACI.py***
 
 ## Run LASSO regression ##
  We calibrated the function by providing a list of alphas (penalty parameters), passing intergers (1-1000) to random state for reproducible outputs, and passing fit_intercept to *False*. The code to run LASSO regression is ***Almond_lasso.py***.
