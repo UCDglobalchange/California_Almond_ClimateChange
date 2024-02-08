@@ -431,7 +431,7 @@ for county in county_list:
 
 
 
-##GrowingKDD 30
+##GrowingKDD 35
 var_name = 'air_temperature'
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((41,2))
@@ -459,7 +459,7 @@ for year in range(1980, 2021):
                     if np.isnan(datatmax[day, lat,lon]):
                         pass
                     else:
-                        b = 30
+                        b = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat,lon] < b and datatmax[day, lat,lon]> b:
@@ -474,53 +474,9 @@ for year in range(1980, 2021):
         locals()[str(county)+'_sum'][year-1980,0] = year
         locals()[str(county)+'_sum'][year-1980,1] = np.nanmean(DD)
 for county in county_list:
-    savetxt(str(save_path)+str(county)+'_GrowingKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
+    savetxt(str(save_path)+str(county)+'_GrowingKDD35.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
-##BloomKDD 30
-var_name = 'air_temperature'
-for county in county_list:
-    locals()[str(county)+'_sum'] = np.zeros((41,2))
-for year in range(1980, 2021):
-    ncdatatmax = salem.open_xr_dataset(input_path+'tmmx_'+str(year)+'.nc')
-    ncdatatmin = salem.open_xr_dataset(input_path+'tmmn_'+str(year)+'.nc')
-    for county in county_list:
-        subsettmax = getattr((ncdatatmax.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
-        roitmax = subsettmax.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        shapedata = locals()[str(county)+'_reference'].values[1]
-        if roitmax.shape[0] == 366:
-            fall_start = 31
-            fall_end = 74
-        else:
-            fall_start = 31
-            fall_end = 73
-        datatmax = roitmax[fall_start:fall_end+1].values-273.15
-        subsettmin = getattr((ncdatatmin.salem.subset(shape = locals()[str(county)+'_shp'], margin = 0)), var_name)
-        roitmin = subsettmin.salem.roi(shape = locals()[str(county)+'_shp'], all_touched=False)
-        datatmin = roitmin[fall_start:fall_end+1].values-273.15
-        DD = np.zeros((datatmin.shape[0],datatmin.shape[1], datatmin.shape[2]))
-        for day in range(0,datatmin.shape[0]):
-            for lat in range(0,datatmin.shape[1]):
-                for lon in range(0, datatmin.shape[2]):
-                    if np.isnan(datatmax[day, lat,lon]):
-                        pass
-                    else:
-                        b = 30
-                        if datatmax[day, lat,lon]<=b:
-                           DD[day, lat,lon] = 0
-                        elif datatmin[day, lat,lon] < b and datatmax[day, lat,lon]> b:
-                           DD[day, lat, lon] = np.arccos((2*b-datatmax[day, lat,lon]-datatmin[day, lat,lon])/(datatmax[day, lat,lon]-datatmin[day, lat,lon]))*((datatmax[day, lat,lon]+datatmin[day, lat,lon])/2-b)/math.pi+(datatmax[day, lat,lon]-datatmin[day, lat,lon])*np.sin(np.arccos((2*b-datatmax[day, lat,lon]-datatmin[day, lat,lon])/(datatmax[day, lat,lon]-datatmin[day, lat,lon])))/2/math.pi
-                        elif datatmin[day, lat,lon] >=b :
-                           DD[day, lat, lon] = (datatmin[day, lat,lon]+datatmax[day, lat,lon])/2-b
-        DD = np.nansum(DD, axis = 0)
-        for lat in range(0,DD.shape[0]):
-            for lon in range(0, DD.shape[1]):
-                if np.isnan(shapedata[lat,lon]):
-                    DD[lat,lon] = np.nan
-        locals()[str(county)+'_sum'][year-1980,0] = year
-        locals()[str(county)+'_sum'][year-1980,1] = np.nanmean(DD)
-for county in county_list:
-    savetxt(str(save_path)+str(county)+'_BloomKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
 
@@ -605,7 +561,7 @@ for year in range(1980, 2021):
                         pass
                     else:
                         b = 4.5
-                        u = 30
+                        u = 35
                         if datatmax[day, lat,lon]<=b:
                            DD[day, lat,lon] = 0
                         elif datatmin[day, lat, lon] >=u:
