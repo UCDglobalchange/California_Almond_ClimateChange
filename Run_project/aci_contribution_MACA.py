@@ -22,7 +22,7 @@ home_path='~/Run_project'
 input_path_model = home_path+'/intermediate_data/lasso_model/'
 input_path_ACI = home_path+'/intermediate_data/MACA_csv/'
 input_path_area = home_path+'/input_data/'
-save_path = home_path+'/output_data/aci_contribution/'
+save_path = home_path+'/output_data/aci_contribution/MACA/'
 
 
 area_csv = genfromtxt(input_path_area+'almond_area.csv', delimiter = ',')
