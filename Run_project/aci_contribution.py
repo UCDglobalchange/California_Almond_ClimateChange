@@ -18,7 +18,7 @@ import matplotlib as mpl
 
 
 aci_num = 14
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 input_path_model = home_path+'/intermediate_data/lasso_model/'
 input_path_ACI = home_path+'/intermediate_data/MACA_csv/'
 input_path_area = home_path+'/input_data/'
