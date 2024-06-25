@@ -1,4 +1,4 @@
-##code to filter out gridMET gridcells without almond cropland
+##code to create a reference GridMet nc file masked based on CDL
 
 
 import matplotlib.pyplot as plt
@@ -14,9 +14,9 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import netCDF4 as nc
 
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 input_path_CDL = home_path+'/input_data/almond_cropland_nc/'
-input_path_gridmet = home_path+'/input_data/GridMet/'
+input_path_gridmet = home_path+'/input_data/reference_cropland/'
 
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
@@ -46,28 +46,12 @@ for i in range(0,lat_with_cropland_sum.shape[0]):
     gridmet_almond_lon[i] = find_nearest_cell(lonarray, cropland_lon[lon_with_cropland_sum[i].astype(int)])
 gridmet_almond_lat_lon = np.row_stack((gridmet_almond_lat, gridmet_almond_lon)).astype(int)
 
-##create matrix with only copland lat-lon =1
-matrix_365 = np.zeros((365, 585, 1386))
-matrix_366 = np.zeros((366, 585, 1386))
-matrix_365[:] = np.nan
-matrix_366[:] = np.nan
-
+nc_data = nc.Dataset(input_path_gridmet+'tmmn_1979.nc','r+')
+day_num = nc_data.variables['air_temperature'].shape[0]
+matrix = np.zeros((day_num, 585,1386))
+matrix[:] = np.nan
 for i in range(0,gridmet_almond_lat_lon.shape[1]):
-    matrix_365[:,gridmet_almond_lat_lon[0,i],gridmet_almond_lat_lon[1,i]] = 1
-    matrix_366[:,gridmet_almond_lat_lon[0,i],gridmet_almond_lat_lon[1,i]] = 1
-
-
-## nan gridmet nc 
-var_list = ['pet', 'sph', 'vs', 'pr', 'tmmx', 'tmmn']
-var_name_list = ['potential_evapotranspiration', 'specific_humidity', 'wind_speed','precipitation_amount', 'air_temperature', 'air_temperature']
-
-for k in range(0,6):
-    for year in range(1979,2021):
-        nc_data = nc.Dataset(input_path_gridmet+str(var_list[k])+'_'+str(year)+'.nc', 'r+')
-        if nc_data.variables[str(var_name_list[k])][:].shape[0] == 366:
-           nc_data.variables[str(var_name_list[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_366
-        if nc_data.variables[str(var_name_list[k])][:].shape[0] == 365:
-           nc_data.variables[str(var_name_list[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix_365
-        nc_data.close()
-
+    matrix[:,gridmet_almond_lat_lon[0,i],gridmet_almond_lat_lon[1,i]] = 1
+nc_data.variables['air_temperature'][:] = nc_data.variables['air_temperature'][:]*matrix
+nc_data.close()
 
