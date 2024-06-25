@@ -15,7 +15,7 @@ county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 
 
 aci_num = 14
 
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 input_path = home_path+'/intermediate_data/MACA_nc/'
 save_path = home_path+'/intermediate_data/MACA_csv/'
 
