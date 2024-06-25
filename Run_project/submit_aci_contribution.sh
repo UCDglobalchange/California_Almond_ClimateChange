@@ -30,4 +30,4 @@
 
 
 
-srun python aci_contribution.py
+srun python aci_contribution_LOCA.py
