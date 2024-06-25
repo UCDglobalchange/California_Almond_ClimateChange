@@ -25,12 +25,12 @@ args = get_args()
 
 model_name=str(args['model'])
 print(model_name)
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 save_path = home_path+'/intermediate_data/MACA_ACI/'+str(model_name)+'/'
 shp_path = home_path+'/input_data/CA_Counties/'
-input_path = '/group/moniergrp/MACA/'
+input_path = 'path to MACA data'
 #input_path = home_path+'/input_data/MACA/'
-reference_cropland_path = home_path+'/input_data/MACA/reference_cropland/'
+reference_cropland_path = home_path+'/input_data/reference_cropland/'
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 shapefile = salem.read_shapefile(shp_path+'Counties.shp')
@@ -1045,7 +1045,7 @@ for county in county_list:
 
 
 
-## Growing KDD30
+## Growing KDD35
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((56,2))
 for year in range(1950, 2006):
@@ -2556,7 +2556,7 @@ for county in county_list:
     savetxt(str(save_path)+str(county)+'_rcp85_BloomKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
-## Growing KDD30
+## Growing KDD35
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((94,2))
 for year in range(2006, 2100):
@@ -4054,7 +4054,7 @@ for county in county_list:
     savetxt(str(save_path)+str(county)+'_rcp45_BloomKDD30.csv', locals()[str(county)+'_sum'], delimiter = ',')
 
 
-## Growing KDD30
+## Growing KDD35
 for county in county_list:
     locals()[str(county)+'_sum'] = np.zeros((94,2))
 for year in range(2006, 2100):
