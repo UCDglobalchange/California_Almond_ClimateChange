@@ -10,7 +10,7 @@ import netCDF4 as nc
 from numpy import genfromtxt
 import math
 
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 input_path_ACI = home_path+'/intermediate_data/Gridmet_ACI/'
 input_path_yield = home_path+'/input_data/'
 save_path = home_path+'/intermediate_data/Gridmet_nc/'
