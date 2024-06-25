@@ -11,7 +11,7 @@ from numpy import genfromtxt
 from numpy import savetxt
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
 
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 input_path = home_path+'/intermediate_data/Gridmet_nc/'
 save_path = home_path+'/intermediate_data/Gridmet_csv/'
 
