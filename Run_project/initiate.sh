@@ -26,8 +26,6 @@ mkdir $home_path/output_data/aci_contribution
 mkdir $home_path/output_data/aci_contribution/MACA
 mkdir $home_path/output_data/aci_contribution/LOCA
 mkdir $home_path/output_data/plots
-mkdir $home_path/output_data/plots/MACA
-mkdir $home_path/output_data/plots/LOCA
 mkdir $home_path/slurm_log
 
 sed -i "s,home_path=.*,home_path='$home_path',g" $home_path/MACA_ACI.py
