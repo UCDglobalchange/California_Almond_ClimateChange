@@ -1,5 +1,5 @@
 #!/bin/bash
-home_path=  ## change it to where you save the project
+home_path=~/Run_project
 model_name_list=('MRI-CGCM3' 'bcc-csm1-1' 'bcc-csm1-1-m' 'BNU-ESM' 'CanESM2' 'CSIRO-Mk3-6-0' 'GFDL-ESM2G' 'GFDL-ESM2M' 'inmcm4' 'IPSL-CM5A-LR' 'IPSL-CM5A-MR' 'CNRM-CM5' 'HadGEM2-CC365' 'HadGEM2-ES365' 'IPSL-CM5B-LR' 'MIROC5' 'MIROC-ESM' 'MIROC-ESM-CHEM')
 
 for model in "${model_name_list[@]}"
