@@ -12,11 +12,11 @@ from numpy import savetxt
 import math
 
 
-home_path='/home/shqwu/California_Almond_ClimateChange-main/Run_project'
+home_path='~/Run_project'
 input_path = home_path+'/input_data/GridMet/'
 save_path = home_path+'/intermediate_data/Gridmet_ACI/'
 shp_path = home_path+'/input_data/CA_Counties/'
-reference_cropland_path = home_path+'/input_data/MACA/reference_cropland/'
+reference_cropland_path = home_path+'/input_data/reference_cropland/'
 
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
