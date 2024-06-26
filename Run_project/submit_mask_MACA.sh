@@ -27,4 +27,4 @@
 # send mail here
 #SBATCH --mail-user=
 
-srun python  mask_cropland_MACA.py
+srun python  mask_cropland.py
