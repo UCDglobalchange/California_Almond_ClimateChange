@@ -91,7 +91,7 @@ gridmet_almond_lat_lon = np.row_stack((gridmet_almond_lat, gridmet_almond_lon)).
 
 ## Because the each nc file of the original LOCA data is so large, instead of masking the entire nc file, I just extract one day 
 ##from a temperature LOCA file as the reference LOCA nc
-nc_data = nc.Dataset('/home/shqwu/CDL_CA_original/LOCA_reference_cropland.nc','r+')
+nc_data = nc.Dataset('home_path+'/input_data/reference_cropland/LOCA_reference_cropland.nc','r+')
 matrix = np.zeros((495,559))
 matrix[:] = np.nan
 for i in range(0,gridmet_almond_lat_lon.shape[1]):
