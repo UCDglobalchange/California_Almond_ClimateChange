@@ -28,7 +28,7 @@ print(model_name)
 home_path='~/Run_project'
 save_path = home_path+'/intermediate_data/MACA_ACI/'+str(model_name)+'/'
 shp_path = home_path+'/input_data/CA_Counties/'
-input_path = 'path to MACA data'
+input_path = home_path+'/input_data/MACA/'
 #input_path = home_path+'/input_data/MACA/'
 reference_cropland_path = home_path+'/input_data/reference_cropland/'
 
