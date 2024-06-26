@@ -78,6 +78,21 @@ nc_data.close()
 
 
 ##LOCA
+
+lat_with_cropland_sum = np.zeros((0))
+lon_with_cropland_sum = np.zeros((0))
+for year in range(2007,2022):
+    cropland_nc = nc.Dataset(home_path+'/input_data/almond_cropland_nc/'+str(year)+'_conv_coarse_CDL_LOCA.nc')
+    cropland = cropland_nc.variables['Band1'][:]
+    cropland_lat = cropland_nc.variables['lat'][:]
+    cropland_lon = cropland_nc.variables['lon'][:]
+    lat_with_cropland = np.where(cropland!=0)[0]
+    lon_with_cropland = np.where(cropland!=0)[1]
+    lat_with_cropland_sum = np.concatenate((lat_with_cropland_sum, lat_with_cropland))
+    lon_with_cropland_sum = np.concatenate((lon_with_cropland_sum, lon_with_cropland))
+    print(year)
+
+
 latarray = np.linspace(29.578125,45.015625,495) ##LOCA lat
 lonarray = np.linspace(-128.42188,-110.984375,559) ##LOCA lon
 
