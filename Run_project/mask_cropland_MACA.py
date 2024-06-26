@@ -31,6 +31,8 @@ def find_nearest_cell(array,value):
     idx = (np.abs(array-value)).argmin()
     return idx
 
+
+##Gridmet
 latarray = np.linspace(49.4,25.06666667,585) ##gridmet lat
 lonarray = np.linspace(-124.76666663,-67.0583333,1386) ##gridmet lon
 
@@ -52,7 +54,7 @@ nc_data.variables['air_temperature'][:] = nc_data.variables['air_temperature'][:
 nc_data.close()
 
 
-
+##MACA
 latarray = np.linspace(25.06666667,49.4,585) ##maca lat
 lonarray = np.linspace(-124.76666663,-67.0583333,1386) ##maca lon
 
@@ -73,6 +75,9 @@ for i in range(0,maca_almond_lat_lon.shape[1]):
 nc_data.variables[str(var_name_list[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix
 nc_data.close()
 
+
+
+##LOCA
 latarray = np.linspace(29.578125,45.015625,495) ##LOCA lat
 lonarray = np.linspace(-128.42188,-110.984375,559) ##LOCA lon
 
@@ -84,8 +89,8 @@ for i in range(0,lat_with_cropland_sum.shape[0]):
     gridmet_almond_lon[i] = find_nearest_cell(lonarray, cropland_lon[lon_with_cropland_sum[i].astype(int)])
 gridmet_almond_lat_lon = np.row_stack((gridmet_almond_lat, gridmet_almond_lon)).astype(int)
 
-
-## nan MACA nc
+## Because the each nc file of the original LOCA data is so large, instead of masking the entire nc file, I just extract one day 
+##from a temperature LOCA file as the reference LOCA nc
 nc_data = nc.Dataset('/home/shqwu/CDL_CA_original/LOCA_reference_cropland.nc','r+')
 matrix = np.zeros((495,559))
 matrix[:] = np.nan
