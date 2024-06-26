@@ -28,7 +28,7 @@ print(model_name)
 home_path='~/Run_project'
 save_path = home_path+'/intermediate_data/LOCA_ACI/'+str(model_name)+'/'
 shp_path = home_path+'/input_data/CA_Counties/'
-input_path = 'path to LOCA dataset'
+input_path = home_path+'/input_data/LOCA/'
 reference_cropland_path = home_path+'/input_data/reference_cropland/'
 
 county_list = ['Butte', 'Colusa', 'Fresno', 'Glenn', 'Kern', 'Kings', 'Madera', 'Merced', 'San Joaquin', 'Solano', 'Stanislaus', 'Sutter', 'Tehama', 'Tulare', 'Yolo', 'Yuba']                      
