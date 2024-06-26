@@ -12,7 +12,8 @@ from salem.utils import get_demo_file
 from numpy import savetxt
 import netCDF4 as nc
 
-home_path=''
+home_path='~/Run_project'
+
 lat_with_cropland_sum = np.zeros((0))
 lon_with_cropland_sum = np.zeros((0))
 for year in range(2007,2021):
@@ -29,6 +30,28 @@ for year in range(2007,2021):
 def find_nearest_cell(array,value):
     idx = (np.abs(array-value)).argmin()
     return idx
+
+latarray = np.linspace(49.4,25.06666667,585) ##gridmet lat
+lonarray = np.linspace(-124.76666663,-67.0583333,1386) ##gridmet lon
+
+gridmet_almond_lat = np.zeros((lat_with_cropland_sum.shape[0]))
+gridmet_almond_lon = np.zeros((lon_with_cropland_sum.shape[0]))
+
+for i in range(0,lat_with_cropland_sum.shape[0]):
+    gridmet_almond_lat[i] = find_nearest_cell(latarray, cropland_lat[lat_with_cropland_sum[i].astype(int)])
+    gridmet_almond_lon[i] = find_nearest_cell(lonarray, cropland_lon[lon_with_cropland_sum[i].astype(int)])
+gridmet_almond_lat_lon = np.row_stack((gridmet_almond_lat, gridmet_almond_lon)).astype(int)
+
+nc_data = nc.Dataset(home_path+'/input_data/reference_cropland/+'tmmn_1979.nc','r+')
+day_num = nc_data.variables['air_temperature'].shape[0]
+matrix = np.zeros((day_num, 585,1386))
+matrix[:] = np.nan
+for i in range(0,gridmet_almond_lat_lon.shape[1]):
+    matrix[:,gridmet_almond_lat_lon[0,i],gridmet_almond_lat_lon[1,i]] = 1
+nc_data.variables['air_temperature'][:] = nc_data.variables['air_temperature'][:]*matrix
+nc_data.close()
+
+
 
 latarray = np.linspace(25.06666667,49.4,585) ##maca lat
 lonarray = np.linspace(-124.76666663,-67.0583333,1386) ##maca lon
@@ -49,3 +72,27 @@ for i in range(0,maca_almond_lat_lon.shape[1]):
     matrix[:,maca_almond_lat_lon[0,i],maca_almond_lat_lon[1,i]] = 1
 nc_data.variables[str(var_name_list[k])][:] = nc_data.variables[str(var_name_list[k])][:]*matrix
 nc_data.close()
+
+latarray = np.linspace(29.578125,45.015625,495) ##LOCA lat
+lonarray = np.linspace(-128.42188,-110.984375,559) ##LOCA lon
+
+gridmet_almond_lat = np.zeros((lat_with_cropland_sum.shape[0]))
+gridmet_almond_lon = np.zeros((lon_with_cropland_sum.shape[0]))
+
+for i in range(0,lat_with_cropland_sum.shape[0]):
+    gridmet_almond_lat[i] = find_nearest_cell(latarray, cropland_lat[lat_with_cropland_sum[i].astype(int)])
+    gridmet_almond_lon[i] = find_nearest_cell(lonarray, cropland_lon[lon_with_cropland_sum[i].astype(int)])
+gridmet_almond_lat_lon = np.row_stack((gridmet_almond_lat, gridmet_almond_lon)).astype(int)
+
+
+## nan MACA nc
+nc_data = nc.Dataset('/home/shqwu/CDL_CA_original/LOCA_reference_cropland.nc','r+')
+matrix = np.zeros((495,559))
+matrix[:] = np.nan
+for i in range(0,gridmet_almond_lat_lon.shape[1]):
+    matrix[gridmet_almond_lat_lon[0,i],gridmet_almond_lat_lon[1,i]] = 1
+nc_data.variables['tasmax'][:] = nc_data.variables['tasmax'][:]*matrix
+nc_data.close()
+
+
+
